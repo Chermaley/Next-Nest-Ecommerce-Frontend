@@ -1,0 +1,41 @@
+.mainLayout {
+  padding-top: 20px;
+}
+
+.logo {
+  font-size: 40px;
+  width: 200px;
+  text-align: center;
+  margin-left: 300px;
+}
+
+.topHeader {
+  position: relative;
+}
+
+.topHeaderButtons {
+  position: absolute;
+  align-items: center;
+  display: flex;
+  right: 15px;
+  top: 0;
+}
+
+.topHeaderButton {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.navHeader {
+  display: flex;
+  margin-top: 60px;
+  border-top: 3px solid #9ac7dc;
+  padding-top: 10px;
+}
+
+.navHeaderButton {
+  text-transform: uppercase;
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
