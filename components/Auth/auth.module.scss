@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.input {
+  margin-bottom: 10px;
+}
+
+.changeAuthTypeButton {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}

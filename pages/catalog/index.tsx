@@ -12,7 +12,7 @@ import {useRouter} from "next/router";
 import {GetServerSideProps} from "next";
 import axios from "axios";
 
-const Index = () => {
+const Catalog = () => {
     const dispatch = useAppDispatch()
     const products = useTypedSelector(state => state.product.productList)
     const productTypes = useTypedSelector(state => state.product.productTypeList)
@@ -46,14 +46,14 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     }
 );
 
-export default Index;
+export default Catalog;
 
 const ProductItem: React.FC<{ product: Product }> = ({product}) => {
     const router = useRouter()
 
     return <div className={styles.product}>
         <p>{product.name}</p>
-        <img style={{width: 100}} src={`${config.apiUrl}/${product.image}`} alt=""/>
+        <img style={{width: 100}} src={`${config.apiUrl}/${product.image1}`} alt=""/>
         <p>{product.description}</p>
         <p>По цене в {product.price} рублей</p>
         <button onClick={() => router.push(`/catalog/${product.id}`)}>Подробнее</button>

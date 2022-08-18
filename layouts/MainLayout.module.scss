@@ -21,9 +21,16 @@
   top: 0;
 }
 
+.logoutButton {
+  margin-right: 10px;
+  color: red;
+  cursor: pointer;
+}
+
 .topHeaderButton {
   width: 20px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .navHeader {
@@ -38,4 +45,11 @@
   margin-right: 10px;
   text-decoration: none;
   color: black;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
 }

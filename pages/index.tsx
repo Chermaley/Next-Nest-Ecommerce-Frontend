@@ -5,7 +5,7 @@ const Index = () => {
 
     return (
         <MainLayout title='Домашняя страница'>
-            <div>sdsdfsdf</div>
+            <div>Главная страница</div>
         </MainLayout>
     );
 };

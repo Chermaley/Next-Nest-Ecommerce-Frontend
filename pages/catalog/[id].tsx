@@ -15,7 +15,9 @@ const ProductPage = () => {
         >
             <div className={styles.wrapper}>
                 <div className={styles.left}>
-                    <img src={`${config.apiUrl}/${product?.image}`} alt=""/>
+                    <img src={`${config.apiUrl}/${product?.image1}`} alt=""/>
+                    <img src={`${config.apiUrl}/${product?.image2}`} alt=""/>
+                    <img src={`${config.apiUrl}/${product?.image3}`} alt=""/>
                 </div>
                 <div className={styles.right}>
                     <div>Название: {product?.name}</div>
