@@ -13,10 +13,10 @@ const initialState = {
 
 export const getProduct = createAsyncThunk(
   "catalog/product",
-  async (params: { productId: number }) => {
+  async (params: { productId: number }, { dispatch }) => {
     try {
       const { data } = await ProductService.getProduct(params);
-      return data;
+      dispatch(setProduct(data));
     } catch (e) {
       console.log(e);
     }
@@ -29,7 +29,6 @@ export const getProductList = createAsyncThunk(
     try {
       const { data } = await ProductService.getProductList(params);
       dispatch(setProductList(data));
-      return data;
     } catch (e) {
       console.log(e);
     }
@@ -41,7 +40,7 @@ export const getProductTypeList = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       const { data } = await ProductService.getProductTypeList();
-      return data;
+      dispatch(setProductTypes(data));
     } catch (e) {
       console.log(e);
     }
@@ -55,15 +54,19 @@ export const contractSlice = createSlice({
     setProductList(state, action: PayloadAction<Product[]>) {
       state.productList = action.payload;
     },
+    setProduct(state, action: PayloadAction<Product>) {
+      state.currentProduct = action.payload;
+    },
+    setProductTypes(state, action: PayloadAction<ProductType[]>) {
+      state.productTypeList = action.payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      console.log(action.payload);
-
       return { ...state, ...action.payload.product };
     },
   },
 });
 
-const { setProductList } = contractSlice.actions;
+const { setProductList, setProduct, setProductTypes } = contractSlice.actions;
 export default contractSlice.reducer;

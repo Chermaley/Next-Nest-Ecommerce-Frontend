@@ -12,7 +12,7 @@ const Personal = () => {
           <div>Почта {user.email}</div>
           <div>
             Роли:{" "}
-            {user.roles.map((role) => (
+            {user.roles && user.roles.map((role) => (
               <div key={role.id}>{role.value}</div>
             ))}
           </div>
