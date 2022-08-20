@@ -5,6 +5,7 @@ import {getProduct} from "../../store/reducers/productSlice";
 import {useTypedSelector} from "../../hooks/useTypedSelectors";
 import config from "../../config";
 import styles from './Product.module.scss'
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const ProductPage = () => {
     const product = useTypedSelector(state => state.product.currentProduct)

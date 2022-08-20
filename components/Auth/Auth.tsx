@@ -1,9 +1,8 @@
 import React, { FormEvent, useState } from "react";
-import MainLayout from "../../layouts/MainLayout";
 import classes from "./auth.module.scss";
 import { Input } from "../../components/Input";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { login, register } from "../../store/reducers/authSlice";
+import { signUp, signIn } from "../../store/reducers/authSlice";
 import { NotificationManager } from "react-notifications";
 
 const Auth = () => {
@@ -16,12 +15,12 @@ const Auth = () => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isLogin) {
-      return dispatch(login({ email, password }));
+      return dispatch(signIn({ email, password }));
     }
     if (password !== passwordConfirm) {
       return NotificationManager.error('Пароли не совпадают');
     }
-    dispatch(register({ email, password }));
+    dispatch(signUp({ email, password }));
   };
 
   return (

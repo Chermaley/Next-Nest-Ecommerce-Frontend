@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AuthService from "../../api/AuthService";
 import { NotificationManager } from "react-notifications";
 import jwtDecode from "jwt-decode";
-import { HYDRATE } from "next-redux-wrapper";
 
 export type User = {
   id: number;
@@ -14,28 +13,30 @@ const initialState = {
   user: null as User | null,
 };
 
-export const login = createAsyncThunk(
+export const signIn = createAsyncThunk(
   "catalog/product",
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
-      const { data } = await AuthService.login(params);
-      const user: User = jwtDecode(data.token);
+      const { data } = await AuthService.signIn(params);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      const user: User = jwtDecode(data.accessToken);
       dispatch(setUser(user));
-      localStorage.setItem("accessToken", data.token);
     } catch (e: any) {
       NotificationManager.error(e.description);
     }
   }
 );
 
-export const register = createAsyncThunk(
+export const signUp = createAsyncThunk(
   "catalog/register",
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
-      const { data } = await AuthService.register(params);
-      const user: User = jwtDecode(data.token);
+      const { data } = await AuthService.signUp(params);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      const user: User = jwtDecode(data.accessToken);
       dispatch(setUser(user));
-      localStorage.setItem("accessToken", data.token);
     } catch (e: any) {
       NotificationManager.error(e.description);
     }

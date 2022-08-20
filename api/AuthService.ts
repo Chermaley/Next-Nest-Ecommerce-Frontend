@@ -1,19 +1,26 @@
 import {AxiosResponse} from 'axios';
-import {Product} from './models';
 import {$api} from './api';
-import {ProductType} from "./models/ProductType";
-import {buildRequestParams} from "../utils";
+import { Tokens } from "./models";
 
 export default class AuthService {
-    static async login(params: { email: string, password: string }): Promise<AxiosResponse<{token: string}>> {
-        return $api.post<{token: string}>(`/auth/login`, {
+    static async signIn(params: { email: string, password: string }): Promise<AxiosResponse<Tokens>> {
+        return $api.post<Tokens>(`/auth/local/signin`, {
             ...params
         });
     }
 
-    static async register(params: { email: string, password: string }): Promise<AxiosResponse<{token: string}>> {
-        return $api.post<{token: string}>(`/auth/registration`, {
+    static async signUp(params: { email: string, password: string }): Promise<AxiosResponse<Tokens>> {
+        return $api.post<Tokens>(`/auth/local/signUp`, {
             ...params
         });
     }
+
+    static async logout(): Promise<AxiosResponse<void>> {
+        return $api.post(`/auth/logout`);
+    }
+
+    // static async refreshTokens(params: {refreshToken}): Promise<AxiosResponse<Tokens>> {
+    //     return $api.post<Tokens>(`/auth/local/registration`, {
+    //     }, {au});
+    // }
 }

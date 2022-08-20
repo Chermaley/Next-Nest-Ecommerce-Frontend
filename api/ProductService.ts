@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios';
 import {Product} from './models';
 import {$api} from './api';
-import {ProductType} from "./models/ProductType";
+import {ProductType} from "./models";
 import {buildRequestParams} from "../utils";
 
 export default class ProductService {

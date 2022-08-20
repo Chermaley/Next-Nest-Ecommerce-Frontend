@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./MainLayout.module.scss";
 import Link from "next/link";
 import Head from "next/head";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { logout } from "../store/reducers/authSlice";
 import { useTypedSelector } from "../hooks/useTypedSelectors";
+import { GetServerSideProps } from "next";
+import { wrapper } from "../store/store";
+import { getProductList, getProductTypeList } from "../store/reducers/productSlice";
+import { getBasket } from "../store/reducers/basketSlice";
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -12,6 +16,10 @@ type MainLayoutProps = {
 };
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(getBasket())
+  }, [])
   return (
     <>
       <Head>
@@ -32,13 +40,20 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
   );
 };
 
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+//   (store) => async () => {
+//     await store.dispatch(getBasket())
+//     return {props: {}}
+//   }
+// );
+
 export default MainLayout;
 
 const TopHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = useTypedSelector(state => state.auth.user)
   const onLogout = () => {
-      localStorage.removeItem('accessToken')
+    localStorage.removeItem('accessToken')
     dispatch(logout());
   };
 
