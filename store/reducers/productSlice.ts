@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "../../api/models";
 import ProductService from "../../api/ProductService";
-import { ProductType } from "../../api/models/ProductType";
+import { ProductType } from "../../api/models";
 import { HYDRATE } from "next-redux-wrapper";
-import { User } from "./authSlice";
 
 const initialState = {
   productList: [] as Product[],
@@ -16,6 +15,7 @@ export const getProduct = createAsyncThunk(
   async (params: { productId: number }, { dispatch }) => {
     try {
       const { data } = await ProductService.getProduct(params);
+      console.log(data);
       dispatch(setProduct(data));
     } catch (e) {
       console.log(e);

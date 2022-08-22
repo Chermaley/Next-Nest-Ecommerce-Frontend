@@ -1,6 +1,13 @@
-import { Product } from "./Product";
 
 export type Basket = {
   id: number;
-  products: Product[]
-}
+  products: BasketProduct[];
+};
+
+export type BasketProduct = {
+  id: number;
+  price: number;
+  name: string;
+  quantity: number;
+  subTotalPrice: number;
+};

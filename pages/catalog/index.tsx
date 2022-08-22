@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import MainLayout from "../../layouts/MainLayout";
 import {Product} from "../../api/models";
 import config from "../../config/config";
 import {wrapper} from "../../store/store";
 import {getProductList, getProductTypeList} from "../../store/reducers/productSlice";
 import {useTypedSelector} from "../../hooks/useTypedSelectors";
-import {ProductType} from "../../api/models/ProductType";
+import {ProductType} from "../../api/models";
 import styles from './Catalog.module.scss';
 import {useAppDispatch} from "../../hooks/useAppDispatch";
 import {useRouter} from "next/router";
 import {GetServerSideProps} from "next";
-import axios from "axios";
+import { addProductToBasket } from "../../store/reducers/basketSlice";
 
 const Catalog = () => {
     const dispatch = useAppDispatch()
     const products = useTypedSelector(state => state.product.productList)
     const productTypes = useTypedSelector(state => state.product.productTypeList)
-    
+
     const onTypeClick = (typeId: number) => {
         dispatch(getProductList({typeId}))
     }
@@ -32,7 +32,6 @@ const Catalog = () => {
                 <div className={styles.productList}>
                     {products.map(p => <ProductItem product={p} key={p.id}/>)}
                 </div>
-
             </div>
         </MainLayout>
     )
@@ -50,6 +49,16 @@ export default Catalog;
 
 const ProductItem: React.FC<{ product: Product }> = ({product}) => {
     const router = useRouter()
+    const dispatch = useAppDispatch()
+
+    const addToCart = () => {
+        dispatch(addProductToBasket({
+            productId: product.id,
+            quantity: 1,
+            price: product.price,
+            name: product.name
+        }))
+    }
 
     return <div className={styles.product}>
         <p>{product.name}</p>
@@ -57,6 +66,7 @@ const ProductItem: React.FC<{ product: Product }> = ({product}) => {
         <p>{product.description}</p>
         <p>По цене в {product.price} рублей</p>
         <button onClick={() => router.push(`/catalog/${product.id}`)}>Подробнее</button>
+        <button onClick={addToCart}>Добавить в корзину</button>
     </div>
 }
 

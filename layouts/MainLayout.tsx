@@ -5,10 +5,10 @@ import Head from "next/head";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { logout } from "../store/reducers/authSlice";
 import { useTypedSelector } from "../hooks/useTypedSelectors";
-import { GetServerSideProps } from "next";
-import { wrapper } from "../store/store";
-import { getProductList, getProductTypeList } from "../store/reducers/productSlice";
 import { getBasket } from "../store/reducers/basketSlice";
+import { $api } from "../api/api";
+import { Tokens } from "../api/models";
+import axios from "axios";
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -17,9 +17,7 @@ type MainLayoutProps = {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
   const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(getBasket())
-  }, [])
+  const basket = useTypedSelector(state => state.basket.basket)
   return (
     <>
       <Head>
@@ -39,13 +37,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
     </>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
-//   (store) => async () => {
-//     await store.dispatch(getBasket())
-//     return {props: {}}
-//   }
-// );
 
 export default MainLayout;
 
@@ -81,7 +72,7 @@ const TopHeader: React.FC = () => {
             />
           </svg>
         </Link>
-        <Link href="">
+        <Link href="/basket">
           <svg
             className={styles.topHeaderButton}
             width="32"
