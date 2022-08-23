@@ -1,7 +1,7 @@
 import React from 'react';
 import MainLayout from "../../layouts/MainLayout";
 import {Product} from "../../api/models";
-import config from "../../config/config";
+import config from "../../../config/config";
 import {wrapper} from "../../store/store";
 import {getProductList, getProductTypeList} from "../../store/reducers/productSlice";
 import {useTypedSelector} from "../../hooks/useTypedSelectors";

@@ -108,7 +108,7 @@ const NavHeader: React.FC = () => {
   return (
     <header>
       <nav className={styles.navHeader}>
-        <Link href="/">
+        <Link href="/frontend/public">
           <a className={styles.navHeaderButton}>Главная</a>
         </Link>
         <Link href="/catalog">

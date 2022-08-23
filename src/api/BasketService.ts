@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { $api } from "./api";
 import { Basket, Tokens } from "./models";
-import config from "../config/config";
+import config from "../../config/config";
 
 export default class BasketService {
   static async getBasket(params: {

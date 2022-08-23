@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from 'axios';
 import {$api} from './api';
 import { Tokens } from "./models";
 import { User } from "../store/reducers/authSlice";
-import config from "../config";
+import config from "../../config";
 
 export default class AuthService {
     static async signIn(params: { email: string, password: string }): Promise<AxiosResponse<Tokens>> {

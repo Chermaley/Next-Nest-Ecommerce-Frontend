@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import classes from "./auth.module.scss";
-import { Input } from "../../components/Input";
+import { Input } from "../Input";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { signUp, signIn } from "../../store/reducers/authSlice";
 import { NotificationManager } from "react-notifications";
