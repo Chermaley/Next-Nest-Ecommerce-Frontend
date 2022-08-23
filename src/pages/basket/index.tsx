@@ -11,6 +11,7 @@ import { BasketProduct } from "../../api/models";
 import MainLayout from "../../layouts/MainLayout";
 import classes from "./Basket.module.scss";
 import { ParsedUrlQuery } from "querystring";
+import { getAccessTokenFromCtx } from "../../utils/getAccessFromCtx";
 
 const Index = () => {
   const basket = useTypedSelector((state) => state.basket.basket);
@@ -68,12 +69,3 @@ const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
   );
 };
 
-function getAccessTokenFromCtx(
-  ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
-): string | null {
-  try {
-    return JSON.parse(ctx.req.cookies.tokens ?? "").accessToken;
-  } catch {
-    return null;
-  }
-}

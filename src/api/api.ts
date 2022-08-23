@@ -5,7 +5,6 @@ import ExpressiveError from "../ExpressiveError";
 export const $api = axios.create({
   withCredentials: true,
   baseURL: config.apiUrl,
-  transformResponse: [(data) => JSON.parse(data)],
 });
 
 $api.interceptors.response.use((conf) => {
@@ -13,6 +12,7 @@ $api.interceptors.response.use((conf) => {
 }, handleRejectedResponse);
 
 async function handleRejectedResponse(error: any) {
+  console.log(error, 'fdgfd');
   if (error && error.response) {
     switch (error.response.status) {
       case 401:

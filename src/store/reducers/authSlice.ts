@@ -1,27 +1,16 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AuthService from "../../api/AuthService";
 import { NotificationManager } from "react-notifications";
-import jwtDecode from "jwt-decode";
+import { getUser } from "./userSlice";
 
-export type User = {
-  id: number;
-  email: string;
-  roles: any[];
-};
-
-const initialState = {
-  user: null as User | null,
-};
+const initialState = {};
 
 export const signIn = createAsyncThunk(
-  "catalog/product",
+  "auth/product",
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
       const { data } = await AuthService.signIn(params);
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      const user: User = jwtDecode(data.accessToken);
-      dispatch(setUser(user));
+      dispatch(getUser({ accessToken: data.accessToken }));
     } catch (e: any) {
       NotificationManager.error(e.description);
     }
@@ -29,15 +18,25 @@ export const signIn = createAsyncThunk(
 );
 
 export const signUp = createAsyncThunk(
-  "catalog/register",
+  "auth/register",
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
       const { data } = await AuthService.signUp(params);
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      const user: User = jwtDecode(data.accessToken);
-      dispatch(setUser(user));
+      dispatch(getUser({ accessToken: data.accessToken }));
     } catch (e: any) {
+      NotificationManager.error(e.description);
+    }
+  }
+);
+
+export const logoutThunk = createAsyncThunk(
+  "auth/logoutThunk",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(logout());
+      await AuthService.logout();
+    } catch (e: any) {
+      console.log(e);
       NotificationManager.error(e.description);
     }
   }
@@ -48,15 +47,10 @@ const authSlice = createSlice({
   initialState,
 
   reducers: {
-    setUser(state, action: PayloadAction<User>) {
-      state.user = action.payload;
-    },
-    logout: () => {
-      console.log("logout");
-    },
+    logout: () => {},
   },
-  extraReducers: {}
+  extraReducers: {},
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;
