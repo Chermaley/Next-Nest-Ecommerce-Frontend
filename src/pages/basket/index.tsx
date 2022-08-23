@@ -1,8 +1,6 @@
 import React from "react";
 import {
   GetServerSideProps,
-  GetServerSidePropsContext,
-  PreviewData,
 } from "next";
 import { wrapper } from "../../store/store";
 import { getBasket } from "../../store/reducers/basketSlice";
@@ -10,7 +8,6 @@ import { useTypedSelector } from "../../hooks/useTypedSelectors";
 import { BasketProduct } from "../../api/models";
 import MainLayout from "../../layouts/MainLayout";
 import classes from "./Basket.module.scss";
-import { ParsedUrlQuery } from "querystring";
 import { getAccessTokenFromCtx } from "../../utils/getAccessFromCtx";
 
 const Index = () => {
