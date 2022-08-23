@@ -42,11 +42,6 @@ export default MainLayout;
 
 const TopHeader: React.FC = () => {
   const dispatch = useAppDispatch();
-  const user = useTypedSelector(state => state.auth.user)
-  const onLogout = () => {
-    localStorage.removeItem('accessToken')
-    dispatch(logout());
-  };
 
   return (
     <div className={styles.topHeader}>
@@ -56,7 +51,6 @@ const TopHeader: React.FC = () => {
         Cosmetology
       </div>
       <div className={styles.topHeaderButtons}>
-        {user && <div className={styles.logoutButton} onClick={onLogout}>Выйти</div>}
         <Link href="/personal">
           <svg
             className={styles.topHeaderButton}
