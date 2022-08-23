@@ -1,11 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NotificationManager } from "react-notifications";
-import { Basket, Tokens } from "../../api/models";
+import { Basket } from "../../api/models";
 import BasketService from "../../api/BasketService";
 import { HYDRATE } from "next-redux-wrapper";
-import AuthService from "../../api/AuthService";
-import jwtDecode from "jwt-decode";
-import { setUser, User } from "./authSlice";
 
 const initialState = {
   basket: null as Basket | null,
