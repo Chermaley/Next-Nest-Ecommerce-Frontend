@@ -1,30 +1,23 @@
-#Creates a layer from node:alpine image.
-FROM node:alpine
+FROM node:alpine as dependencies
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install --frozen-lockfile
 
-#Creates directories
-RUN mkdir -p /usr/src/app
-
-#Sets an environment variable
-ENV PORT 3000
-
-#Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY, and ADD commands
-WORKDIR /usr/src/app
-
-#Copy new files or directories into the filesystem of the container
-COPY package.json /usr/src/app
-COPY package-lock.json /usr/src/app
-
-#Execute commands in a new layer on top of the current image and commit the results
-RUN npm install --force
-
-##Copy new files or directories into the filesystem of the container
-COPY . /usr/src/app
-
-#Execute commands in a new layer on top of the current image and commit the results
+FROM node:alpine as builder
+WORKDIR /app
+COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
 RUN npm run build
 
-#Informs container runtime that the container listens on the specified network ports at runtime
+FROM node:alpine as runner
+WORKDIR /app
+ENV NODE_ENV production
+# If you are using a custom next.config.js file, uncomment this line.
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
 EXPOSE 3000
-
-#Allows you to configure a container that will run as an executable
-
+CMD ["npm", "run", "start"]
