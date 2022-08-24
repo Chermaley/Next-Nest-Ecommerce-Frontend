@@ -92,11 +92,6 @@
 }
 
 .delete {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  border: 1.5px solid #E4E4E4;
+  cursor: pointer;
+  color: red;
 }

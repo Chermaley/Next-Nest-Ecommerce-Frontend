@@ -3,15 +3,17 @@ import {
   GetServerSideProps,
 } from "next";
 import { wrapper } from "../../store/store";
-import { getBasket } from "../../store/reducers/basketSlice";
+import { deleteProductFromBasket, getBasket } from "../../store/reducers/basketSlice";
 import { useTypedSelector } from "../../hooks/useTypedSelectors";
 import { BasketProduct } from "../../api/models";
 import MainLayout from "../../layouts/MainLayout";
 import classes from "./Basket.module.scss";
 import { getAccessTokenFromCtx } from "../../utils/getAccessFromCtx";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 const Index = () => {
   const basket = useTypedSelector((state) => state.basket.basket);
+  console.log(basket);
   return (
     <MainLayout title="Корзина">
       <div className={classes.cart}>
@@ -47,6 +49,10 @@ export const getServerSideProps: GetServerSideProps =
 export default Index;
 
 const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
+  const dispatch = useAppDispatch()
+  const onDelete = () => {
+    dispatch(deleteProductFromBasket({productId: product.id}))
+  }
   return (
     <div className={classes.item}>
       <div className={classes.name}>{product.name}</div>
@@ -58,8 +64,7 @@ const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
       <div className={classes.fullPrice}>
         {product.price * product.quantity} ₽
       </div>
-      <div onClick={console.log}>
-        {/*<DeleteIcon />*/}
+      <div onClick={onDelete} className={classes.delete}>
         Удалить
       </div>
     </div>

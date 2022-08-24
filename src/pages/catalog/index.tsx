@@ -54,9 +54,9 @@ const ProductItem: React.FC<{ product: Product }> = ({product}) => {
     const addToCart = () => {
         dispatch(addProductToBasket({
             productId: product.id,
-            quantity: 1,
             price: product.price,
-            name: product.name
+            name: product.name,
+            quantity: 1,
         }))
     }
 

@@ -21,7 +21,7 @@ export const getBasket = createAsyncThunk<void, { accessToken: string }>(
 );
 
 export const addProductToBasket = createAsyncThunk(
-  "catalog/product",
+  "basket/add",
   async (
     params: {
       productId: number;
@@ -33,7 +33,24 @@ export const addProductToBasket = createAsyncThunk(
   ) => {
     try {
       const { data } = await BasketService.addProductToBasket(params);
-      dispatch(setBasket(data))
+      dispatch(setBasket(data));
+    } catch (e: any) {
+      NotificationManager.error(e.description);
+    }
+  }
+);
+
+export const deleteProductFromBasket = createAsyncThunk(
+  "basket/delete",
+  async (
+    params: {
+      productId: number;
+    },
+    { dispatch }
+  ) => {
+    try {
+      const { data } = await BasketService.deleteProductFromBasket(params);
+      dispatch(setBasket(data));
     } catch (e: any) {
       NotificationManager.error(e.description);
     }

@@ -22,4 +22,10 @@ export default class BasketService {
   }): Promise<AxiosResponse<Basket>> {
     return $api.post<Basket>(`/basket/add`, params);
   }
+
+  static async deleteProductFromBasket(params: {
+    productId: number;
+  }): Promise<AxiosResponse<Basket>> {
+    return $api.post<Basket>(`/basket/delete`, params);
+  }
 }
