@@ -22,6 +22,7 @@ export const signUp = createAsyncThunk(
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
       const { data } = await AuthService.signUp(params);
+      console.log(data);
       dispatch(getUser({ accessToken: data.accessToken }));
     } catch (e: any) {
       NotificationManager.error(e.description);

@@ -10,7 +10,7 @@ export default class AuthService {
     }
 
     static async signUp(params: { email: string, password: string }): Promise<AxiosResponse<Tokens>> {
-        return $api.post<Tokens>(`/auth/local/signUp`, {
+        return $api.post<Tokens>(`/auth/local/signup`, {
             ...params
         });
     }

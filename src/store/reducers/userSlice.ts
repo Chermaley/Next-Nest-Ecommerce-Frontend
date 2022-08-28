@@ -9,10 +9,11 @@ const initialState = {
 
 export const getUser = createAsyncThunk(
   "user/user",
-  async (params: {accessToken: string} , { dispatch }) => {
+  async (params: { accessToken: string }, { dispatch }) => {
     try {
       const { data } = await UserService.getCurrentUser(params);
       dispatch(setUser(data));
+      return data;
     } catch (e) {
       console.log(e);
     }

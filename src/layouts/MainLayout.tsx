@@ -9,6 +9,7 @@ import { getBasket } from "../store/reducers/basketSlice";
 import { $api } from "../api/api";
 import { Tokens } from "../api/models";
 import axios from "axios";
+import { chatActions } from "../store/reducers/chatSlice";
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -16,8 +17,9 @@ type MainLayoutProps = {
 };
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
-  const dispatch = useAppDispatch()
   const basket = useTypedSelector(state => state.basket.basket)
+
+
   return (
     <>
       <Head>
@@ -102,7 +104,7 @@ const NavHeader: React.FC = () => {
   return (
     <header>
       <nav className={styles.navHeader}>
-        <Link href="/frontend/public">
+        <Link href="/">
           <a className={styles.navHeaderButton}>Главная</a>
         </Link>
         <Link href="/catalog">

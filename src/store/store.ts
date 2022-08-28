@@ -1,6 +1,7 @@
 import reducers from "./reducers";
 import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
-import { createWrapper, HYDRATE } from "next-redux-wrapper";
+import { createWrapper } from "next-redux-wrapper";
+import chatMiddleware from "./middlewares/chatMiddleware";
 
 const appReducer = combineReducers({
   ...reducers,
@@ -16,6 +17,8 @@ const reducer: Reducer = (state, action) => {
 export const makeStore = () =>
   configureStore({
     reducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat([chatMiddleware]),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
