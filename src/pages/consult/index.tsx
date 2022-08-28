@@ -1,18 +1,17 @@
 import React from "react";
 import MainLayout from "../../layouts/MainLayout";
 import { useTypedSelector } from "../../hooks/useTypedSelectors";
-import { Consultation, ConsultationStatus, RoleValue } from "../../api/models";
+import { Consultation, ConsultationStatus } from "../../api/models";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import {
   chatActions,
   getOpenConsultation,
-  getClosedConsultations,
 } from "../../store/reducers/chatSlice";
 import { GetServerSideProps } from "next";
 import { wrapper } from "../../store/store";
 import { getUser } from "../../store/reducers/userSlice";
 import { getAccessTokenFromCtx } from "../../utils/getAccessFromCtx";
-import { Chat } from "./Chat";
+import { Chat } from "../../components/Chat";
 import styles from "./Consult.module.scss";
 import clsx from "clsx";
 

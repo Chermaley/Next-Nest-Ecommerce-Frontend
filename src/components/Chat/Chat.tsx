@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { chatActions } from "../../../store/reducers/chatSlice";
-import { ChatMessage } from "../../../components/ChatMessage";
-import { ChatInput } from "../../../components/ChatInput";
-import { useChatScroll } from "../../../hooks/useChatScroll";
-import { useTypedSelector } from "../../../hooks/useTypedSelectors";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { chatActions } from "../../store/reducers/chatSlice";
+import { ChatMessage } from "../ChatMessage";
+import { ChatInput } from "../ChatInput";
+import { useChatScroll } from "../../hooks/useChatScroll";
+import { useTypedSelector } from "../../hooks/useTypedSelectors";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 import styles from "./Chat.module.scss";
-import { RoleValue } from "../../../api/models";
+import { RoleValue } from "../../api/models";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
