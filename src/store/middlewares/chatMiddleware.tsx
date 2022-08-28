@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { chatActions } from "../reducers/chatSlice";
 import { Consultation, Message, Role } from "../../api/models";
 import { NotificationManager } from "react-notifications";
+import config from "../../../config";
 
 export enum ChatEvent {
   CreateConsultation = "createConsultation",
@@ -28,7 +29,7 @@ const chatMiddleware: Middleware = (store) => {
       socket && store.getState().chat.client.isConnected;
 
     if (chatActions.startConnecting.match(action)) {
-      socket = io("http://localhost:8000/chat", { withCredentials: true });
+      socket = io(`${config.apiUrl}/chat`, { withCredentials: true });
 
       socket.on("connect", () => {
         store.dispatch(chatActions.connectionEstablished());
