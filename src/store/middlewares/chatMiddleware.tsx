@@ -32,6 +32,7 @@ const chatMiddleware: Middleware = (store) => {
       socket = io(`${config.apiUrl}chat`, { withCredentials: true });
 
       socket.on("connect", () => {
+        console.log('connected to chat ws');
         store.dispatch(chatActions.connectionEstablished());
       });
 
