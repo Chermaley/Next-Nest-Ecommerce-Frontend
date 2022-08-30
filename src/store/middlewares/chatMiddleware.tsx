@@ -29,19 +29,23 @@ const chatMiddleware: Middleware = (store) => {
       socket && store.getState().chat.client.isConnected;
 
     if (chatActions.startConnecting.match(action)) {
-      socket = io(config.wsUrl, {
-        path: "/api/chat",
+      socket = io(`${config.wsUrl}/chat`, {
+        path: "/api/socket.io",
         withCredentials: true,
         transports: ["websocket"],
       });
+
 
       socket.on("connect", () => {
         console.log("connected to chat ws");
         store.dispatch(chatActions.connectionEstablished());
       });
 
+      socket.on('connect_error', (e) => {
+        console.log(e);
+      });
+
       socket.on(ChatEvent.Consultations, (consultations: Consultation[]) => {
-        console.log(consultations);
         store.dispatch(chatActions.setConsultations({ consultations }));
       });
 
