@@ -29,7 +29,7 @@ const chatMiddleware: Middleware = (store) => {
       socket && store.getState().chat.client.isConnected;
 
     if (chatActions.startConnecting.match(action)) {
-      socket = io(config.apiUrl, {
+      socket = io(config.wsUrl, {
         path: "/chat",
         withCredentials: true,
         transports: ["websocket"],
