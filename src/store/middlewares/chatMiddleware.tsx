@@ -29,10 +29,14 @@ const chatMiddleware: Middleware = (store) => {
       socket && store.getState().chat.client.isConnected;
 
     if (chatActions.startConnecting.match(action)) {
-      socket = io(`${config.apiUrl}chat`, { withCredentials: true });
+      socket = io(config.apiUrl, {
+        path: "/chat",
+        withCredentials: true,
+        transports: ["websocket"],
+      });
 
       socket.on("connect", () => {
-        console.log('connected to chat ws');
+        console.log("connected to chat ws");
         store.dispatch(chatActions.connectionEstablished());
       });
 
@@ -58,9 +62,7 @@ const chatMiddleware: Middleware = (store) => {
       });
 
       socket.on(ChatEvent.NewMessageInConversation, (message: Message) => {
-        NotificationManager.info(
-          'Новое сообщение по консультации'
-        );
+        NotificationManager.info("Новое сообщение по консультации");
       });
     }
 
