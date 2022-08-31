@@ -36,6 +36,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
         <NavHeader />
         <div className={styles.content}>{children}</div>
       </div>
+      <style global jsx>
+        {`
+            html, body {
+              font-family: 'Alike', serif;
+            }
+          `}
+      </style>
     </>
   );
 };
