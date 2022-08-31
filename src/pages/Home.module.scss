@@ -1,0 +1,20 @@
+.image {
+}
+
+.benefits {
+  display: flex;
+  justify-content: space-between;
+  background: #B8EBF3;
+  padding: 50px 60px;
+  margin-top: 20px;
+  border-radius: 142.5px;
+}
+
+.benefit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 250px;
+  text-align: center;
+}
