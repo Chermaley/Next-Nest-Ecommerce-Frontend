@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps =
     const accessToken = getAccessTokenFromCtx(ctx);
     if (accessToken) {
       await store.dispatch(getUser({ accessToken }));
-      await store.dispatch(getOpenConsultation({ accessToken }));
+      // await store.dispatch(getOpenConsultation( ));
       // await store.dispatch(getClosedConsultations({ accessToken }));
     }
     return { props: {} };
