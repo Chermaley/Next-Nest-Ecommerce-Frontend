@@ -34,7 +34,7 @@ const SearchInput: React.FC<SearchInputPropsTypes> = ({ onCloseRequested }) => {
         />
         <div className={styles.results}>
           {searchedList?.map((item) => (
-            <div onClick={onCloseRequested}>
+            <div key={item.id} onClick={onCloseRequested}>
               <Link
                 href={`/catalog/${item.id}`}
                 key={item.id}
