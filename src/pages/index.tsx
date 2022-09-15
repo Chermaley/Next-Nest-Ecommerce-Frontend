@@ -8,7 +8,7 @@ const Index = () => {
     <MainLayout title="Домашняя страница">
       <Image
         width="100"
-        height="50"
+        height="45"
         layout="responsive"
         src="/background.png"
         alt="bg"

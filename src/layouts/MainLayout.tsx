@@ -86,9 +86,8 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
   return (
     <div className={styles.topHeader}>
       <div className={styles.logo}>
-        OneLab
-        <br />
-        Cosmetology
+        <Image src="/logo.png" width={491} height={200} />
+
       </div>
       <div className={styles.topHeaderButtons}>
         <svg
