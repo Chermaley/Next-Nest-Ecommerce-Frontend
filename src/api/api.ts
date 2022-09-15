@@ -12,27 +12,10 @@ $api.interceptors.response.use((conf) => {
 }, handleRejectedResponse);
 
 async function handleRejectedResponse(error: any) {
-  console.log(error, 'fdgfd');
   if (error && error.response) {
     switch (error.response.status) {
-      case 401:
-        // if (error.config && !error.config._isRetry) {
-        //   try {
-        //     console.log('sdfs');
-        //     if (typeof window !== 'undefined') {
-        //       console.log('ref');
-        //     }
-        //     } catch (e: any) {
-        //     console.log(e);
-        //     // console.log(e);
-        //     // if (e.response.status && e.response.status === 401) {
-        //     //   localStorage.removeItem("refreshToken");
-        //     //   localStorage.removeItem("accessToken");
-        //     //   document.location.reload();
-        //     // }
-        //   }
-        // }
-        break;
+      case 400:
+        throw new ExpressiveError(error.response.data.join(', '))
       case 500:
         throw ExpressiveError.serverError();
       case 502:

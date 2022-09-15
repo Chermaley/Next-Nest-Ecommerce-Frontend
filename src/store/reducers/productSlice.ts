@@ -8,6 +8,7 @@ const initialState = {
   productList: [] as Product[],
   productTypeList: [] as ProductType[],
   currentProduct: null as Product | null,
+  searchedProducts: [] as Product[]
 };
 
 export const getProduct = createAsyncThunk(
@@ -25,10 +26,15 @@ export const getProduct = createAsyncThunk(
 
 export const getProductList = createAsyncThunk(
   "catalog/list",
-  async (params: { typeId?: number }, { dispatch }) => {
+  async (params: { typeId?: number; term?: string }, { dispatch }) => {
     try {
-      const { data } = await ProductService.getProductList(params);
-      dispatch(setProductList(data));
+      if (!params.term) {
+        const { data } = await ProductService.getProductList(params);
+        return dispatch(setProductList(data));
+      }
+      const { data } = await ProductService.getProductListByTerm(params);
+      console.log(data);
+      dispatch(setSearchedProductList(data));
     } catch (e) {
       console.log(e);
     }
@@ -60,6 +66,9 @@ export const contractSlice = createSlice({
     setProductTypes(state, action: PayloadAction<ProductType[]>) {
       state.productTypeList = action.payload;
     },
+    setSearchedProductList(state, action: PayloadAction<Product[]>) {
+      state.searchedProducts = action.payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -68,5 +77,5 @@ export const contractSlice = createSlice({
   },
 });
 
-const { setProductList, setProduct, setProductTypes } = contractSlice.actions;
+const { setProductList, setProduct, setProductTypes, setSearchedProductList } = contractSlice.actions;
 export default contractSlice.reducer;

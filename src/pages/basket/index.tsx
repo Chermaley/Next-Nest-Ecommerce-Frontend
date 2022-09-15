@@ -1,9 +1,11 @@
 import React from "react";
-import {
-  GetServerSideProps,
-} from "next";
+import { GetServerSideProps } from "next";
 import { wrapper } from "../../store/store";
-import { deleteProductFromBasket, getBasket } from "../../store/reducers/basketSlice";
+import {
+  createOrder,
+  deleteProductFromBasket,
+  getBasket,
+} from "../../store/reducers/basketSlice";
 import { useTypedSelector } from "../../hooks/useTypedSelectors";
 import { BasketProduct } from "../../api/models";
 import MainLayout from "../../layouts/MainLayout";
@@ -12,8 +14,13 @@ import { getAccessTokenFromCtx } from "../../utils/getAccessFromCtx";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 const Index = () => {
+  const dispatch = useAppDispatch();
   const basket = useTypedSelector((state) => state.basket.basket);
-  console.log(basket);
+
+  const onOrder = () => {
+    dispatch(createOrder());
+  };
+
   return (
     <MainLayout title="Корзина">
       <div className={classes.cart}>
@@ -30,7 +37,7 @@ const Index = () => {
           <Product key={product.id} product={product} />
         ))}
         <div className={classes.button}>
-          <button onClick={console.log}>Оформить заказ</button>
+          <button onClick={onOrder}>Оформить заказ</button>
         </div>
       </div>
     </MainLayout>
@@ -49,10 +56,10 @@ export const getServerSideProps: GetServerSideProps =
 export default Index;
 
 const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const onDelete = () => {
-    dispatch(deleteProductFromBasket({productId: product.id}))
-  }
+    dispatch(deleteProductFromBasket({ productId: product.id }));
+  };
   return (
     <div className={classes.item}>
       <div className={classes.name}>{product.name}</div>
@@ -70,4 +77,3 @@ const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
     </div>
   );
 };
-

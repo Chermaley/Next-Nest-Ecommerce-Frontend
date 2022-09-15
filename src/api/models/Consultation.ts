@@ -11,3 +11,8 @@ export enum ConsultationStatus {
   Open = 'Open',
   Close = 'Close'
 }
+
+export enum ConsultationType {
+  Support = 'Support',
+  Cosmetic = 'Cosmetic',
+}

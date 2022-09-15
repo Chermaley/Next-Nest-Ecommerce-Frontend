@@ -30,19 +30,15 @@ const chatMiddleware: Middleware = (store) => {
 
     if (chatActions.startConnecting.match(action)) {
       socket = io(`${config.wsUrl}/chat`, {
-        path: "/api/socket.io",
+        // path: "/api/socket.io",
+        path: "/socket.io",
         withCredentials: true,
         transports: ["websocket"],
       });
 
-
       socket.on("connect", () => {
         console.log("connected to chat ws");
         store.dispatch(chatActions.connectionEstablished());
-      });
-
-      socket.on('connect_error', (e) => {
-        console.log(e);
       });
 
       socket.on(ChatEvent.Consultations, (consultations: Consultation[]) => {
@@ -74,7 +70,11 @@ const chatMiddleware: Middleware = (store) => {
       chatActions.createNewConsultation.match(action) &&
       isConnectionEstablished
     ) {
-      socket.emit(ChatEvent.CreateConsultation, action.payload.userId);
+      console.log("create");
+      socket.emit(ChatEvent.CreateConsultation, {
+        creatorId: action.payload.userId,
+        type: action.payload.type,
+      });
     }
 
     if (chatActions.getConsultations.match(action) && isConnectionEstablished) {
@@ -107,6 +107,7 @@ const chatMiddleware: Middleware = (store) => {
         message: action.payload.message,
         userId: action.payload.userId,
         consultationId: action.payload.consultationId,
+        attachments: action.payload.attachments,
       });
     }
 

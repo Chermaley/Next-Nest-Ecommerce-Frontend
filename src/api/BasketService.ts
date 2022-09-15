@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { $api } from "./api";
-import { Basket, Tokens } from "./models";
+import { Basket } from "./models";
 import config from "../../config/config";
 
 export default class BasketService {
@@ -27,5 +27,9 @@ export default class BasketService {
     productId: number;
   }): Promise<AxiosResponse<Basket>> {
     return $api.post<Basket>(`/basket/delete`, params);
+  }
+
+  static async createOrder(): Promise<AxiosResponse<Basket>> {
+    return $api.post(`/basket/order`);
   }
 }

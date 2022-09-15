@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AuthService from "../../api/AuthService";
 import { NotificationManager } from "react-notifications";
 import { getUser } from "./userSlice";
+import { AxiosError } from "axios";
 
 const initialState = {};
 
@@ -22,7 +23,6 @@ export const signUp = createAsyncThunk(
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
       const { data } = await AuthService.signUp(params);
-      console.log(data);
       dispatch(getUser({ accessToken: data.accessToken }));
     } catch (e: any) {
       NotificationManager.error(e.description);

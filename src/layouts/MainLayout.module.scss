@@ -1,7 +1,14 @@
+
+
 .mainLayout {
   padding-top: 20px;
-  width: 1200px;
+  width: 1280px;
+  min-height: 100vh;
   margin: 0 auto;
+  background: url("/figures.png") no-repeat;
+  background-size: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -29,8 +36,8 @@
 }
 
 .topHeaderButton {
-  width: 20px;
-  margin-left: 10px;
+  width: 28px;
+  margin-left: 22px;
   cursor: pointer;
 }
 
@@ -51,4 +58,35 @@
 .content {
   width: 100%;
   padding-top: 10px;
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+}
+
+.footerLogo {
+  right: 40px;
+  position: relative;
+}
+
+.footerInfo {
+  font-size: 20px;
+  width: 340px;
+  margin-bottom: 18px;
+}
+
+
+
+.footerLink {
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+.footerTitleLink {
+  font-size: 20px;
+  margin-bottom: 32px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }

@@ -57,6 +57,17 @@ export const deleteProductFromBasket = createAsyncThunk(
   }
 );
 
+export const createOrder = createAsyncThunk(
+  "basket/order",
+  async (_, { dispatch }) => {
+    try {
+      const { data } = await BasketService.createOrder();
+    } catch (e: any) {
+      NotificationManager.error(e.description);
+    }
+  }
+);
+
 const basketSlice = createSlice({
   name: "basket",
   initialState,

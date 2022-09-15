@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Consultation, Message } from "../../api/models";
+import { Consultation, ConsultationType, Message } from "../../api/models";
 import { NotificationManager } from "react-notifications";
 import ChatService from "../../api/ChatService";
 import { HYDRATE } from "next-redux-wrapper";
@@ -31,11 +31,11 @@ export const getClosedConsultations = createAsyncThunk<
 
 export const getOpenConsultation = createAsyncThunk<
   void,
-  { accessToken: string }
+  { accessToken: string; type: ConsultationType }
 >("chat/getActiveConsultation", async (params, { dispatch }) => {
   try {
     const { data } = await ChatService.getOpenConsultation(params);
-    console.log(data, 'sdgfdg');
+    console.log(data, "sdgfdg");
     dispatch(chatActions.setConsultations({ consultations: data }));
   } catch (e: any) {
     NotificationManager.error(e.description);
@@ -57,6 +57,7 @@ export const chatSlice = createSlice({
       state,
       action: PayloadAction<{
         userId: number;
+        type: ConsultationType;
       }>
     ) => {},
     leaveConsultation: () => {},
@@ -81,7 +82,10 @@ export const chatSlice = createSlice({
     ) => {
       state.client.activeConsultation = action.payload.consultation;
     },
-    setActiveConsultation: (state, action: PayloadAction<Consultation | null>) => {
+    setActiveConsultation: (
+      state,
+      action: PayloadAction<Consultation | null>
+    ) => {
       state.client.activeConsultation = action.payload;
     },
     closeConsultation: (
@@ -96,6 +100,7 @@ export const chatSlice = createSlice({
         message: string;
         consultationId: number;
         userId: number;
+        attachments: any[];
       }>
     ) => {},
     setMessages: (

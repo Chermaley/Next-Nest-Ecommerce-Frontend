@@ -5,9 +5,17 @@ import {ProductType} from "./models";
 import {buildRequestParams} from "../utils";
 
 export default class ProductService {
-    static async getProductList(params: { typeId?: number }): Promise<AxiosResponse<Product[]>> {
+    static async getProductListByTerm({term}: { term?: string }): Promise<AxiosResponse<Product[]>> {
         const reqParams = buildRequestParams({
-            typeId: params.typeId
+            term
+        })
+        return $api.get<Product[]>(`/products/?${reqParams}`,);
+    }
+
+    static async getProductList({term, typeId}: { typeId?: number; term?: string }): Promise<AxiosResponse<Product[]>> {
+        const reqParams = buildRequestParams({
+            typeId,
+            term
         })
         return $api.get<Product[]>(`/products/?${reqParams}`,);
     }

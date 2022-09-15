@@ -6,7 +6,7 @@ import { useChatScroll } from "../../hooks/useChatScroll";
 import { useTypedSelector } from "../../hooks/useTypedSelectors";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import styles from "./Chat.module.scss";
-import { RoleValue } from "../../api/models";
+import { ChatFile } from "../ChatInput/ChatInput";
 
 const Chat = () => {
   const dispatch = useAppDispatch();
@@ -26,21 +26,19 @@ const Chat = () => {
         })
       );
     }
-
     return () => {
-      console.log('clear');
-      dispatch(chatActions.setActiveConsultation(null));
       dispatch(chatActions.leaveConsultation());
     };
-  }, [dispatch, user, activeConsultation]);
+  }, [activeConsultation, user, dispatch]);
 
-  const sendMessage = (text: string) => {
+  const sendMessage = (text: string, files: ChatFile[]) => {
     if (user && activeConsultation) {
       dispatch(
         chatActions.sendMessage({
           userId: user.id,
           consultationId: activeConsultation.id,
           message: text,
+          attachments: files,
         })
       );
     }
@@ -52,9 +50,7 @@ const Chat = () => {
       <div className={styles.chat}>
         <div className={styles.header}>
           <div className={styles.headerTop}>
-            <div className={styles.headerTitle}>
-              Консультация с кометологом
-            </div>
+            <div className={styles.headerTitle}>Консультация с кометологом</div>
             {/*<div className='chat-header__info'>Договор № {currentDialog?.contract_number}</div>*/}
             {/*<div className='chat-header__info'>{currentDialog?.client.fio}</div>*/}
           </div>
@@ -63,11 +59,11 @@ const Chat = () => {
             <div
             //    className={`panel-title chat-header__status
             // ${chatStatus === ChatStatus.Online && 'online'} ${chatStatus === ChatStatus.Offline && 'offline'} `}
-            >
-              {/*{chatStatus === ChatStatus.Typing && 'Абонент печатает'}*/}
-              {/*{chatStatus === ChatStatus.Online && 'Абонент в сети'}*/}
-              {/*{chatStatus === ChatStatus.Offline && 'Абонент не в сети'}*/}
-            </div>
+          >
+            {/*{chatStatus === ChatStatus.Typing && 'Абонент печатает'}*/}
+            {/*{chatStatus === ChatStatus.Online && 'Абонент в сети'}*/}
+            {/*{chatStatus === ChatStatus.Offline && 'Абонент не в сети'}*/}
+          </div>
           </div>
         </div>
         <div className={styles.content}>

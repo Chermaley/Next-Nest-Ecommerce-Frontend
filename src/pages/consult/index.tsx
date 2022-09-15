@@ -1,12 +1,9 @@
 import React from "react";
 import MainLayout from "../../layouts/MainLayout";
 import { useTypedSelector } from "../../hooks/useTypedSelectors";
-import { Consultation, ConsultationStatus } from "../../api/models";
+import { Consultation, ConsultationStatus, ConsultationType } from "../../api/models";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import {
-  chatActions,
-  getOpenConsultation,
-} from "../../store/reducers/chatSlice";
+import { chatActions, getOpenConsultation } from "../../store/reducers/chatSlice";
 import { GetServerSideProps } from "next";
 import { wrapper } from "../../store/store";
 import { getUser } from "../../store/reducers/userSlice";
@@ -28,9 +25,14 @@ const Consult = () => {
     (state) => state.chat.client.activeConsultation
   );
 
-  const onCreateNewConversation = () => {
+  const onCreateNewConsultation = () => {
     if (user) {
-      dispatch(chatActions.createNewConsultation({ userId: user.id }));
+      dispatch(
+        chatActions.createNewConsultation({
+          userId: user.id,
+          type: ConsultationType.Cosmetic,
+        })
+      );
     }
   };
 
@@ -49,7 +51,7 @@ const Consult = () => {
                   />
                 ))}
                 {openConsultations.length === 0 && (
-                  <button onClick={onCreateNewConversation}>
+                  <button onClick={onCreateNewConsultation}>
                     Создать обращение
                   </button>
                 )}
@@ -76,7 +78,7 @@ export const getServerSideProps: GetServerSideProps =
     const accessToken = getAccessTokenFromCtx(ctx);
     if (accessToken) {
       await store.dispatch(getUser({ accessToken }));
-      await store.dispatch(getOpenConsultation({ accessToken }));
+      await store.dispatch(getOpenConsultation({ accessToken, type: ConsultationType.Cosmetic }));
       // await store.dispatch(getClosedConsultations({ accessToken }));
     }
     return { props: {} };

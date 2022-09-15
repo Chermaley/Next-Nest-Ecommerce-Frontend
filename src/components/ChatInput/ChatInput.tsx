@@ -2,9 +2,27 @@ import React, { FormEvent, useState } from "react";
 import styles from "./ChatInput.module.scss";
 
 type InputFormProps = {
-  onInputFormSubmit: (value: string) => void;
+  onInputFormSubmit: (value: string, files: ChatFile[]) => void;
   onTyping: () => void;
   onInputFocus: () => void;
+};
+
+const getBase64 = (file: File): Promise<string | ArrayBuffer | null> => {
+  return new Promise((resolve) => {
+    let baseURL;
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      baseURL = reader.result;
+      resolve(baseURL);
+    };
+  });
+};
+
+export type ChatFile = {
+  content: string;
+  type: string;
+  name: string;
 };
 
 const ChatInput: React.FC<InputFormProps> = ({
@@ -13,6 +31,7 @@ const ChatInput: React.FC<InputFormProps> = ({
   onInputFocus,
 }) => {
   const [value, setValue] = useState("");
+  const [files, setFiles] = useState<ChatFile[]>([]);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -24,8 +43,9 @@ const ChatInput: React.FC<InputFormProps> = ({
   const onSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
     if (value.trim()) {
-      onInputFormSubmit(value);
+      onInputFormSubmit(value, files);
       setValue("");
+      setFiles([]);
     }
   };
 
@@ -33,6 +53,19 @@ const ChatInput: React.FC<InputFormProps> = ({
     if (e.keyCode == 13 && !e.shiftKey) {
       e.preventDefault();
       onSubmit();
+    }
+  };
+
+  const onFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length) {
+      const file = event.target.files[0];
+      const base64 = await getBase64(file);
+      if (base64) {
+        setFiles([
+          ...files,
+          { content: base64.toString(), type: file.type, name: file.name },
+        ]);
+      }
     }
   };
 
@@ -52,6 +85,7 @@ const ChatInput: React.FC<InputFormProps> = ({
         value={value}
         onChange={(e) => onChangeText(e.target.value)}
       />
+      <input type="file" name="file" onChange={onFile} multiple />
       <button type="submit" className={styles.button}>
         <svg
           width="15"
