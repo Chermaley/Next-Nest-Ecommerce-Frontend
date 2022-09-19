@@ -13,13 +13,13 @@ const ProductPage = () => {
     <MainLayout title={"Страница продукта"}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
-          <Image
+          <img
             style={{ width: 100 }}
             src={`${config.apiUrl}/${product?.image1}`}
             alt=""
           />
-          <Image src={`${config.apiUrl}/${product?.image2}`} alt="" />
-          <Image src={`${config.apiUrl}/${product?.image3}`} alt="" />
+          <img src={`${config.apiUrl}/${product?.image2}`} alt="" />
+          <img src={`${config.apiUrl}/${product?.image3}`} alt="" />
         </div>
         <div className={styles.right}>
           <div>Название: {product?.name}</div>

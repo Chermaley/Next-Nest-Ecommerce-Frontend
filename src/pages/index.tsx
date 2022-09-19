@@ -3,7 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import Image from "next/image";
 import styles from "./Home.module.scss";
 
-const Index = () => {
+const   Index = () => {
   return (
     <MainLayout title="Домашняя страница">
       <Image
