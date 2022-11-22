@@ -10,7 +10,7 @@ import { ProductType } from '../../services/models'
 import styles from './Catalog.module.scss'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { GetServerSideProps } from 'next'
-import { ProductItem } from './ProductItem'
+import { ProductCard } from '../../components/ProductCard'
 
 const Catalog = () => {
   const dispatch = useAppDispatch()
@@ -37,7 +37,7 @@ const Catalog = () => {
         </div>
         <div className={styles.productList}>
           {products.map((p) => (
-            <ProductItem product={p} key={p.id} />
+            <ProductCard product={p} key={p.id} />
           ))}
         </div>
       </div>
@@ -47,8 +47,10 @@ const Catalog = () => {
 
 export const getServerSideProps: GetServerSideProps =
   wrapper.getServerSideProps((store) => async () => {
-    await store.dispatch(getProductList({}))
-    await store.dispatch(getProductTypeList())
+    await Promise.all([
+      store.dispatch(getProductList({})),
+      store.dispatch(getProductTypeList()),
+    ])
     return { props: {} }
   })
 

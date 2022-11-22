@@ -65,8 +65,8 @@ const chatMiddleware: Middleware = (store) => {
       })
 
       socket.on(ChatEvent.ConsultationClosed, (consultation: Consultation) => {
-        store.dispatch(chatActions.setActiveConsultation(null))
         console.log(consultation)
+        store.dispatch(chatActions.setActiveConsultation(null))
         store.dispatch(chatActions.setLastClosedConsultation(consultation))
       })
     }

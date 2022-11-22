@@ -36,7 +36,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
       <div className={styles.mainLayout}>
         <TopHeader onSearchButtonPressed={toggleInput} />
         <NavHeader />
-        <div className={styles.content}>{children}</div>
+        <main className={styles.content}>{children}</main>
         {isSearchInputShown && <SearchInput onCloseRequested={toggleInput} />}
         <Footer />
       </div>
@@ -65,7 +65,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
   }, [user, dispatch])
 
   return (
-    <div className={styles.topHeader}>
+    <nav className={styles.topHeader}>
       <div className={styles.logo}>LOGO</div>
       <div className={styles.topHeaderButtons}>
         <Image
@@ -102,7 +102,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
           </div>
         )}
       </div>
-    </div>
+    </nav>
   )
 }
 
