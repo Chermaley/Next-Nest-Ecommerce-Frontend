@@ -1,29 +1,45 @@
 export default class ExpressiveError extends Error {
-  constructor(message: string, public readonly description: string = message, public readonly solution?: string) {
-    super(message); // 'Error' breaks prototype chain here
+  constructor(
+    message: string,
+    public readonly description: string = message,
+    public readonly solution?: string
+  ) {
+    super(message) // 'Error' breaks prototype chain here
     if (new.target) {
-      Object.setPrototypeOf(this, new.target.prototype); // Restore prototype chain
+      Object.setPrototypeOf(this, new.target.prototype) // Restore prototype chain
     }
   }
 
   static serverError() {
-    return new ExpressiveError('api/internal-server-error', 'Ошибка сервера.', 'Попробуйте позже.');
+    return new ExpressiveError(
+      'services/internal-server-error',
+      'Ошибка сервера.',
+      'Попробуйте позже.'
+    )
   }
 
   static noConnection() {
-    return new ExpressiveError('api/no-connection', 'Нет соединения.', 'Проверьте подключение к Интернету.');
+    return new ExpressiveError(
+      'services/no-connection',
+      'Нет соединения.',
+      'Проверьте подключение к Интернету.'
+    )
   }
 
   static unknown() {
-    return new ExpressiveError('api/unknown', 'Неизвестная ошибка.');
+    return new ExpressiveError('services/unknown', 'Неизвестная ошибка.')
   }
 
   static common(response: Response) {
     switch (response.status) {
       case 500:
-        return new ExpressiveError('api/internal-server-error', 'Ошибка сервера.', 'Попробуйте позже.');
+        return new ExpressiveError(
+          'services/internal-server-error',
+          'Ошибка сервера.',
+          'Попробуйте позже.'
+        )
       default:
-        return ExpressiveError.unknown();
+        return ExpressiveError.unknown()
     }
   }
 }

@@ -1,27 +1,28 @@
-import React, { FormEvent, useState } from "react";
-import classes from "./auth.module.scss";
-import { Input } from "../Input";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { signUp, signIn } from "../../store/reducers/authSlice";
-import { NotificationManager } from "react-notifications";
+import React, { FormEvent, useState } from 'react'
+import classes from './auth.module.scss'
+import { Input } from '../Input'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { signUp } from '../../store/reducers/authSlice'
+import { NotificationManager } from 'react-notifications'
+import { signIn } from 'next-auth/react'
 
 const Auth = () => {
-  const dispatch = useAppDispatch();
-  const [isLogin, setIsLogin] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const dispatch = useAppDispatch()
+  const [isLogin, setIsLogin] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     if (isLogin) {
-      return dispatch(signIn({ email, password }));
+      return signIn('credentials', { email, password, redirect: false })
     }
     if (password !== passwordConfirm) {
-      return NotificationManager.error('Пароли не совпадают');
+      return NotificationManager.error('Пароли не совпадают')
     }
-    dispatch(signUp({ email, password }));
-  };
+    dispatch(signUp({ email, password }))
+  }
 
   return (
     <form onSubmit={onSubmit} className={classes.wrapper}>
@@ -31,13 +32,13 @@ const Auth = () => {
             className={classes.input}
             value={email}
             onChange={setEmail}
-            placeholder='Email'
+            placeholder="Email"
           />
           <Input
             className={classes.input}
             value={password}
             onChange={setPassword}
-            placeholder='Пароль'
+            placeholder="Пароль"
           />
           <button>Войти</button>
         </>
@@ -47,19 +48,19 @@ const Auth = () => {
             className={classes.input}
             value={email}
             onChange={setEmail}
-            placeholder='Email'
+            placeholder="Email"
           />
           <Input
             className={classes.input}
             value={password}
             onChange={setPassword}
-            placeholder='Пароль'
+            placeholder="Пароль"
           />
           <Input
             className={classes.input}
             value={passwordConfirm}
             onChange={setPasswordConfirm}
-            placeholder='Пароль ещё раз'
+            placeholder="Пароль ещё раз"
           />
           <button>Зарегистрироваться</button>
         </>
@@ -68,10 +69,10 @@ const Auth = () => {
         onClick={() => setIsLogin(!isLogin)}
         className={classes.changeAuthTypeButton}
       >
-        {!isLogin ? "Войти" : "Зарегестрироваться"}
+        {!isLogin ? 'Войти' : 'Зарегестрироваться'}
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default Auth;
+export default Auth

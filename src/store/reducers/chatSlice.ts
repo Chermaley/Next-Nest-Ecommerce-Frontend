@@ -1,63 +1,64 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Consultation, ConsultationType, Message } from "../../api/models";
-import { NotificationManager } from "react-notifications";
-import ChatService from "../../api/ChatService";
-import { HYDRATE } from "next-redux-wrapper";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Consultation, ConsultationType, Message } from '../../services/models'
+import { NotificationManager } from 'react-notifications'
+import ChatService from '../../services/ChatService'
+import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
-  server: {
-    openConsultations: [] as Consultation[],
-    closedConsultations: [] as Consultation[],
-  },
-  client: {
-    activeConsultation: null as Consultation | null,
-    messages: [] as Message[],
-    isEstablishingConnection: false,
-    isConnected: false,
-  },
-};
+  openConsultations: [] as Consultation[],
+  closedConsultations: [] as Consultation[],
+  activeConsultation: null as Consultation | null,
+  messages: [] as Message[],
+  isEstablishingConnection: false,
+  isConnected: false,
+  isLoading: false,
+}
 
 export const getClosedConsultations = createAsyncThunk<
   void,
   { accessToken: string }
->("chat/getClosedConsultations", async (params, { dispatch }) => {
+>('chat/getClosedConsultations', async (params, { dispatch }) => {
   try {
-    const { data } = await ChatService.getClosedConsultations(params);
-    dispatch(chatActions.setClosedConsultations(data));
+    const { data } = await ChatService.getClosedConsultations(params)
+    dispatch(chatActions.setClosedConsultations(data))
   } catch (e: any) {
-    NotificationManager.error(e.description);
+    NotificationManager.error(e.description)
   }
-});
+})
 
 export const getOpenConsultation = createAsyncThunk<
   void,
-  { accessToken: string; type: ConsultationType }
->("chat/getActiveConsultation", async (params, { dispatch }) => {
+  { accessToken: string }
+>('chat/getActiveConsultation', async (params, { dispatch }) => {
   try {
-    const { data } = await ChatService.getOpenConsultation(params);
-    console.log(data, "sdgfdg");
-    dispatch(chatActions.setConsultations({ consultations: data }));
+    const { data } = await ChatService.getOpenConsultation(params)
+    dispatch(chatActions.setConsultations({ consultations: data }))
   } catch (e: any) {
-    NotificationManager.error(e.description);
+    NotificationManager.error(e.description)
   }
-});
+})
 
 export const chatSlice = createSlice({
-  name: "chat",
+  name: 'chat',
   initialState,
   reducers: {
-    startConnecting: (state) => {
-      state.client.isEstablishingConnection = true;
+    startConnecting: (
+      state,
+      action: PayloadAction<{
+        accessToken: string
+      }>
+    ) => {
+      state.isEstablishingConnection = true
     },
     connectionEstablished: (state) => {
-      state.client.isConnected = true;
-      state.client.isEstablishingConnection = true;
+      state.isConnected = true
+      state.isEstablishingConnection = true
     },
     createNewConsultation: (
       state,
       action: PayloadAction<{
-        userId: number;
-        type: ConsultationType;
+        userId: string
+        type: ConsultationType
       }>
     ) => {},
     leaveConsultation: () => {},
@@ -65,74 +66,66 @@ export const chatSlice = createSlice({
     setConsultations: (
       state,
       action: PayloadAction<{
-        consultations: Consultation[];
+        consultations: Consultation[]
       }>
     ) => {
-      state.server.openConsultations = action.payload.consultations;
+      state.openConsultations = action.payload.consultations
+    },
+    setLastClosedConsultation: (state, action: PayloadAction<Consultation>) => {
+      state.closedConsultations.push(action.payload)
     },
     setClosedConsultations: (state, action: PayloadAction<Consultation[]>) => {
-      state.server.closedConsultations = action.payload;
+      state.closedConsultations = action.payload
     },
     joinConsultation: (
       state,
       action: PayloadAction<{
-        userId: number;
-        consultation: Consultation;
+        userId: string
+        consultation: Consultation
       }>
     ) => {
-      state.client.activeConsultation = action.payload.consultation;
+      state.activeConsultation = action.payload.consultation
     },
     setActiveConsultation: (
       state,
       action: PayloadAction<Consultation | null>
     ) => {
-      state.client.activeConsultation = action.payload;
+      state.activeConsultation = action.payload
     },
     closeConsultation: (
       state,
       action: PayloadAction<{
-        consultationId: number;
+        consultationId: number
       }>
     ) => {},
     sendMessage: (
       state,
       action: PayloadAction<{
-        message: string;
-        consultationId: number;
-        userId: number;
-        attachments: any[];
+        message: string
+        consultationId: number
+        userId: number
+        attachments: any[]
       }>
     ) => {},
     setMessages: (
       state,
       action: PayloadAction<{
-        messages: Message[];
+        messages: Message[]
       }>
     ) => {
-      state.client.messages = action.payload.messages;
+      state.messages = action.payload.messages
     },
     setMessage: (
       state,
       action: PayloadAction<{
-        message: Message;
+        message: Message
       }>
     ) => {
-      state.client.messages.push(action.payload.message);
+      state.messages.push(action.payload.message)
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        server: {
-          ...state.server,
-          ...action.payload.chat.server,
-        },
-      };
-    },
-  },
-});
+})
 
-export const chatActions = chatSlice.actions;
+export const chatActions = chatSlice.actions
 
-export default chatSlice.reducer;
+export default chatSlice.reducer

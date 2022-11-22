@@ -1,57 +1,25 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import AuthService from "../../api/AuthService";
-import { NotificationManager } from "react-notifications";
-import { getUser } from "./userSlice";
-import { AxiosError } from "axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import AuthService from '../../services/AuthService'
+import { NotificationManager } from 'react-notifications'
 
-const initialState = {};
-
-export const signIn = createAsyncThunk(
-  "auth/product",
-  async (params: { email: string; password: string }, { dispatch }) => {
-    try {
-      const { data } = await AuthService.signIn(params);
-      dispatch(getUser({ accessToken: data.accessToken }));
-    } catch (e: any) {
-      NotificationManager.error(e.description);
-    }
-  }
-);
+const initialState = {}
 
 export const signUp = createAsyncThunk(
-  "auth/register",
+  'auth/register',
   async (params: { email: string; password: string }, { dispatch }) => {
     try {
-      const { data } = await AuthService.signUp(params);
-      dispatch(getUser({ accessToken: data.accessToken }));
+      await AuthService.signUp(params)
+      NotificationManager.success('Аккаунт создан')
     } catch (e: any) {
-      NotificationManager.error(e.description);
+      NotificationManager.error(e.description)
     }
   }
-);
-
-export const logoutThunk = createAsyncThunk(
-  "auth/logoutThunk",
-  async (_, { dispatch }) => {
-    try {
-      dispatch(logout());
-      await AuthService.logout();
-    } catch (e: any) {
-      console.log(e);
-      NotificationManager.error(e.description);
-    }
-  }
-);
+)
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
+  reducers: {},
+})
 
-  reducers: {
-    logout: () => {},
-  },
-  extraReducers: {},
-});
-
-export const { logout } = authSlice.actions;
-export default authSlice.reducer;
+export default authSlice.reducer

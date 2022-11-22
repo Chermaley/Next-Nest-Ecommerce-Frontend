@@ -2,14 +2,17 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
+  images: {
+    domains: ['localhost'],
+  },
   // except for webpack, other parts are left as generated
   webpack: (config, context) => {
     config.watchOptions = {
       poll: 1000,
-      aggregateTimeout: 300
+      aggregateTimeout: 300,
     }
     return config
-  }
+  },
 }
 
 module.exports = nextConfig

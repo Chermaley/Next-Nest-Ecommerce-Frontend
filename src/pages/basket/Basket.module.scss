@@ -1,7 +1,6 @@
 .cart {
   display: grid;
   flex-direction: column;
-  width: 70%;
   border-collapse: separate;
 }
 
@@ -15,7 +14,7 @@
     color: black;
   }
   &_name {
-    width: 150px;
+    width: 140px;
   }
   &_count {
     width: 160px;
@@ -58,7 +57,7 @@
 .name {
   display: flex;
   align-items: center;
-  width: 212px;
+  width: 210px;
 }
 
 .image {

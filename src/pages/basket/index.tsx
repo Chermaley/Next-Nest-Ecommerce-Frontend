@@ -1,25 +1,25 @@
-import React from "react";
-import { GetServerSideProps } from "next";
-import { wrapper } from "../../store/store";
+import React from 'react'
+import { GetServerSideProps } from 'next'
+import { wrapper } from '../../store/store'
 import {
   createOrder,
   deleteProductFromBasket,
   getBasket,
-} from "../../store/reducers/basketSlice";
-import { useTypedSelector } from "../../hooks/useTypedSelectors";
-import { BasketProduct } from "../../api/models";
-import MainLayout from "../../layouts/MainLayout";
-import classes from "./Basket.module.scss";
-import { getAccessTokenFromCtx } from "../../utils/getAccessFromCtx";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
+} from '../../store/reducers/basketSlice'
+import { useTypedSelector } from '../../hooks/useTypedSelectors'
+import { BasketProduct } from '../../services/models'
+import MainLayout from '../../layouts/MainLayout'
+import classes from './Basket.module.scss'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { getSession, useSession } from 'next-auth/react'
 
 const Index = () => {
-  const dispatch = useAppDispatch();
-  const basket = useTypedSelector((state) => state.basket.basket);
+  const dispatch = useAppDispatch()
+  const basket = useTypedSelector((state) => state.basket.basket)
 
   const onOrder = () => {
-    dispatch(createOrder());
-  };
+    dispatch(createOrder())
+  }
 
   return (
     <MainLayout title="Корзина">
@@ -41,31 +41,33 @@ const Index = () => {
         </div>
       </div>
     </MainLayout>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps =
   wrapper.getServerSideProps((store) => async (ctx) => {
-    const accessToken = getAccessTokenFromCtx(ctx);
-    if (accessToken) {
-      await store.dispatch(getBasket({ accessToken }));
-    }
-    return { props: {} };
-  });
+    const session = await getSession({ req: ctx.req })
+    await store.dispatch(getBasket({ accessToken: session?.user.accessToken }))
+    return { props: {} }
+  })
 
-export default Index;
+export default Index
 
 const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
+  const session = useSession()
+  const user = session.data?.user
+  const accessToken = user?.accessToken
   const onDelete = () => {
-    dispatch(deleteProductFromBasket({ productId: product.id }));
-  };
+    if (accessToken) {
+      dispatch(deleteProductFromBasket({ productId: product.id, accessToken }))
+    }
+  }
   return (
     <div className={classes.item}>
       <div className={classes.name}>{product.name}</div>
       <div className={classes.quantity}>
         <div>{product.quantity}</div>
-        {/*<Quantity decrement={onDecrementCount} increment={onIncrementCount} quantity={cartItem.count} />*/}
       </div>
       <div className={classes.price}>{product.price} ₽</div>
       <div className={classes.fullPrice}>
@@ -75,5 +77,5 @@ const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
         Удалить
       </div>
     </div>
-  );
-};
+  )
+}

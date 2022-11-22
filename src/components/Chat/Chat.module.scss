@@ -2,48 +2,18 @@
   width: 900px;
   display: flex;
   flex-direction: column;
-}
-
-.header {
-  background: #0667EB;
-  border-radius: 16px 16px 0px 0px;
-  padding: 17px 15px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  min-height: 150px;
-  position: relative;
-}
-
-.headerTop {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.headerBack {
-  color: white;
-  cursor: pointer;
-  left: 20px;
-  position: absolute;
+  height: 70vh;
 }
 
 .headerTitle {
-  color: white;
+  color: black;
   font-size: 20px;
-}
-
-.headerBottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .content {
   position: relative;
-  background: #EFEFEF;
   padding: 23px 10px 10px 10px;
-  height: 50vh;
+  height: 90%;
   display: flex;
   flex-direction: column;
 }

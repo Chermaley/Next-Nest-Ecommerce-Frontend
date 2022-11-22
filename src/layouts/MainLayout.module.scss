@@ -1,11 +1,8 @@
-
-
 .mainLayout {
   padding-top: 20px;
   width: 1280px;
   min-height: 100vh;
   margin: 0 auto;
-  background: url("/figures.png") no-repeat;
   background-size: auto;
   display: flex;
   flex-direction: column;
@@ -13,8 +10,6 @@
 
 .logo {
   font-size: 40px;
-  width: 300px;
-  text-align: center;
 }
 
 .topHeader {
@@ -29,6 +24,21 @@
   top: 0;
 }
 
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  border-radius: 100px;
+  z-index: 10;
+}
+
 .logoutButton {
   margin-right: 10px;
   color: red;
@@ -37,7 +47,6 @@
 
 .topHeaderButton {
   width: 28px;
-  margin-left: 22px;
   cursor: pointer;
 }
 
@@ -64,12 +73,16 @@
 .footer {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   margin-top: 80px;
 }
 
 .footerLogo {
-  right: 40px;
+  font-size: 40px;
+  line-height: 40px;
+  margin-bottom: 18px;
   position: relative;
+  top: -8px;
 }
 
 .footerInfo {
@@ -77,8 +90,6 @@
   width: 340px;
   margin-bottom: 18px;
 }
-
-
 
 .footerLink {
   margin-bottom: 24px;
