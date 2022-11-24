@@ -4,6 +4,9 @@ import { NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
 import { SessionProvider } from 'next-auth/react'
 import '../styles/global.css'
+import 'moment/locale/ru'
+import moment from 'moment/moment'
+moment.locale('ru')
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (

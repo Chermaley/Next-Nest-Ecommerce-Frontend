@@ -1,13 +1,65 @@
+@import '../../styles/base';
+
 .wrapper {
+}
+
+.top {
   display: flex;
+  height: 350px;
 }
 
 .left {
   width: 400px;
-  height: 300px;
-  margin-right: 20px;
+  margin-right: 10px;
+  padding: 16px;
+  @include box;
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .right {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  @include box;
+}
 
+.info {
+  flex: 1;
+}
+
+
+.reviews {
+  padding: 16px;
+  margin-top: 10px;
+  min-height: 200px;
+  @include box;
+}
+
+.title {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 16px;
+}
+
+.actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 600;
+  color: $price;
 }

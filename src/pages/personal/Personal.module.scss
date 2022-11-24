@@ -1,3 +1,11 @@
+@import '../../styles/base';
+
+.wrapper {
+  padding: 20px;
+  height: 70vh;
+  @include box;
+}
+
 .logout {
   color: red;
   margin-top: 20px;

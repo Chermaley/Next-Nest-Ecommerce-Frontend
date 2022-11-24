@@ -7,11 +7,10 @@ import { HYDRATE } from 'next-redux-wrapper'
 const initialState = {
   openConsultations: [] as Consultation[],
   closedConsultations: [] as Consultation[],
-  activeConsultation: null as Consultation | null,
   messages: [] as Message[],
+  activeConsultation: null as Consultation | null,
   isEstablishingConnection: false,
   isConnected: false,
-  isLoading: false,
 }
 
 export const getClosedConsultations = createAsyncThunk<
@@ -52,7 +51,7 @@ export const chatSlice = createSlice({
     },
     connectionEstablished: (state) => {
       state.isConnected = true
-      state.isEstablishingConnection = true
+      state.isEstablishingConnection = false
     },
     createNewConsultation: (
       state,

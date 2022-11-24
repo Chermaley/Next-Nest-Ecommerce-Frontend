@@ -6,7 +6,7 @@ const initialState = {}
 
 export const signUp = createAsyncThunk(
   'auth/register',
-  async (params: { email: string; password: string }, { dispatch }) => {
+  async (params: { email: string; password: string }) => {
     try {
       await AuthService.signUp(params)
       NotificationManager.success('Аккаунт создан')

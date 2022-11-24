@@ -12,6 +12,9 @@ import MainLayout from '../../layouts/MainLayout'
 import classes from './Basket.module.scss'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { getSession, useSession } from 'next-auth/react'
+import { Button } from '../../components/Button'
+import { PageTitle } from '../../components/PageTitle'
+import { WithAuth } from '../../hoc'
 
 const Index = () => {
   const dispatch = useAppDispatch()
@@ -23,22 +26,26 @@ const Index = () => {
 
   return (
     <MainLayout title="Корзина">
-      <div className={classes.cart}>
-        <div>
+      <PageTitle>Корзина</PageTitle>
+      <div className={classes.wrapper}>
+        <WithAuth>
           <ul className={classes.fields}>
-            <li className={classes.fields_name}>Название</li>
-            <li className={classes.fields_count}>Количество</li>
-            <li className={classes.fields_price}>Цена за 1 шт.</li>
-            <li className={classes.fields_allPrice}>Общая цена</li>
+            <li>Название</li>
+            <li>Количество</li>
+            <li>Цена за 1 шт.</li>
+            <li>Общая цена</li>
             <li />
           </ul>
-        </div>
-        {basket?.products.map((product) => (
-          <Product key={product.id} product={product} />
-        ))}
-        <div className={classes.button}>
-          <button onClick={onOrder}>Оформить заказ</button>
-        </div>
+          <div className={classes.products}>
+            {basket?.products.map((product) => (
+              <Product key={product.id} product={product} />
+            ))}
+          </div>
+
+          <div className={classes.button}>
+            <Button onClick={onOrder} title="Оформить заказ" />
+          </div>
+        </WithAuth>
       </div>
     </MainLayout>
   )
@@ -65,14 +72,12 @@ const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
   }
   return (
     <div className={classes.item}>
-      <div className={classes.name}>{product.name}</div>
-      <div className={classes.quantity}>
+      <div>{product.name}</div>
+      <div>
         <div>{product.quantity}</div>
       </div>
-      <div className={classes.price}>{product.price} ₽</div>
-      <div className={classes.fullPrice}>
-        {product.price * product.quantity} ₽
-      </div>
+      <div>{product.price} ₽</div>
+      <div>{product.price * product.quantity} ₽</div>
       <div onClick={onDelete} className={classes.delete}>
         Удалить
       </div>

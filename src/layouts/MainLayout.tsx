@@ -34,11 +34,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
         <title>{title}</title>
       </Head>
       <div className={styles.mainLayout}>
-        <TopHeader onSearchButtonPressed={toggleInput} />
-        <NavHeader />
+        <div className={styles.header}>
+          <TopHeader onSearchButtonPressed={toggleInput} />
+          <NavHeader />
+        </div>
+
         <main className={styles.content}>{children}</main>
         {isSearchInputShown && <SearchInput onCloseRequested={toggleInput} />}
-        <Footer />
+        {/*<Footer />*/}
       </div>
     </div>
   )
@@ -75,6 +78,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
           onClick={onSearchButtonPressed}
           className={styles.topHeaderButton}
           alt="search"
+          priority
         />
         <Link href="/personal">
           <Image
@@ -83,6 +87,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
             height={30}
             className={styles.topHeaderButton}
             alt="personal"
+            priority
           />
         </Link>
         {user && (
@@ -97,6 +102,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
                 height={30}
                 className={styles.topHeaderButton}
                 alt="basket"
+                priority
               />
             </Link>
           </div>
@@ -115,9 +121,6 @@ const NavHeader: React.FC = () => {
         </Link>
         <Link href="/catalog">
           <a className={styles.navHeaderButton}>Каталог продукции</a>
-        </Link>
-        <Link href="/info">
-          <a className={styles.navHeaderButton}>О компании</a>
         </Link>
         <Link href="/consult">
           <a className={styles.navHeaderButton}>Консультации</a>

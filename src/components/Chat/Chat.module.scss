@@ -1,26 +1,19 @@
 .chat {
-  width: 900px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 70vh;
-}
-
-.headerTitle {
-  color: black;
-  font-size: 20px;
 }
 
 .content {
   position: relative;
-  padding: 23px 10px 10px 10px;
-  height: 90%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .messages {
   flex: 1;
-  padding: 20px 10px 0 10px;
   overflow-y: scroll;
   position: relative;
 }

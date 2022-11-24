@@ -1,6 +1,7 @@
+@import '../../styles/base';
 
 .message {
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   overflow: hidden;
   display: flex;
 }
@@ -28,7 +29,6 @@
 
 .content {
   min-width: 50px;
-
   flex-direction: column;
   display: inline-flex;
   padding: 10px 15px;
@@ -43,6 +43,7 @@
   .content {
     background-color: #d0cccc;
     border-bottom-left-radius: 0;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
   }
 
   .text {

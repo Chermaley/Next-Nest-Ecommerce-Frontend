@@ -29,8 +29,8 @@
   top: -10px;
   right: -10px;
   background-color: red;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,13 +39,8 @@
   z-index: 10;
 }
 
-.logoutButton {
-  margin-right: 10px;
-  color: red;
-  cursor: pointer;
-}
-
 .topHeaderButton {
+  display: block;
   width: 28px;
   cursor: pointer;
 }
@@ -60,6 +55,8 @@
 .navHeaderButton {
   text-transform: uppercase;
   margin-right: 10px;
+  font-size: 16px;
+  font-weight: 500;
   text-decoration: none;
   color: black;
 }
@@ -99,5 +96,4 @@
 .footerTitleLink {
   font-size: 20px;
   margin-bottom: 32px;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }

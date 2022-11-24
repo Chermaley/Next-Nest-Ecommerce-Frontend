@@ -11,6 +11,7 @@ import styles from './Catalog.module.scss'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { GetServerSideProps } from 'next'
 import { ProductCard } from '../../components/ProductCard'
+import { PageTitle } from '../../components/PageTitle'
 
 const Catalog = () => {
   const dispatch = useAppDispatch()
@@ -25,15 +26,18 @@ const Catalog = () => {
 
   return (
     <MainLayout title="Каталог">
+      <PageTitle>Каталог</PageTitle>
       <div className={styles.wrapper}>
         <div className={styles.types}>
           <div className={styles.typeSectionTitle}>Линейки</div>
-          <div className={styles.type} onClick={() => onTypeClick()}>
-            Все
+          <div className={styles.typesContent}>
+            <div className={styles.type} onClick={() => onTypeClick()}>
+              Все
+            </div>
+            {productTypes.map((t) => (
+              <ProductTypeItem onClick={onTypeClick} type={t} key={t.id} />
+            ))}
           </div>
-          {productTypes.map((t) => (
-            <ProductTypeItem onClick={onTypeClick} type={t} key={t.id} />
-          ))}
         </div>
         <div className={styles.productList}>
           {products.map((p) => (

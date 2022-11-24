@@ -2,10 +2,12 @@ import React from 'react'
 import MainLayout from '../layouts/MainLayout'
 import Image from 'next/image'
 import styles from './Home.module.scss'
+import { PageTitle } from '../components/PageTitle'
 
 const Index = () => {
   return (
     <MainLayout title="Домашняя страница">
+      <PageTitle>Главная</PageTitle>
       <p className={styles.text}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus,
         dolor dolorum eveniet magni omnis perspiciatis quasi repudiandae saepe
@@ -24,20 +26,6 @@ const Index = () => {
         dolor dolorum eveniet magni omnis perspiciatis quasi repudiandae saepe
         tenetur. Ab aut error explicabo nemo nulla placeat quidem quo rerum.
       </p>
-      <div className={styles.benefits}>
-        <div className={styles.benefit}>
-          <Image src="/starIcon.svg" width={43} height={43} />
-          <p>Бесплатная доставка при заказе от 3000 рублей</p>
-        </div>
-        <div className={styles.benefit}>
-          <Image src="/consultIcon.svg" width={43} height={43} />
-          <p>Бесплатная консультация косметолога</p>
-        </div>
-        <div className={styles.benefit}>
-          <Image src="/friendIcon.svg" width={43} height={43} />
-          <p>Дружественная система лоялности</p>
-        </div>
-      </div>
       <p className={styles.text}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis
         distinctio eaque est et fugiat impedit laboriosam magni molestiae natus

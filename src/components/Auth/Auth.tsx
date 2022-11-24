@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { signUp } from '../../store/reducers/authSlice'
 import { NotificationManager } from 'react-notifications'
 import { signIn } from 'next-auth/react'
+import { Button } from '../Button'
 
 const Auth = () => {
   const dispatch = useAppDispatch()
@@ -25,53 +26,55 @@ const Auth = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} className={classes.wrapper}>
-      {isLogin ? (
-        <>
-          <Input
-            className={classes.input}
-            value={email}
-            onChange={setEmail}
-            placeholder="Email"
-          />
-          <Input
-            className={classes.input}
-            value={password}
-            onChange={setPassword}
-            placeholder="Пароль"
-          />
-          <button>Войти</button>
-        </>
-      ) : (
-        <>
-          <Input
-            className={classes.input}
-            value={email}
-            onChange={setEmail}
-            placeholder="Email"
-          />
-          <Input
-            className={classes.input}
-            value={password}
-            onChange={setPassword}
-            placeholder="Пароль"
-          />
-          <Input
-            className={classes.input}
-            value={passwordConfirm}
-            onChange={setPasswordConfirm}
-            placeholder="Пароль ещё раз"
-          />
-          <button>Зарегистрироваться</button>
-        </>
-      )}
-      <div
-        onClick={() => setIsLogin(!isLogin)}
-        className={classes.changeAuthTypeButton}
-      >
-        {!isLogin ? 'Войти' : 'Зарегестрироваться'}
-      </div>
-    </form>
+    <div className={classes.wrapper}>
+      <form onSubmit={onSubmit} className={classes.form}>
+        {isLogin ? (
+          <>
+            <Input
+              className={classes.input}
+              value={email}
+              onChange={setEmail}
+              placeholder="Email"
+            />
+            <Input
+              className={classes.input}
+              value={password}
+              onChange={setPassword}
+              placeholder="Пароль"
+            />
+            <Button title="Войти" />
+          </>
+        ) : (
+          <>
+            <Input
+              className={classes.input}
+              value={email}
+              onChange={setEmail}
+              placeholder="Email"
+            />
+            <Input
+              className={classes.input}
+              value={password}
+              onChange={setPassword}
+              placeholder="Пароль"
+            />
+            <Input
+              className={classes.input}
+              value={passwordConfirm}
+              onChange={setPasswordConfirm}
+              placeholder="Пароль ещё раз"
+            />
+            <Button title="Зарегестрироваться" />
+          </>
+        )}
+        <div
+          onClick={() => setIsLogin(!isLogin)}
+          className={classes.changeAuthTypeButton}
+        >
+          {!isLogin ? 'Войти' : 'Зарегестрироваться'}
+        </div>
+      </form>
+    </div>
   )
 }
 

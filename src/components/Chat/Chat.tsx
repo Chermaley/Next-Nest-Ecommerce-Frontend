@@ -63,11 +63,7 @@ const Chat: React.FC = () => {
               : null}
           </div>
           {activeConsultation.status === ConsultationStatus.Open && (
-            <ChatInput
-              onInputFocus={() => {}}
-              onInputFormSubmit={sendMessage}
-              onTyping={() => {}}
-            />
+            <ChatInput onInputFormSubmit={sendMessage} />
           )}
         </div>
       </div>

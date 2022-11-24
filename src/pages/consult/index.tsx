@@ -16,13 +16,17 @@ import { Chat } from '../../components/Chat'
 import styles from './Consult.module.scss'
 import clsx from 'clsx'
 import { useSession } from 'next-auth/react'
-import { Auth } from '../../components/Auth'
+import { WithAuth } from '../../hoc'
+import { PageTitle } from '../../components/PageTitle'
 
 const Consult = () => {
   const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
   const accessToken = user?.accessToken
+  const isEstablishingConnection = useTypedSelector(
+    (state) => state.chat.isEstablishingConnection
+  )
   const openConsultations = useTypedSelector(
     (state) => state.chat.openConsultations
   )
@@ -52,9 +56,10 @@ const Consult = () => {
   }
 
   return (
-    <MainLayout title="Консультация косметолога">
-      {user ? (
-        <div className={styles.wrapper}>
+    <MainLayout title="Консультация">
+      <PageTitle>Консультация</PageTitle>
+      <div className={styles.wrapper}>
+        <WithAuth isLoading={isEstablishingConnection}>
           <div className={styles.left}>
             <div className={styles.consultType}>Открытые</div>
             {openConsultations?.map((consultation) => (
@@ -81,10 +86,8 @@ const Consult = () => {
             )}
             {activeConsultation && <Chat />}
           </div>
-        </div>
-      ) : (
-        <Auth />
-      )}
+        </WithAuth>
+      </div>
     </MainLayout>
   )
 }

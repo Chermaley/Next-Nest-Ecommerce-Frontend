@@ -1,28 +1,40 @@
+@import '../../styles/base';
+
 .wrapper {
   display: flex;
-  height: 100vh;
 }
 
 .typeSectionTitle {
   font-size: 20px;
   margin-bottom: 15px;
   padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
 }
 
 .types {
-  padding: 10px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  padding-top: 10px;
+  @include box;
+}
+
+.typesContent {
+  padding: 0 24px;
 }
 
 .type {
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   margin-bottom: 10px;
+  width: 220px;
 }
 
 .productList {
+  width: 100%;
   display: flex;
-  padding-left: 80px;
+  flex-wrap: wrap;
+  padding-left: 20px;
+  align-content: flex-start;
 }

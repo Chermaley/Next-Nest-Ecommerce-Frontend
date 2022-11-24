@@ -1,0 +1,19 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  font-size: 17px;
+  margin-right: 10px;
+}
+
+.text {
+  font-size: 15px;
+}

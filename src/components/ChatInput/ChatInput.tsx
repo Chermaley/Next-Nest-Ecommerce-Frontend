@@ -4,8 +4,6 @@ import Image from 'next/image'
 
 type InputFormProps = {
   onInputFormSubmit: (value: string, files: ChatFile[]) => void
-  onTyping: () => void
-  onInputFocus: () => void
 }
 
 const getBase64 = (file: File): Promise<string | ArrayBuffer | null> => {
@@ -26,11 +24,7 @@ export type ChatFile = {
   name: string
 }
 
-const ChatInput: React.FC<InputFormProps> = ({
-  onInputFormSubmit,
-  onTyping,
-  onInputFocus,
-}) => {
+const ChatInput: React.FC<InputFormProps> = ({ onInputFormSubmit }) => {
   const [value, setValue] = useState('')
   const [files, setFiles] = useState<ChatFile[]>([])
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
@@ -38,7 +32,6 @@ const ChatInput: React.FC<InputFormProps> = ({
 
   const onChangeText = (value: string) => {
     setValue(value)
-    onTyping()
   }
 
   const onSubmit = (e?: FormEvent<HTMLFormElement>) => {
@@ -71,12 +64,7 @@ const ChatInput: React.FC<InputFormProps> = ({
   }
 
   return (
-    <form
-      ref={formRef}
-      className={styles.container}
-      onFocus={onInputFocus}
-      onSubmit={onSubmit}
-    >
+    <form ref={formRef} className={styles.container} onSubmit={onSubmit}>
       <textarea
         placeholder="Введите сообщение"
         rows={1}
