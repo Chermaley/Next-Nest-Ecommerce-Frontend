@@ -117,16 +117,16 @@ const NavHeader: React.FC = () => {
     <header>
       <nav className={styles.navHeader}>
         <Link href="/">
-          <a className={styles.navHeaderButton}>Главная</a>
+          <div className={styles.navHeaderButton}>Главная</div>
         </Link>
         <Link href="/catalog">
-          <a className={styles.navHeaderButton}>Каталог продукции</a>
+          <div className={styles.navHeaderButton}>Каталог продукции</div>
         </Link>
         <Link href="/consult">
-          <a className={styles.navHeaderButton}>Консультации</a>
+          <div className={styles.navHeaderButton}>Консультации</div>
         </Link>
         <Link href="/personal">
-          <a className={styles.navHeaderButton}>Личный кабинет</a>
+          <div className={styles.navHeaderButton}>Личный кабинет</div>
         </Link>
       </nav>
     </header>
