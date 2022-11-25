@@ -20,6 +20,10 @@ const Chat: React.FC = () => {
     (state) => state.chat.activeConsultation
   )
 
+  const closeChat = () => {
+    dispatch(chatActions.setActiveConsultation(null))
+  }
+
   useEffect(() => {
     if (activeConsultation && user) {
       dispatch(
@@ -48,26 +52,27 @@ const Chat: React.FC = () => {
   }
 
   return (
-    activeConsultation && (
-      <div className={styles.chat}>
-        <div className={styles.content}>
-          <div className={styles.messages} ref={scrollRef}>
-            {messages.length
-              ? messages.map((message) => (
-                  <ChatMessage
-                    currentUserId={Number(user?.id)}
-                    message={message}
-                    key={message.id}
-                  />
-                ))
-              : null}
-          </div>
-          {activeConsultation.status === ConsultationStatus.Open && (
-            <ChatInput onInputFormSubmit={sendMessage} />
-          )}
-        </div>
+    <div className={styles.chat}>
+      <div className={styles.close} onClick={closeChat}>
+        &#x2716;
       </div>
-    )
+      <div className={styles.content}>
+        <div className={styles.messages} ref={scrollRef}>
+          {messages.length
+            ? messages.map((message) => (
+                <ChatMessage
+                  currentUserId={Number(user?.id)}
+                  message={message}
+                  key={message.id}
+                />
+              ))
+            : null}
+        </div>
+        {activeConsultation?.status === ConsultationStatus.Open && (
+          <ChatInput onInputFormSubmit={sendMessage} />
+        )}
+      </div>
+    </div>
   )
 }
 

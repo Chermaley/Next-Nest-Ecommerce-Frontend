@@ -18,15 +18,13 @@ import clsx from 'clsx'
 import { useSession } from 'next-auth/react'
 import { WithAuth } from '../../hoc'
 import { PageTitle } from '../../components/PageTitle'
+import { Button } from '../../components/Button'
 
 const Consult = () => {
   const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
   const accessToken = user?.accessToken
-  const isEstablishingConnection = useTypedSelector(
-    (state) => state.chat.isEstablishingConnection
-  )
   const openConsultations = useTypedSelector(
     (state) => state.chat.openConsultations
   )
@@ -59,10 +57,10 @@ const Consult = () => {
     <MainLayout title="Консультация">
       <PageTitle>Консультация</PageTitle>
       <div className={styles.wrapper}>
-        <WithAuth isLoading={isEstablishingConnection}>
+        <WithAuth>
           <div className={styles.left}>
             <div className={styles.consultType}>Открытые</div>
-            {openConsultations?.map((consultation) => (
+            {openConsultations.map((consultation) => (
               <ConsultationItem
                 key={consultation.id}
                 consultation={consultation}
@@ -70,7 +68,7 @@ const Consult = () => {
             ))}
             <div className={styles.consultType}>История</div>
             <div>
-              {closedConsultations?.map((consultation) => (
+              {closedConsultations.map((consultation) => (
                 <ConsultationItem
                   consultation={consultation}
                   key={consultation.id}
@@ -80,9 +78,10 @@ const Consult = () => {
           </div>
           <div className={styles.right}>
             {!openConsultations.length && !activeConsultation && (
-              <button onClick={onCreateNewConsultation}>
-                Создать обращение
-              </button>
+              <Button
+                title="Создать обращение"
+                onClick={onCreateNewConsultation}
+              />
             )}
             {activeConsultation && <Chat />}
           </div>

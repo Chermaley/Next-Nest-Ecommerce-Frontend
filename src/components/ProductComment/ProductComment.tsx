@@ -8,7 +8,7 @@ const ProductComment: React.FC<{ comment: Comment }> = ({ comment }) => {
     <div className={styles.comment}>
       <div className={styles.info}>
         <p className={styles.name}>{comment.author}</p>
-        <p>{moment(comment.createdAt).fromNow()}</p>
+        <p className={styles.date}>{moment(comment.createdAt).fromNow()}</p>
       </div>
       <p className={styles.text}>{comment.text}</p>
     </div>

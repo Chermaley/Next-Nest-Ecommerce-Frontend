@@ -41,6 +41,7 @@ const Auth = () => {
               value={password}
               onChange={setPassword}
               placeholder="Пароль"
+              type="password"
             />
             <Button title="Войти" />
           </>
@@ -57,6 +58,7 @@ const Auth = () => {
               value={password}
               onChange={setPassword}
               placeholder="Пароль"
+              type="password"
             />
             <Input
               className={classes.input}

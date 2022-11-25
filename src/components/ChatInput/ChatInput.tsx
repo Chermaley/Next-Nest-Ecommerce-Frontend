@@ -82,10 +82,10 @@ const ChatInput: React.FC<InputFormProps> = ({ onInputFormSubmit }) => {
         multiple
       />
       <label htmlFor="file">
-        <Image src="/attachIcon.svg" width={30} height={30} alt="send" />
+        <Image src="/attachIcon.svg" width={30} height={30} alt="attach" />
       </label>
       <button type="submit" className={styles.button}>
-        <Image src="/sendIcon.svg" width={30} height={30} alt="send" />
+        <Image src="/sendIcon.svg" width={20} height={20} alt="send" />
       </button>
     </form>
   )

@@ -11,7 +11,14 @@
 
 .name {
   font-size: 17px;
-  margin-right: 10px;
+}
+
+.date {
+    color: #999;
+    &::before {
+      content: '•';
+      margin: 0 5px;
+    }
 }
 
 .text {

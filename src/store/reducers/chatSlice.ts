@@ -11,6 +11,7 @@ const initialState = {
   activeConsultation: null as Consultation | null,
   isEstablishingConnection: false,
   isConnected: false,
+  isLoading: false,
 }
 
 export const getClosedConsultations = createAsyncThunk<
@@ -71,7 +72,7 @@ export const chatSlice = createSlice({
       state.openConsultations = action.payload.consultations
     },
     setLastClosedConsultation: (state, action: PayloadAction<Consultation>) => {
-      state.closedConsultations.push(action.payload)
+      state.closedConsultations = [action.payload, ...state.closedConsultations]
     },
     setClosedConsultations: (state, action: PayloadAction<Consultation[]>) => {
       state.closedConsultations = action.payload

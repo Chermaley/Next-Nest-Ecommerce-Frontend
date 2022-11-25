@@ -1,15 +1,15 @@
 .mainLayout {
   padding-top: 20px;
   width: 1280px;
-  min-height: 100vh;
   margin: 0 auto;
-  background-size: auto;
-  display: flex;
-  flex-direction: column;
+  @media (max-width: 1280px) {
+    padding: 0 20px;
+  }
 }
 
 .logo {
   font-size: 40px;
+  text-decoration: none;
 }
 
 .topHeader {

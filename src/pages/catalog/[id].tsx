@@ -11,6 +11,7 @@ import { addProductToBasket } from '../../store/reducers/basketSlice'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import Button from '../../components/Button/Button'
 import { ProductComment } from '../../components/ProductComment'
+import { Input } from '../../components/Input'
 
 const ProductPage = () => {
   const dispatch = useAppDispatch()

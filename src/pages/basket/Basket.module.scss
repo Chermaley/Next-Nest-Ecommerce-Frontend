@@ -14,9 +14,9 @@
   li {
     list-style: none;
     font-size: 16px;
-    flex: 0 1 calc(25% - 1em);
+    flex-basis: calc(25% - 1em);
     &:first-child {
-      flex: 0 1 calc(50% - 1em);
+      flex-basis: calc(50% - 1em);
     }
   }
 }
@@ -37,9 +37,9 @@
   @include box(rgba(0, 0, 0, 0.18) 0px 2px 4px);
   div {
     display: flex;
-    flex: 0 1 calc(25% - 1em);
+    flex-basis: calc(25% - 1em);
     &:first-child {
-      flex: 0 1 calc(50% - 1em);
+      flex-basis: calc(50% - 1em);
     }
   }
 }

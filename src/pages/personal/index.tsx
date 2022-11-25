@@ -8,6 +8,7 @@ import WithAuth from '../../hoc/WithAuth'
 const Personal = () => {
   const { data: session } = useSession()
   const user = session?.user
+
   return (
     <MainLayout title="Личный кабинет">
       <PageTitle>Личный кабинет</PageTitle>
@@ -17,7 +18,7 @@ const Personal = () => {
           <div>
             Роли:
             {user?.roles &&
-              user.roles.map((role) => <div key={role.id}>{role.value}</div>)}
+              user.roles.map((role) => <p key={role.id}>{role.value}</p>)}
           </div>
           <div onClick={() => signOut()} className={styles.logout}>
             Выйти

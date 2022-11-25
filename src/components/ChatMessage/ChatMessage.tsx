@@ -2,7 +2,7 @@ import React from 'react'
 import { Message } from '../../services/models'
 import styles from './Chat.module.scss'
 import clsx from 'clsx'
-import Gallery from 'react-grid-gallery'
+import Image from 'next/image'
 
 type MessageProps = {
   message: Message
@@ -28,19 +28,15 @@ const ChatMessage: React.FC<MessageProps> = ({ message, currentUserId }) => {
         </div>
         {message.attachments && (
           <div className={styles.images}>
-            <Gallery
-              showCloseButton={false}
-              backdropClosesModal
-              tileViewportStyle={() => ({
-                maxWidth: 350,
-              })}
-              images={message.attachments.map((item) => ({
-                src: item.content,
-                thumbnail: item.content,
-                thumbnailWidth: 200,
-                thumbnailHeight: 300,
-              }))}
-            />
+            {message.attachments.map((item) => (
+              <Image
+                key={item.id}
+                src={item.content}
+                width={300}
+                height={200}
+                alt={item.name}
+              />
+            ))}
           </div>
         )}
       </div>

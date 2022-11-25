@@ -3,10 +3,7 @@ import { useSession } from 'next-auth/react'
 import { Auth } from '../components/Auth'
 import Image from 'next/image'
 
-const WithAuth: React.FC<{ children: any; isLoading: boolean }> = ({
-  children,
-  isLoading,
-}) => {
+const WithAuth: React.FC<{ children: any }> = ({ children }) => {
   const { data: session, status } = useSession()
   const [isPreloaderShown, setIsPreloaderShown] = React.useState(
     status === 'loading'
@@ -14,12 +11,12 @@ const WithAuth: React.FC<{ children: any; isLoading: boolean }> = ({
   const user = session?.user
 
   useEffect(() => {
-    if (status !== 'loading' && !isLoading) {
+    if (status !== 'loading') {
       setTimeout(() => {
         setIsPreloaderShown(false)
       }, 1000)
     }
-  }, [isLoading, status])
+  }, [status])
 
   if (isPreloaderShown)
     return (

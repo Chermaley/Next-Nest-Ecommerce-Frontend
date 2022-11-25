@@ -3,6 +3,16 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  font-size: 30px;
+  z-index: 100;
 }
 
 .content {
@@ -10,6 +20,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding-top: 45px;
 }
 
 .messages {
