@@ -1,35 +1,31 @@
 import React from 'react'
 import { Product } from '../../services/models'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { addProductToBasket } from '../../store/reducers/basketSlice'
 import styles from './ProductCard.module.scss'
 import config from '../../../config/config'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { useAddProductToBasketMutation } from '../../services/BasketService'
 import Link from 'next/link'
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
+  const [addProductToBasket] = useAddProductToBasketMutation()
 
   const addToCart = () => {
-    dispatch(
-      addProductToBasket({
-        productId: product.id,
-        price: product.price,
-        name: product.name,
-        accessToken: user?.accessToken,
-        quantity: 1,
-      })
-    )
+    addProductToBasket({
+      productId: product.id,
+      price: product.price,
+      name: product.name,
+      quantity: 1,
+    })
   }
 
   return (
     <div className={styles.product}>
       <div className={styles.image}>
         <Image
-          layout="fill"
+          fill
           placeholder="blur"
           blurDataURL={`${config.apiUrl}/${product.image1}`}
           src={`${config.apiUrl}/${product.image1}`}

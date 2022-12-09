@@ -1,4 +1,5 @@
 import 'next-auth'
+import { ThunkDispatch } from '@reduxjs/toolkit'
 
 declare module 'next-auth' {
   interface Session {

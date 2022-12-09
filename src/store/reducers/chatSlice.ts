@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Consultation, ConsultationType, Message } from '../../services/models'
-import { NotificationManager } from 'react-notifications'
-import ChatService from '../../services/ChatService'
-import { HYDRATE } from 'next-redux-wrapper'
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Consultation, ConsultationType, Message } from "../../services/models";
+import { NotificationManager } from "react-notifications";
+import ChatService from "../../services/ChatService";
 
 const initialState = {
   openConsultations: [] as Consultation[],

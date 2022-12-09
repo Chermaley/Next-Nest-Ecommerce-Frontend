@@ -1,6 +1,6 @@
-import { AxiosResponse } from 'axios'
-import { $api } from './api'
-import { Tokens } from './models'
+import { AxiosResponse } from "axios";
+import { $api } from "./api";
+import { Tokens } from "./models";
 
 export default class AuthService {
   static async signIn(params: {

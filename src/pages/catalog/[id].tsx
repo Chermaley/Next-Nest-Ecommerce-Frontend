@@ -1,35 +1,33 @@
 import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import { wrapper } from '../../store/store'
-import { getProduct } from '../../store/reducers/productSlice'
-import { useTypedSelector } from '../../hooks/useTypedSelectors'
 import config from '../../../config'
 import styles from './Product.module.scss'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { addProductToBasket } from '../../store/reducers/basketSlice'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
 import Button from '../../components/Button/Button'
 import { ProductComment } from '../../components/ProductComment'
-import { Input } from '../../components/Input'
+import { fetchProduct } from '../../services/ProductService'
+import { useRouter } from 'next/router'
+import { useAddProductToBasketMutation } from '../../services/BasketService'
 
 const ProductPage = () => {
-  const dispatch = useAppDispatch()
   const session = useSession()
+  const { id } = useRouter().query
   const user = session.data?.user
-  const product = useTypedSelector((state) => state.product.currentProduct)
+  const [addProductToBasket] = useAddProductToBasketMutation()
+  const { data: product } = fetchProduct.useQueryState({
+    productId: Number(id),
+  })
 
   const addToCart = () => {
     if (product) {
-      dispatch(
-        addProductToBasket({
-          productId: product.id,
-          price: product.price,
-          name: product.name,
-          accessToken: user?.accessToken,
-          quantity: 1,
-        })
-      )
+      addProductToBasket({
+        productId: product.id,
+        price: product.price,
+        name: product.name,
+        quantity: 1,
+      })
     }
   }
 
@@ -71,7 +69,9 @@ const ProductPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ params }) => {
-      await store.dispatch(getProduct({ productId: Number(params?.id) }))
+      await store.dispatch(
+        fetchProduct.initiate({ productId: Number(params?.id) })
+      )
       return { props: {} }
     }
 )

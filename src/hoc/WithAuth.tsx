@@ -5,18 +5,8 @@ import Image from 'next/image'
 
 const WithAuth: React.FC<{ children: any }> = ({ children }) => {
   const { data: session, status } = useSession()
-  const [isPreloaderShown, setIsPreloaderShown] = React.useState(
-    status === 'loading'
-  )
+  const isPreloaderShown = useDelayedLoading(status === 'loading')
   const user = session?.user
-
-  useEffect(() => {
-    if (status !== 'loading') {
-      setTimeout(() => {
-        setIsPreloaderShown(false)
-      }, 1000)
-    }
-  }, [status])
 
   if (isPreloaderShown)
     return (
@@ -32,6 +22,20 @@ const WithAuth: React.FC<{ children: any }> = ({ children }) => {
     )
 
   return user ? children : <Auth />
+}
+
+const useDelayedLoading = (isLoading: boolean) => {
+  const [isPreloaderShown, setIsPreloaderShown] = React.useState(isLoading)
+
+  useEffect(() => {
+    if (!isLoading) {
+      setTimeout(() => {
+        setIsPreloaderShown(false)
+      }, 1000)
+    }
+  }, [isLoading])
+
+  return isPreloaderShown
 }
 
 export default WithAuth

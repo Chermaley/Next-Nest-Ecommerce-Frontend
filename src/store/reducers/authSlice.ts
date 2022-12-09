@@ -1,8 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import AuthService from '../../services/AuthService'
 import { NotificationManager } from 'react-notifications'
+import { HYDRATE } from 'next-redux-wrapper'
 
-const initialState = {}
+const initialState = {
+  accessToken: null as string | null,
+}
 
 export const signUp = createAsyncThunk(
   'auth/register',
@@ -19,7 +22,12 @@ export const signUp = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setAccessToken(state, action: PayloadAction<string>) {
+      state.accessToken = action.payload
+    },
+  },
 })
 
+export const authActions = authSlice.actions
 export default authSlice.reducer

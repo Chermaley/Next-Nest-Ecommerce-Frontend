@@ -1,7 +1,7 @@
-import React from 'react'
-import { Comment } from '../../services/models'
-import styles from './ProductComment.module.scss'
-import moment from 'moment/moment'
+import React from "react";
+import { Comment } from "../../services/models";
+import styles from "./ProductComment.module.scss";
+import moment from "moment/moment";
 
 const ProductComment: React.FC<{ comment: Comment }> = ({ comment }) => {
   return (

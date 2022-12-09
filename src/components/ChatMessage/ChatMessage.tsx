@@ -1,8 +1,8 @@
-import React from 'react'
-import { Message } from '../../services/models'
-import styles from './Chat.module.scss'
-import clsx from 'clsx'
-import Image from 'next/image'
+import React from "react";
+import { Message } from "../../services/models";
+import styles from "./Chat.module.scss";
+import clsx from "clsx";
+import Image from "next/image";
 
 type MessageProps = {
   message: Message

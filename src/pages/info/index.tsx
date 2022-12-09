@@ -1,6 +1,6 @@
-import React from 'react'
-import MainLayout from '../../layouts/MainLayout'
-import { PageTitle } from '../../components/PageTitle'
+import React from "react";
+import MainLayout from "../../layouts/MainLayout";
+import { PageTitle } from "../../components/PageTitle";
 
 const Info = () => {
   return (

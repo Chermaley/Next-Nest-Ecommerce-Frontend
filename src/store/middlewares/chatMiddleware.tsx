@@ -8,7 +8,6 @@ import config from '../../../config'
 export enum ChatEvent {
   CreateConsultation = 'createConsultation',
   LeaveConsultation = 'leaveConsultation',
-  GetAllConsultations = 'getAllConsultations',
   Consultations = 'consultations',
   ActiveConsultation = 'activeConsultation',
   JoinConsultation = 'joinConsultation',

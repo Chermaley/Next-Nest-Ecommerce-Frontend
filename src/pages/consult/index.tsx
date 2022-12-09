@@ -1,24 +1,16 @@
-import React, { useEffect } from 'react'
-import MainLayout from '../../layouts/MainLayout'
-import { useTypedSelector } from '../../hooks/useTypedSelectors'
-import {
-  Consultation,
-  ConsultationStatus,
-  ConsultationType,
-} from '../../services/models'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import {
-  chatActions,
-  getClosedConsultations,
-  getOpenConsultation,
-} from '../../store/reducers/chatSlice'
-import { Chat } from '../../components/Chat'
-import styles from './Consult.module.scss'
-import clsx from 'clsx'
-import { useSession } from 'next-auth/react'
-import { WithAuth } from '../../hoc'
-import { PageTitle } from '../../components/PageTitle'
-import { Button } from '../../components/Button'
+import React, { useEffect } from "react";
+import MainLayout from "../../layouts/MainLayout";
+import { useTypedSelector } from "../../hooks/useTypedSelectors";
+import { Consultation, ConsultationStatus, ConsultationType } from "../../services/models";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { chatActions, getClosedConsultations, getOpenConsultation } from "../../store/reducers/chatSlice";
+import { Chat } from "../../components/Chat";
+import styles from "./Consult.module.scss";
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import { WithAuth } from "../../hoc";
+import { PageTitle } from "../../components/PageTitle";
+import { Button } from "../../components/Button";
 
 const Consult = () => {
   const dispatch = useAppDispatch()

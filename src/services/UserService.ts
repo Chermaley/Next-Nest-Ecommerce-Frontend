@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios'
-import { User } from './models'
-import { $api } from './api'
-import config from '../../config/config'
+import { AxiosResponse } from "axios";
+import { User } from "./models";
+import { $api } from "./api";
+import config from "../../config/config";
 
 export default class UserService {
   static async getCurrentUser(params: {

@@ -5,7 +5,10 @@ import AuthService from '../../../services/AuthService'
 import UserService from '../../../services/UserService'
 import config from '../../../../config'
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = (
+  req: NextApiRequest,
+  res: NextApiResponse
+): NextAuthOptions => ({
   session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 10 },
   secret: config.secret,
   providers: [
@@ -45,8 +48,8 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-}
+})
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  return NextAuth(req, res, authOptions)
+  return NextAuth(req, res, authOptions(req, res))
 }

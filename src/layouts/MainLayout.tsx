@@ -7,8 +7,8 @@ import SearchInput from '../components/SearchInput/SearchInput'
 import { useSession } from 'next-auth/react'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { chatActions } from '../store/reducers/chatSlice'
-import { useTypedSelector } from '../hooks/useTypedSelectors'
-import { getBasket } from '../store/reducers/basketSlice'
+import { authActions } from '../store/reducers/authSlice'
+import { fetchBasket } from '../services/BasketService'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -18,15 +18,18 @@ type MainLayoutProps = {
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
   const session = useSession()
   const user = session.data?.user
+  const accessToken = user?.accessToken
   const [isSearchInputShown, setIsSearchInputShown] = useState(false)
   const toggleInput = () => setIsSearchInputShown(!isSearchInputShown)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (user?.accessToken) {
-      dispatch(chatActions.startConnecting({ accessToken: user.accessToken }))
+    if (accessToken) {
+      dispatch(chatActions.startConnecting({ accessToken }))
+      dispatch(authActions.setAccessToken(accessToken))
+      dispatch(fetchBasket.initiate())
     }
-  }, [dispatch, user])
+  }, [dispatch, accessToken])
 
   return (
     <div>
@@ -52,20 +55,13 @@ export default MainLayout
 const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
   onSearchButtonPressed,
 }) => {
-  const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
-  const basket = useTypedSelector((state) => state.basket.basket)
+  const { data: basket } = fetchBasket.useQueryState(undefined)
   const productsInBasketCount = basket?.products.reduce(
     (count, product) => count + product.quantity,
     0
   )
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getBasket({ accessToken: user?.accessToken }))
-    }
-  }, [user, dispatch])
 
   return (
     <nav className={styles.topHeader}>

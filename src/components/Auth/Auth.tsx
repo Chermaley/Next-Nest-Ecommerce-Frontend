@@ -1,11 +1,11 @@
-import React, { FormEvent, useState } from 'react'
-import classes from './auth.module.scss'
-import { Input } from '../Input'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { signUp } from '../../store/reducers/authSlice'
-import { NotificationManager } from 'react-notifications'
-import { signIn } from 'next-auth/react'
-import { Button } from '../Button'
+import React, { FormEvent, useState } from "react";
+import classes from "./auth.module.scss";
+import { Input } from "../Input";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { signUp } from "../../store/reducers/authSlice";
+import { NotificationManager } from "react-notifications";
+import { signIn } from "next-auth/react";
+import { Button } from "../Button";
 
 const Auth = () => {
   const dispatch = useAppDispatch()

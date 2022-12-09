@@ -1,8 +1,7 @@
-import React from 'react'
-import MainLayout from '../layouts/MainLayout'
-import Image from 'next/image'
-import styles from './Home.module.scss'
-import { PageTitle } from '../components/PageTitle'
+import React from "react";
+import MainLayout from "../layouts/MainLayout";
+import styles from "./Home.module.scss";
+import { PageTitle } from "../components/PageTitle";
 
 const Index = () => {
   return (

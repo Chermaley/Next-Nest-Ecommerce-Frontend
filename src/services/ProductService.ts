@@ -1,44 +1,52 @@
-import { AxiosResponse } from 'axios'
-import { Product } from './models'
-import { $api } from './api'
-import { ProductType } from './models'
-import { buildRequestParams } from '../utils'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
+import { Product, ProductType } from './models'
+import config from '../../config'
+import { HYDRATE } from 'next-redux-wrapper'
 
-export default class ProductService {
-  static async getProductListByTerm({
-    term,
-  }: {
-    term?: string
-  }): Promise<AxiosResponse<Product[]>> {
-    const reqParams = buildRequestParams({
-      term,
-    })
-    return $api.get<Product[]>(`/products/?${reqParams}`)
-  }
+export const productServiceAPI = createApi({
+  reducerPath: 'productAPI',
+  baseQuery: fetchBaseQuery({
+    baseUrl: config.apiUrl,
+  }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
+  tagTypes: [],
+  endpoints: (build) => ({
+    fetchAllProducts: build.query<Product[], number | undefined>({
+      query: (typeId) => ({
+        url: `/products`,
+        params: {
+          typeId,
+        },
+      }),
+    }),
+    fetchProductsByTerm: build.query<Product[], string>({
+      query: (term) => ({
+        url: `/products`,
+        params: {
+          term,
+        },
+      }),
+    }),
+    fetchProduct: build.query<Product, { productId: number }>({
+      query: ({ productId }) => ({
+        url: `/products/p/${productId}`,
+      }),
+    }),
+    fetchProductTypes: build.query<ProductType[], void>({
+      query: () => ({
+        url: `/products/types`,
+      }),
+    }),
+  }),
+})
 
-  static async getProductList({
-    term,
-    typeId,
-  }: {
-    typeId?: number
-    term?: string
-  }): Promise<AxiosResponse<Product[]>> {
-    const reqParams = buildRequestParams({
-      typeId,
-      term,
-    })
-    return $api.get<Product[]>(`/products/?${reqParams}`)
-  }
-
-  static async getProduct({
-    productId,
-  }: {
-    productId?: number
-  }): Promise<AxiosResponse<Product>> {
-    return $api.get<Product>(`/products/p/${productId}`)
-  }
-
-  static async getProductTypeList(): Promise<AxiosResponse<ProductType[]>> {
-    return $api.get<ProductType[]>('/products/types')
-  }
-}
+export const {
+  fetchAllProducts,
+  fetchProductTypes,
+  fetchProduct,
+  fetchProductsByTerm,
+} = productServiceAPI.endpoints
