@@ -2,18 +2,20 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
 import { Product, ProductType } from './models'
 import config from '../../config'
 import { HYDRATE } from 'next-redux-wrapper'
+import prepareHeaders from './prepareHeaders'
 
 export const productServiceAPI = createApi({
   reducerPath: 'productAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: config.apiUrl,
+    prepareHeaders,
   }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
       return action.payload[reducerPath]
     }
   },
-  tagTypes: [],
+  tagTypes: ['Products', 'Product', 'ProductTypes', 'ProductsByTerm'],
   endpoints: (build) => ({
     fetchAllProducts: build.query<Product[], number | undefined>({
       query: (typeId) => ({
@@ -30,16 +32,31 @@ export const productServiceAPI = createApi({
           term,
         },
       }),
-    }),
-    fetchProduct: build.query<Product, { productId: number }>({
-      query: ({ productId }) => ({
-        url: `/products/p/${productId}`,
-      }),
+      providesTags: () => ['ProductsByTerm'],
     }),
     fetchProductTypes: build.query<ProductType[], void>({
       query: () => ({
         url: `/products/types`,
       }),
+      providesTags: () => ['ProductTypes'],
+    }),
+    fetchProduct: build.query<Product, { productId: number }>({
+      query: ({ productId }) => ({
+        url: `/products/p/${productId}`,
+      }),
+      providesTags: (result) => {
+        return [{ type: 'Product', id: Number(result?.id) }]
+      },
+    }),
+    leaveComment: build.mutation<Product, { productId: number; text: string }>({
+      query: ({ productId, text }) => ({
+        method: 'POST',
+        url: `/products/p/${productId}/comment`,
+        body: { text },
+      }),
+      invalidatesTags: (result, error, { productId }) => {
+        return [{ type: 'Product', id: productId }]
+      },
     }),
   }),
 })
@@ -50,3 +67,5 @@ export const {
   fetchProduct,
   fetchProductsByTerm,
 } = productServiceAPI.endpoints
+
+export const { useLeaveCommentMutation } = productServiceAPI

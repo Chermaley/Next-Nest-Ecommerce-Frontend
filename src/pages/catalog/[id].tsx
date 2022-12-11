@@ -7,16 +7,21 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import Button from '../../components/Button/Button'
 import { ProductComment } from '../../components/ProductComment'
-import { fetchProduct } from '../../services/ProductService'
+import {
+  fetchProduct,
+  useLeaveCommentMutation,
+} from '../../services/ProductService'
 import { useRouter } from 'next/router'
 import { useAddProductToBasketMutation } from '../../services/BasketService'
+import { Input } from '../../components/Input'
+import { Comment } from '../../services/models'
 
 const ProductPage = () => {
   const session = useSession()
   const { id } = useRouter().query
   const user = session.data?.user
   const [addProductToBasket] = useAddProductToBasketMutation()
-  const { data: product } = fetchProduct.useQueryState({
+  const { data: product } = fetchProduct.useQuery({
     productId: Number(id),
   })
 
@@ -39,8 +44,8 @@ const ProductPage = () => {
             <Image
               src={`${config.apiUrl}${product?.image1}`}
               priority
-              layout="fill"
-              alt=""
+              fill
+              alt={product?.name ?? 'Продукт'}
             />
           </div>
         </div>
@@ -55,13 +60,9 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-
-      <div className={styles.reviews}>
-        <h2 className={styles.title}>Комментарии</h2>
-        {product?.comments.map((comment) => (
-          <ProductComment key={comment.id} comment={comment} />
-        ))}
-      </div>
+      {product?.comments && (
+        <CommentSection productId={product.id} comments={product.comments} />
+      )}
     </MainLayout>
   )
 }
@@ -77,3 +78,32 @@ export const getServerSideProps = wrapper.getServerSideProps(
 )
 
 export default ProductPage
+
+const CommentSection: React.FC<{ productId: number; comments: Comment[] }> = ({
+  comments,
+  productId,
+}) => {
+  const [comment, setComment] = React.useState('')
+  const [leaveComment] = useLeaveCommentMutation()
+  const onLeaveCommentButtonClick = () => {
+    leaveComment({ productId, text: comment })
+  }
+  return (
+    <div className={styles.reviews}>
+      <h2 className={styles.reviews__title}>Комментарии</h2>
+      <div className={styles.reviews__list}>
+        {comments.map((comment) => (
+          <ProductComment key={comment.id} comment={comment} />
+        ))}
+      </div>
+      <div className={styles.reviews__inputField}>
+        <Input
+          value={comment}
+          onChange={setComment}
+          className={styles.reviews__input}
+        />
+        <Button title="Отправить" onClick={onLeaveCommentButtonClick} />
+      </div>
+    </div>
+  )
+}

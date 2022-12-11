@@ -1,27 +1,21 @@
-import { AxiosResponse } from "axios";
-import { $api } from "./api";
-import { Tokens } from "./models";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
+import { Basket } from './models'
+import config from '../../config'
 
-export default class AuthService {
-  static async signIn(params: {
-    email: string
-    password: string
-  }): Promise<AxiosResponse<Tokens>> {
-    return $api.post<Tokens>(`/auth/local/signin`, {
-      ...params,
-    })
-  }
+export const authServiceAPI = createApi({
+  reducerPath: 'authAPI',
+  baseQuery: fetchBaseQuery({
+    baseUrl: config.apiUrl,
+  }),
+  endpoints: (build) => ({
+    singUp: build.mutation<Basket, { email: string; password: string }>({
+      query: (body) => ({
+        method: 'POST',
+        url: `/auth/local/signup`,
+        body,
+      }),
+    }),
+  }),
+})
 
-  static async signUp(params: {
-    email: string
-    password: string
-  }): Promise<AxiosResponse<Tokens>> {
-    return $api.post<Tokens>(`/auth/local/signup`, {
-      ...params,
-    })
-  }
-
-  static async logout(): Promise<AxiosResponse<void>> {
-    return $api.post(`/auth/logout`)
-  }
-}
+export const { singUp } = authServiceAPI.endpoints

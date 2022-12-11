@@ -39,12 +39,26 @@
   padding: 16px;
   margin-top: 10px;
   min-height: 200px;
+  display: flex;
+  flex-direction: column;
   @include box;
-}
 
-.title {
-  font-size: 22px;
-  margin-bottom: 10px;
+  &__title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  &__list {
+    overflow: scroll;
+    height: 500px;
+  }
+  &__inputField {
+    display: flex;
+  }
+  &__input {
+    padding: 10px;
+    width: 100%;
+    margin-right: 10px;
+  }
 }
 
 .description {

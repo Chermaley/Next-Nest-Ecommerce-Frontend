@@ -1,9 +1,9 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { NextApiRequest, NextApiResponse } from 'next'
-import AuthService from '../../../services/AuthService'
-import UserService from '../../../services/UserService'
 import config from '../../../../config'
+import { $api } from '../../../services/api'
+import { Tokens } from '../../../services/models'
 
 export const authOptions = (
   req: NextApiRequest,
@@ -20,13 +20,15 @@ export const authOptions = (
       },
       async authorize(credentials) {
         if (credentials) {
-          const signInResponse = await AuthService.signIn({
+          const signInResponse = await $api.post<Tokens>(`/auth/local/signin`, {
             email: credentials.email,
             password: credentials.password,
           })
           if (signInResponse.data) {
-            const userResponse = await UserService.getCurrentUser({
-              accessToken: signInResponse.data.accessToken,
+            const userResponse = await $api.get(`/users/me`, {
+              headers: {
+                Authorization: `${config.accessTokenPrefix} ${signInResponse.data.accessToken}`,
+              },
             })
             return {
               ...userResponse.data,
