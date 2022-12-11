@@ -4,11 +4,13 @@ import { createWrapper } from 'next-redux-wrapper'
 import chatMiddleware from './middlewares/chatMiddleware'
 import { productServiceAPI } from '../services/ProductService'
 import { basketServiceAPI } from '../services/BasketService'
+import { chatServiceAPI } from '../services/ChatService'
 
 const appReducer = combineReducers({
   ...reducers,
   [productServiceAPI.reducerPath]: productServiceAPI.reducer,
   [basketServiceAPI.reducerPath]: basketServiceAPI.reducer,
+  [chatServiceAPI.reducerPath]: chatServiceAPI.reducer,
 })
 
 const reducer: Reducer = (state, action) => {

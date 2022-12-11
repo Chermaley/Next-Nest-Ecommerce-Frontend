@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState, ReactNode } from 'react'
 import styles from './MainLayout.module.scss'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -8,10 +8,11 @@ import { useSession } from 'next-auth/react'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { chatActions } from '../store/reducers/chatSlice'
 import { authActions } from '../store/reducers/authSlice'
-import { fetchBasket } from '../services/BasketService'
+import { useFetchBasketQuery } from '../services/BasketService'
+import { useTypedSelector } from '../hooks/useTypedSelectors'
 
 type MainLayoutProps = {
-  children: React.ReactNode
+  children: ReactNode
   title: string
 }
 
@@ -27,7 +28,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
     if (accessToken) {
       dispatch(chatActions.startConnecting({ accessToken }))
       dispatch(authActions.setAccessToken(accessToken))
-      dispatch(fetchBasket.initiate())
     }
   }, [dispatch, accessToken])
 
@@ -55,12 +55,14 @@ export default MainLayout
 const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
   onSearchButtonPressed,
 }) => {
-  const session = useSession()
-  const user = session.data?.user
-  const { data: basket } = fetchBasket.useQueryState(undefined)
-  const productsInBasketCount = basket?.products.reduce(
-    (count, product) => count + product.quantity,
-    0
+  const skip = useTypedSelector((state) => state.auth.skip)
+  const { data: basket } = useFetchBasketQuery(undefined, {
+    skip,
+  })
+  const productsInBasketCount = useMemo(
+    () =>
+      basket?.products.reduce((count, product) => count + product.quantity, 0),
+    [basket]
   )
 
   return (
@@ -86,7 +88,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
             priority
           />
         </Link>
-        {user && (
+        {!skip && (
           <div>
             {productsInBasketCount ? (
               <div className={styles.badge}>{productsInBasketCount}</div>

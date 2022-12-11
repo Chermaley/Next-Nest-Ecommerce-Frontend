@@ -4,6 +4,8 @@ import { chatActions } from '../reducers/chatSlice'
 import { Consultation, Message } from '../../services/models'
 import { NotificationManager } from 'react-notifications'
 import config from '../../../config'
+import { modifyConsultations } from '../../services/ChatService'
+import { AppDispatch } from '../store'
 
 export enum ChatEvent {
   CreateConsultation = 'createConsultation',
@@ -23,6 +25,7 @@ const chatMiddleware: Middleware = (store) => {
   let socket: Socket
 
   return (next) => (action) => {
+    const dispatch = store.dispatch as AppDispatch
     const isConnectionEstablished = socket && store.getState().chat.isConnected
 
     if (chatActions.startConnecting.match(action)) {
@@ -40,7 +43,7 @@ const chatMiddleware: Middleware = (store) => {
       })
 
       socket.on(ChatEvent.Consultations, (consultations: Consultation[]) => {
-        store.dispatch(chatActions.setConsultations({ consultations }))
+        dispatch(modifyConsultations('open', (prev) => (prev = consultations)))
       })
 
       socket.on(ChatEvent.Messages, (messages: Message[]) => {
@@ -48,25 +51,31 @@ const chatMiddleware: Middleware = (store) => {
       })
 
       socket.on(ChatEvent.ActiveConsultation, (consultation: Consultation) => {
-        store.dispatch(chatActions.setActiveConsultation(consultation))
+        dispatch(
+          modifyConsultations('open', (consultations) =>
+            consultations.push(consultation)
+          )
+        )
       })
 
       socket.on(ChatEvent.NewMessage, (message: Message) => {
         store.dispatch(chatActions.setMessage({ message }))
       })
 
-      socket.on(ChatEvent.NewConsultation, (userId: string) => {
-        NotificationManager.info(`Пользователь с ${userId} задал вопрос`)
-      })
-
       socket.on(ChatEvent.NewMessageInConversation, (message: Message) => {
-        NotificationManager.info('Новое сообщение по консультации')
+        NotificationManager.info('Новое сообщение по консультации: ' + message)
       })
 
       socket.on(ChatEvent.ConsultationClosed, (consultation: Consultation) => {
-        console.log(consultation)
         store.dispatch(chatActions.setActiveConsultation(null))
-        store.dispatch(chatActions.setLastClosedConsultation(consultation))
+        dispatch(
+          modifyConsultations('open', (consultations) => consultations.pop())
+        )
+        dispatch(
+          modifyConsultations('closed', (consultations) =>
+            consultations.unshift(consultation)
+          )
+        )
       })
     }
 

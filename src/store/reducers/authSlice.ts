@@ -5,6 +5,7 @@ import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
   accessToken: null as string | null,
+  skip: true,
 }
 
 export const signUp = createAsyncThunk(
@@ -25,6 +26,7 @@ const authSlice = createSlice({
   reducers: {
     setAccessToken(state, action: PayloadAction<string>) {
       state.accessToken = action.payload
+      state.skip = false
     },
   },
 })

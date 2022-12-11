@@ -2,22 +2,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
 import { Basket } from './models'
 import config from '../../config'
 import { HYDRATE } from 'next-redux-wrapper'
-import { AppState } from '../store/store'
+import prepareHeaders from './prepareHeaders'
 
 export const basketServiceAPI = createApi({
   reducerPath: 'basketAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: config.apiUrl,
-    prepareHeaders: (headers, { getState }) => {
-      const accessToken = (getState() as AppState).auth.accessToken
-      if (accessToken) {
-        headers.set(
-          'Authorization',
-          `${config.accessTokenPrefix} ${accessToken}`
-        )
-      }
-      return headers
-    },
+    prepareHeaders,
   }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
@@ -68,4 +59,5 @@ export const { fetchBasket } = basketServiceAPI.endpoints
 export const {
   useAddProductToBasketMutation,
   useDeleteProductFromBasketMutation,
+  useFetchBasketQuery,
 } = basketServiceAPI

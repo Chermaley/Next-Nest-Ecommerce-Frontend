@@ -1,7 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Consultation, ConsultationType, Message } from "../../services/models";
-import { NotificationManager } from "react-notifications";
-import ChatService from "../../services/ChatService";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Consultation, ConsultationType, Message } from '../../services/models'
 
 const initialState = {
   openConsultations: [] as Consultation[],
@@ -12,30 +10,6 @@ const initialState = {
   isConnected: false,
   isLoading: false,
 }
-
-export const getClosedConsultations = createAsyncThunk<
-  void,
-  { accessToken: string }
->('chat/getClosedConsultations', async (params, { dispatch }) => {
-  try {
-    const { data } = await ChatService.getClosedConsultations(params)
-    dispatch(chatActions.setClosedConsultations(data))
-  } catch (e: any) {
-    NotificationManager.error(e.description)
-  }
-})
-
-export const getOpenConsultation = createAsyncThunk<
-  void,
-  { accessToken: string }
->('chat/getActiveConsultation', async (params, { dispatch }) => {
-  try {
-    const { data } = await ChatService.getOpenConsultation(params)
-    dispatch(chatActions.setConsultations({ consultations: data }))
-  } catch (e: any) {
-    NotificationManager.error(e.description)
-  }
-})
 
 export const chatSlice = createSlice({
   name: 'chat',
