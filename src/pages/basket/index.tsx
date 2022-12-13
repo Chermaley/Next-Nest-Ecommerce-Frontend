@@ -7,11 +7,40 @@ import { PageTitle } from '../../components/PageTitle'
 import { WithAuth } from '../../hoc'
 import {
   fetchBasket,
+  useCreateOrderMutation,
   useDeleteProductFromBasketMutation,
 } from '../../services/BasketService'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import {
+  notificationActions,
+  NotificationType,
+} from '../../store/reducers/notificationSlice'
 
 const Index = () => {
+  const dispatch = useAppDispatch()
   const { data } = fetchBasket.useQueryState(undefined)
+  const [createOrder] = useCreateOrderMutation()
+
+  const onCreateOrder = async () => {
+    if (data?.products.length) {
+      try {
+        await createOrder({ basketId: data.id }).unwrap()
+        dispatch(
+          notificationActions.show({
+            type: NotificationType.Success,
+            text: 'Заказ успешно создан',
+          })
+        )
+      } catch (e) {
+        dispatch(
+          notificationActions.show({
+            type: NotificationType.Error,
+            text: 'Что-то пошло не так',
+          })
+        )
+      }
+    }
+  }
 
   return (
     <MainLayout title="Корзина">
@@ -30,9 +59,8 @@ const Index = () => {
               <Product key={product.id} product={product} />
             ))}
           </div>
-
           <div className={classes.button}>
-            <Button onClick={console.log} title="Оформить заказ" />
+            <Button onClick={onCreateOrder} title="Оформить заказ" />
           </div>
         </WithAuth>
       </div>

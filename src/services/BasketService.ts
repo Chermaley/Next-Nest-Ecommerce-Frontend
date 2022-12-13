@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
-import { Basket } from './models'
+import { Basket, Order } from './models'
 import config from '../../config'
 import { HYDRATE } from 'next-redux-wrapper'
 import prepareHeaders from './prepareHeaders'
@@ -15,7 +15,7 @@ export const basketServiceAPI = createApi({
       return action.payload[reducerPath]
     }
   },
-  tagTypes: ['Basket'],
+  tagTypes: ['Basket', 'Order'],
   endpoints: (build) => ({
     fetchBasket: build.query<Basket, void>({
       query: () => ({
@@ -52,6 +52,20 @@ export const basketServiceAPI = createApi({
       }),
       invalidatesTags: ['Basket'],
     }),
+    getOrders: build.query<Order[], void>({
+      query: () => ({
+        url: `/order`,
+      }),
+      providesTags: () => ['Order'],
+    }),
+    createOrder: build.mutation<Order, { basketId: number }>({
+      query: (body) => ({
+        method: 'POST',
+        url: `/order`,
+        body,
+      }),
+      invalidatesTags: ['Basket'],
+    }),
   }),
 })
 
@@ -60,4 +74,6 @@ export const {
   useAddProductToBasketMutation,
   useDeleteProductFromBasketMutation,
   useFetchBasketQuery,
+  useGetOrdersQuery,
+  useCreateOrderMutation,
 } = basketServiceAPI

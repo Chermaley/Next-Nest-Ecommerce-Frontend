@@ -13,11 +13,6 @@ export const contractSlice = createSlice({
       state.currentProductTypeId = action.payload
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return { ...state, ...action.payload.product }
-    },
-  },
 })
 
 export const { setCurrentProductTypeId } = contractSlice.actions

@@ -1,9 +1,9 @@
-import React from "react";
-import MainLayout from "../../layouts/MainLayout";
-import styles from "./Personal.module.scss";
-import { signOut, useSession } from "next-auth/react";
-import { PageTitle } from "../../components/PageTitle";
-import WithAuth from "../../hoc/WithAuth";
+import React from 'react'
+import MainLayout from '../../layouts/MainLayout'
+import styles from './Personal.module.scss'
+import { signOut, useSession } from 'next-auth/react'
+import { PageTitle } from '../../components/PageTitle'
+import WithAuth from '../../hoc/WithAuth'
 
 const Personal = () => {
   const { data: session } = useSession()
@@ -23,6 +23,7 @@ const Personal = () => {
           <div onClick={() => signOut()} className={styles.logout}>
             Выйти
           </div>
+          История заказов
         </WithAuth>
       </div>
     </MainLayout>
