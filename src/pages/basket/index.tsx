@@ -10,34 +10,27 @@ import {
   useCreateOrderMutation,
   useDeleteProductFromBasketMutation,
 } from '../../services/BasketService'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import {
-  notificationActions,
-  NotificationType,
-} from '../../store/reducers/notificationSlice'
+import { NotificationType } from '../../store/reducers/notificationSlice'
+import useNotification from '../../hooks/useNotification'
 
 const Index = () => {
-  const dispatch = useAppDispatch()
   const { data } = fetchBasket.useQueryState(undefined)
   const [createOrder] = useCreateOrderMutation()
+  const showNotification = useNotification()
 
   const onCreateOrder = async () => {
     if (data?.products.length) {
       try {
         await createOrder({ basketId: data.id }).unwrap()
-        dispatch(
-          notificationActions.show({
-            type: NotificationType.Success,
-            text: 'Заказ успешно создан',
-          })
-        )
+        showNotification({
+          type: NotificationType.Success,
+          text: 'Заказ успешно создан',
+        })
       } catch (e) {
-        dispatch(
-          notificationActions.show({
-            type: NotificationType.Error,
-            text: 'Что-то пошло не так',
-          })
-        )
+        showNotification({
+          type: NotificationType.Error,
+          text: 'Упс, что-то пошло не так',
+        })
       }
     }
   }
@@ -47,21 +40,27 @@ const Index = () => {
       <PageTitle>Корзина</PageTitle>
       <div className={classes.wrapper}>
         <WithAuth>
-          <ul className={classes.fields}>
-            <li>Название</li>
-            <li>Количество</li>
-            <li>Цена за 1 шт.</li>
-            <li>Общая цена</li>
-            <li />
-          </ul>
-          <div className={classes.products}>
-            {data?.products.map((product) => (
-              <Product key={product.id} product={product} />
-            ))}
-          </div>
-          <div className={classes.button}>
-            <Button onClick={onCreateOrder} title="Оформить заказ" />
-          </div>
+          {data?.products.length ? (
+            <div className={classes.basket}>
+              <ul className={classes.basket__fields}>
+                <li>Название</li>
+                <li>Количество</li>
+                <li>Цена за 1 шт.</li>
+                <li>Общая цена</li>
+                <li />
+              </ul>
+              <div className={classes.basket__products}>
+                {data?.products.map((product) => (
+                  <Product key={product.id} product={product} />
+                ))}
+              </div>
+              <div className={classes.basket__button}>
+                <Button onClick={onCreateOrder} title="Оформить заказ" />
+              </div>
+            </div>
+          ) : (
+            <div className={classes.basket__empty}>Корзина пуста</div>
+          )}
         </WithAuth>
       </div>
     </MainLayout>
@@ -85,7 +84,7 @@ const Product: React.FC<{ product: BasketProduct }> = ({ product }) => {
       </div>
       <div>{product.price} ₽</div>
       <div>{product.price * product.quantity} ₽</div>
-      <div onClick={onDelete} className={classes.delete}>
+      <div onClick={onDelete} className={classes.item__delete}>
         Удалить
       </div>
     </div>

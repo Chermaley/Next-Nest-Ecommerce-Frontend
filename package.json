@@ -24,8 +24,11 @@
     "next-redux-wrapper": "^7.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-image-gallery": "^1.2.11",
     "react-notifications": "^1.7.4",
     "react-redux": "^8.0.2",
+    "react-responsive-carousel": "^3.2.23",
+    "react-simple-star-rating": "^5.1.7",
     "sass": "^1.54.4",
     "socket.io-client": "^4.5.1",
     "swiper": "^8.3.2"

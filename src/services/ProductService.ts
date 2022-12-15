@@ -48,11 +48,14 @@ export const productServiceAPI = createApi({
         return [{ type: 'Product', id: Number(result?.id) }]
       },
     }),
-    leaveComment: build.mutation<Product, { productId: number; text: string }>({
-      query: ({ productId, text }) => ({
+    leaveComment: build.mutation<
+      Product,
+      { productId: number; text: string; rating: number }
+    >({
+      query: ({ productId, ...body }) => ({
         method: 'POST',
         url: `/products/p/${productId}/comment`,
-        body: { text },
+        body,
       }),
       invalidatesTags: (result, error, { productId }) => {
         return [{ type: 'Product', id: productId }]

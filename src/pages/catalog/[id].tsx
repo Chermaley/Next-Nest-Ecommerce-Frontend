@@ -15,6 +15,8 @@ import { useRouter } from 'next/router'
 import { useAddProductToBasketMutation } from '../../services/BasketService'
 import { Input } from '../../components/Input'
 import { Comment } from '../../services/models'
+import { Rating } from 'react-simple-star-rating'
+import { Carousel } from 'react-responsive-carousel'
 
 const ProductPage = () => {
   const session = useSession()
@@ -24,6 +26,7 @@ const ProductPage = () => {
   const { data: product } = fetchProduct.useQuery({
     productId: Number(id),
   })
+  const images = [product?.image1, product?.image2, product?.image3]
 
   const addToCart = () => {
     if (product) {
@@ -40,18 +43,30 @@ const ProductPage = () => {
     <MainLayout title={product?.name ?? ''}>
       <div className={styles.top}>
         <div className={styles.left}>
-          <div className={styles.image}>
-            <Image
-              src={`${config.apiUrl}${product?.image1}`}
-              priority
-              fill
-              alt={product?.name ?? 'Продукт'}
-            />
-          </div>
+          <Carousel
+            emulateTouch
+            swipeable
+            showThumbs={false}
+            showArrows={false}
+          >
+            {images.map((image) => (
+              <div key={image} className={styles.image}>
+                <Image
+                  key={image}
+                  src={`${config.apiUrl}/${image}`}
+                  alt={product?.name ?? 'Продукт'}
+                  fill
+                />
+              </div>
+            ))}
+          </Carousel>
         </div>
         <div className={styles.right}>
           <div className={styles.info}>
-            <h1 className={styles.title}>{product?.name}</h1>
+            <div className={styles.header}>
+              <h1 className={styles.title}>{product?.name}</h1>
+              <Rating size={25} readonly initialValue={product?.rating} />
+            </div>
             <div className={styles.description}>{product?.description}</div>
           </div>
           <div className={styles.actions}>
@@ -83,11 +98,13 @@ const CommentSection: React.FC<{ productId: number; comments: Comment[] }> = ({
   comments,
   productId,
 }) => {
-  const [comment, setComment] = React.useState('')
+  const [text, setText] = React.useState('')
+  const [rating, setRating] = React.useState(0)
   const [leaveComment] = useLeaveCommentMutation()
   const onLeaveCommentButtonClick = () => {
-    leaveComment({ productId, text: comment })
+    leaveComment({ productId, text, rating })
   }
+
   return (
     <div className={styles.reviews}>
       <h2 className={styles.reviews__title}>Комментарии</h2>
@@ -98,9 +115,14 @@ const CommentSection: React.FC<{ productId: number; comments: Comment[] }> = ({
       </div>
       <div className={styles.reviews__inputField}>
         <Input
-          value={comment}
-          onChange={setComment}
+          value={text}
+          onChange={setText}
           className={styles.reviews__input}
+        />
+        <Rating
+          initialValue={rating}
+          onClick={setRating}
+          className={styles.reviews__rating}
         />
         <Button title="Отправить" onClick={onLeaveCommentButtonClick} />
       </div>

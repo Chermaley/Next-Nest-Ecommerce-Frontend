@@ -5,27 +5,24 @@
 
 .top {
   display: flex;
-  height: 350px;
+  height: auto;
 }
 
 .left {
-  width: 400px;
   margin-right: 10px;
   padding: 16px;
   @include box;
 }
 
 .image {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 500px;
 }
 
 .right {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
   padding: 16px;
   @include box;
 }
@@ -34,6 +31,11 @@
   flex: 1;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .reviews {
   padding: 16px;
@@ -58,6 +60,9 @@
     padding: 10px;
     width: 100%;
     margin-right: 10px;
+  }
+  &__rating {
+
   }
 }
 

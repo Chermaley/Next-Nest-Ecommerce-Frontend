@@ -1,8 +1,8 @@
-import React from "react";
-import { Message } from "../../services/models";
-import styles from "./Chat.module.scss";
-import clsx from "clsx";
-import Image from "next/image";
+import React from 'react'
+import { Message } from '../../services/models'
+import styles from './Chat.module.scss'
+import clsx from 'clsx'
+import Image from 'next/image'
 
 type MessageProps = {
   message: Message
@@ -14,20 +14,20 @@ const ChatMessage: React.FC<MessageProps> = ({ message, currentUserId }) => {
   return (
     <div
       className={clsx(styles.message, {
-        [styles.messageLeft]: isAuthor,
-        [styles.messageRight]: !isAuthor,
+        [styles.message__messageLeft]: isAuthor,
+        [styles.message__messageRight]: !isAuthor,
       })}
       key={message.id}
     >
-      <div className={styles.content}>
-        <div className={styles.textWrapper}>
+      <div className={styles.message__content}>
+        <div className={styles.message__textWrapper}>
           <div
-            className={styles.text}
+            className={styles.message__text}
             dangerouslySetInnerHTML={{ __html: message.message }}
           />
         </div>
         {message.attachments && (
-          <div className={styles.images}>
+          <div className={styles.message__images}>
             {message.attachments.map((item) => (
               <Image
                 key={item.id}

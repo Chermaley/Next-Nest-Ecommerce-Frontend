@@ -4,8 +4,8 @@ import styles from './ProductCard.module.scss'
 import config from '../../../config/config'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { useAddProductToBasketMutation } from '../../services/BasketService'
 import Link from 'next/link'
+import { useAddProductToBasketMutation } from '../../services/BasketService'
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const session = useSession()
@@ -23,7 +23,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 
   return (
     <div className={styles.product}>
-      <div className={styles.image}>
+      <div className={styles.product__image}>
         <Image
           fill
           placeholder="blur"
@@ -32,19 +32,18 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
           alt={product.description}
         />
       </div>
-      <div className={styles.info}>
+      <div className={styles.product__info}>
         <Link href={`/catalog/${product.id}`}>
-          <p className={styles.name}>{product.name}</p>
+          <p className={styles.product__name}>{product.name}</p>
         </Link>
-        <div className={styles.bottom}>
-          <p className={styles.price}>{product.price} ₽</p>
+        <div className={styles.product__bottom}>
+          <p className={styles.product__price}>{product.price} ₽</p>
           {user && (
             <Image
               onClick={addToCart}
               src={'/basketIcon.svg'}
               width={30}
               height={30}
-              className={styles.topHeaderButton}
               alt="basket"
             />
           )}

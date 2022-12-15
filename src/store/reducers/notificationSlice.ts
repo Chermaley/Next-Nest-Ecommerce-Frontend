@@ -12,12 +12,7 @@ export enum NotificationType {
 }
 
 const initialState = {
-  notifications: [
-    { text: 'First', type: NotificationType.Error, id: 1 },
-    { text: 'Second', type: NotificationType.Error, id: 2 },
-    { text: 'Third', type: NotificationType.Error, id: 3 },
-    { text: 'Fourth', type: NotificationType.Error, id: 4 },
-  ] as Notification[],
+  notifications: [] as Notification[],
 }
 
 export const notificationSlice = createSlice({

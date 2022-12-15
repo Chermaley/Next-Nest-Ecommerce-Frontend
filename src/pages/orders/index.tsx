@@ -31,9 +31,9 @@ const Index = () => {
             <tbody>
               {orders?.map((order) => (
                 <tr className={styles.table__row} key={order.id}>
-                  <td>Заказ N#{order.id}</td>
-                  <td>{order.status}</td>
-                  <td>{order.amount}</td>
+                  <td className={styles.table__column}>Заказ N#{order.id}</td>
+                  <td className={styles.table__column}>{order.status}</td>
+                  <td className={styles.table__column}>{order.amount}</td>
                 </tr>
               ))}
             </tbody>

@@ -7,6 +7,7 @@ export type Product = {
   image2: string
   image3: string
   comments: Comment[]
+  rating: number
 }
 
 export type Comment = {
@@ -14,4 +15,5 @@ export type Comment = {
   author: string
   text: string
   createdAt: string
+  rating: number
 }

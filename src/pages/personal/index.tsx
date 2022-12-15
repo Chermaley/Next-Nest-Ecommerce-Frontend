@@ -23,7 +23,6 @@ const Personal = () => {
           <div onClick={() => signOut()} className={styles.logout}>
             Выйти
           </div>
-          История заказов
         </WithAuth>
       </div>
     </MainLayout>
