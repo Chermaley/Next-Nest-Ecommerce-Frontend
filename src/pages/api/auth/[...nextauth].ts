@@ -1,16 +1,19 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { NextApiRequest, NextApiResponse } from 'next'
-import config from '../../../../config'
-import { $api } from '../../../services/api'
 import { Tokens } from '../../../services/models'
+import axios from 'axios'
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+})
 
 export const authOptions = (
   req: NextApiRequest,
   res: NextApiResponse
 ): NextAuthOptions => ({
   session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 10 },
-  secret: config.secret,
+  secret: process.env.SECRET,
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -20,14 +23,17 @@ export const authOptions = (
       },
       async authorize(credentials) {
         if (credentials) {
-          const signInResponse = await $api.post<Tokens>(`/auth/local/signin`, {
-            email: credentials.email,
-            password: credentials.password,
-          })
+          const signInResponse = await axiosInstance.post<Tokens>(
+            '/auth/local/signin',
+            {
+              email: credentials.email,
+              password: credentials.password,
+            }
+          )
           if (signInResponse.data) {
-            const userResponse = await $api.get(`/users/me`, {
+            const userResponse = await axiosInstance.get(`/users/me`, {
               headers: {
-                Authorization: `${config.accessTokenPrefix} ${signInResponse.data.accessToken}`,
+                Authorization: `${process.env.ACCESS_TOKEN_PREFIX} ${signInResponse.data.accessToken}`,
               },
             })
             return {

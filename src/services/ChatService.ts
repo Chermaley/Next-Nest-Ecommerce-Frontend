@@ -1,11 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
-import { Consultation, Message, Product, ProductType } from './models'
-import config from '../../config'
+import { Consultation } from './models'
 import { HYDRATE } from 'next-redux-wrapper'
-import { AppDispatch, AppState } from '../store/store'
 import prepareHeaders from './prepareHeaders'
-import { io, Socket } from 'socket.io-client'
-import { chatActions } from '../store/reducers/chatSlice'
 
 enum ChatEvent {
   CreateConsultation = 'createConsultation',
@@ -21,20 +17,10 @@ enum ChatEvent {
   ConsultationClosed = 'consultationClosed',
 }
 
-let socket: Socket
-function getSocket() {
-  if (!socket) {
-    socket = io(config.wsUrl, {
-      withCredentials: true,
-    })
-  }
-  return socket
-}
-
 export const chatServiceAPI = createApi({
   reducerPath: 'chatAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: config.apiUrl,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
     prepareHeaders,
   }),
   extractRehydrationInfo(action, { reducerPath }) {

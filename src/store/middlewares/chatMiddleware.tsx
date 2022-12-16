@@ -3,7 +3,6 @@ import { io, Socket } from 'socket.io-client'
 import { chatActions } from '../reducers/chatSlice'
 import { Consultation, Message } from '../../services/models'
 import { NotificationManager } from 'react-notifications'
-import config from '../../../config'
 import { modifyConsultations } from '../../services/ChatService'
 import { AppDispatch } from '../store'
 
@@ -29,7 +28,7 @@ const chatMiddleware: Middleware = (store) => {
     const isConnectionEstablished = socket && store.getState().chat.isConnected
 
     if (chatActions.startConnecting.match(action)) {
-      socket = io(`${config.wsUrl}/chat`, {
+      socket = io(`${process.env.NEXT_PUBLIC_WS_URL}/chat`, {
         path: '/socket.io',
         auth: {
           token: action.payload.accessToken,

@@ -1,7 +1,6 @@
 import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import { wrapper } from '../../store/store'
-import config from '../../../config'
 import styles from './Product.module.scss'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
@@ -17,7 +16,6 @@ import { Input } from '../../components/Input'
 import { Comment } from '../../services/models'
 import { Rating } from 'react-simple-star-rating'
 import { Carousel } from 'react-responsive-carousel'
-import { PageTitle } from '../../components/PageTitle'
 
 const ProductPage = () => {
   const session = useSession()
@@ -56,7 +54,7 @@ const ProductPage = () => {
                 <div key={image} className={styles.product__image}>
                   <Image
                     key={image}
-                    src={`${config.apiUrl}/${image}`}
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/${image}`}
                     alt={product?.name ?? 'Продукт'}
                     fill
                   />

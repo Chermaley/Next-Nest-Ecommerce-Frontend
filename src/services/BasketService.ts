@@ -1,13 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
 import { Basket, Order } from './models'
-import config from '../../config'
 import { HYDRATE } from 'next-redux-wrapper'
 import prepareHeaders from './prepareHeaders'
 
 export const basketServiceAPI = createApi({
   reducerPath: 'basketAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: config.apiUrl,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
     prepareHeaders,
   }),
   extractRehydrationInfo(action, { reducerPath }) {

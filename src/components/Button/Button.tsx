@@ -5,7 +5,7 @@ import clsx from 'clsx'
 const Button: React.FC<{
   onClick?: () => void
   title: string
-  className: string
+  className?: string
 }> = ({ onClick, title, className }) => {
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation()

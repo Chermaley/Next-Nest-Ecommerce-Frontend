@@ -1,7 +1,6 @@
 import React from 'react'
 import { Product } from '../../services/models'
 import styles from './ProductCard.module.scss'
-import config from '../../../config/config'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -21,14 +20,16 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     })
   }
 
+  console.log(process.env)
+
   return (
     <div className={styles.product}>
       <div className={styles.product__image}>
         <Image
           fill
           placeholder="blur"
-          blurDataURL={`${config.apiUrl}/${product.image1}`}
-          src={`${config.apiUrl}/${product.image1}`}
+          blurDataURL={`${process.env.NEXT_PUBLIC_API_URL}/${product.image1}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${product.image1}`}
           alt={product.description}
         />
       </div>

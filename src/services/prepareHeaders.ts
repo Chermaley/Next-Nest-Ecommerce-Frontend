@@ -1,5 +1,4 @@
 import { AppState } from '../store/store'
-import config from '../../config/config'
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 export default function prepareHeaders(
@@ -10,7 +9,10 @@ export default function prepareHeaders(
 ) {
   const accessToken = (getState() as AppState).auth.accessToken
   if (accessToken) {
-    headers.set('Authorization', `${config.accessTokenPrefix} ${accessToken}`)
+    headers.set(
+      'Authorization',
+      `${process.env.NEXT_PUBLIC_ACCESS_TOKEN_PREFIX} ${accessToken}`
+    )
   }
   return headers
 }

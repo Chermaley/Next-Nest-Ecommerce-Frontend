@@ -12,7 +12,12 @@
     border-spacing: 0;
     font-size: 14px;
     text-align: left;
-    overflow: scroll;
+
+  &__body {
+    width: 100%;
+    height: 100%;
+    overflow:scroll;
+  }
 
   &__row {
     border-bottom: 1px solid #e0e0e0;
