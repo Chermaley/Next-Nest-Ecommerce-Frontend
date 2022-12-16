@@ -1,42 +1,43 @@
 @import '../../styles/base';
 
-.wrapper {
+.catalog {
   display: flex;
-}
+  &__types {
 
-.typeSectionTitle {
-  font-size: 20px;
-  margin-bottom: 15px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #eee;
-  text-align: center;
+  }
+  &__products {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    align-content: flex-start;
+  }
 }
 
 .types {
-  min-height: 100vh;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   padding-top: 10px;
+  min-height: 100vh;
   @include box;
-}
 
-.typesContent {
-  padding: 0 24px;
-}
+  &__title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
 
-.type {
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  width: 220px;
-}
+  &__content {
+    padding: 0 24px;
+  }
 
-.productList {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 20px;
-  align-content: flex-start;
-
+  &__type {
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 220px;
+  }
 }

@@ -1,0 +1,9 @@
+@import '../../styles/base';
+
+.order {
+  width: 100%;
+  height: 70vh;
+  padding: 20px;
+  @include box;
+
+}

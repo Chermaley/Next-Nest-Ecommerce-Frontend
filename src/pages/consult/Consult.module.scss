@@ -6,29 +6,33 @@
   height: 70vh;
   padding: 20px;
   @include box;
+
+  &__left {
+    width: 200px;
+    margin-right: 20px;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
 }
 
-.consultType {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.left {
+.consultationList {
   display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  width: 200px;
   padding: 0 10px;
-  margin-right: 20px;
+  overflow-y: scroll;
+  flex-direction: column;
+
+  &__title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 }
 
-.right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
 
 .consultation {
   margin-bottom: 16px;

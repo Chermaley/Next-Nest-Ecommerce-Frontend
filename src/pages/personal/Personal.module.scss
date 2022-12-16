@@ -1,9 +1,24 @@
 @import '../../styles/base';
 
-.wrapper {
+.user {
   padding: 20px;
   height: 70vh;
   @include box;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__info {
+
+  }
+
+  &__orders {
+    color: $price;
+    font-size: 20px;
+    cursor: pointer;
+  }
 }
 
 .logout {

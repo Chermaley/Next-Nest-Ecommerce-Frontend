@@ -2,7 +2,6 @@ import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import { wrapper } from '../../store/store'
 import { setCurrentProductTypeId } from '../../store/reducers/productSlice'
-import { ProductType } from '../../services/models'
 import styles from './Catalog.module.scss'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { GetServerSideProps } from 'next'
@@ -13,6 +12,7 @@ import {
   fetchProductTypes,
 } from '../../services/ProductService'
 import { useTypedSelector } from '../../hooks/useTypedSelectors'
+import clsx from 'clsx'
 
 const Catalog = () => {
   const dispatch = useAppDispatch()
@@ -27,19 +27,28 @@ const Catalog = () => {
   return (
     <MainLayout title="Каталог">
       <PageTitle>Каталог</PageTitle>
-      <div className={styles.wrapper}>
-        <div className={styles.types}>
-          <div className={styles.typeSectionTitle}>Линейки</div>
-          <div className={styles.typesContent}>
-            <div className={styles.type} onClick={() => onTypeClick(null)}>
+      <div className={styles.catalog}>
+        <div className={clsx(styles.catalog__types, styles.types)}>
+          <div className={styles.types__title}>Линейки</div>
+          <div className={styles.types__content}>
+            <div
+              className={styles.types__type}
+              onClick={() => onTypeClick(null)}
+            >
               Все
             </div>
             {productTypes?.map((t) => (
-              <ProductTypeItem onClick={onTypeClick} type={t} key={t.id} />
+              <div
+                key={t.id}
+                onClick={() => onTypeClick(t.id)}
+                className={styles.types__type}
+              >
+                {t.name}
+              </div>
             ))}
           </div>
         </div>
-        <div className={styles.productList}>
+        <div className={styles.catalog__products}>
           {products?.map((p) => (
             <ProductCard product={p} key={p.id} />
           ))}
@@ -59,14 +68,3 @@ export const getServerSideProps: GetServerSideProps =
   })
 
 export default Catalog
-
-const ProductTypeItem: React.FC<{
-  type: ProductType
-  onClick: (typeId: number) => void
-}> = ({ type, onClick }) => {
-  return (
-    <div onClick={() => onClick(type.id)} className={styles.type}>
-      {type.name}
-    </div>
-  )
-}

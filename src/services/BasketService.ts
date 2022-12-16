@@ -52,11 +52,16 @@ export const basketServiceAPI = createApi({
       }),
       invalidatesTags: ['Basket'],
     }),
-    getOrders: build.query<Order[], void>({
+    fetchOrders: build.query<Order[], void>({
       query: () => ({
         url: `/order`,
       }),
       providesTags: () => ['Order'],
+    }),
+    fetchOrder: build.query<Order, { id: number }>({
+      query: (body) => ({
+        url: `/order/${body.id}`,
+      }),
     }),
     createOrder: build.mutation<Order, { basketId: number }>({
       query: (body) => ({
@@ -74,6 +79,7 @@ export const {
   useAddProductToBasketMutation,
   useDeleteProductFromBasketMutation,
   useFetchBasketQuery,
-  useGetOrdersQuery,
+  useFetchOrderQuery,
+  useFetchOrdersQuery,
   useCreateOrderMutation,
 } = basketServiceAPI

@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { chatActions } from "../../store/reducers/chatSlice";
-import { ChatMessage } from "../ChatMessage";
-import { ChatInput } from "../ChatInput";
-import { useChatScroll } from "../../hooks/useChatScroll";
-import { useTypedSelector } from "../../hooks/useTypedSelectors";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { ChatFile } from "../ChatInput/ChatInput";
-import styles from "./Chat.module.scss";
-import { ConsultationStatus } from "../../services/models";
-import { useSession } from "next-auth/react";
+import React, { useEffect } from 'react'
+import { chatActions } from '../../store/reducers/chatSlice'
+import { ChatMessage } from '../ChatMessage'
+import { ChatInput } from '../ChatInput'
+import { useChatScroll } from '../../hooks/useChatScroll'
+import { useTypedSelector } from '../../hooks/useTypedSelectors'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { ChatFile } from '../ChatInput/ChatInput'
+import styles from './Chat.module.scss'
+import { ConsultationStatus } from '../../services/models'
+import { useSession } from 'next-auth/react'
 
 const Chat: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -53,11 +53,11 @@ const Chat: React.FC = () => {
 
   return (
     <div className={styles.chat}>
-      <div className={styles.close} onClick={closeChat}>
+      <div className={styles.chat__close} onClick={closeChat}>
         &#x2716;
       </div>
-      <div className={styles.content}>
-        <div className={styles.messages} ref={scrollRef}>
+      <div className={styles.chat__content}>
+        <div className={styles.chat__messages} ref={scrollRef}>
           {messages.length
             ? messages.map((message) => (
                 <ChatMessage

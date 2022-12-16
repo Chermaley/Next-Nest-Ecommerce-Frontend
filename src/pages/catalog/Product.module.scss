@@ -1,40 +1,51 @@
 @import '../../styles/base';
 
-.wrapper {
-}
+.product {
+  &__top {
+    display: flex;
+    height: auto;
+  }
+  &__left {
+    margin-right: 10px;
+    padding: 16px;
+    @include box;
+  }
+  &__right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 16px;
+    @include box;
+  }
+  &__info {
+    flex: 1;
+  }
+  &__image {
+    width: 150px;
+    height: 500px;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__price {
+    font-size: 20px;
+    font-weight: 600;
+    color: $price;
+  }
+  &__descriptions {
+    font-size: 16px;
+  }
+  &__actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__reviews {
 
-.top {
-  display: flex;
-  height: auto;
-}
-
-.left {
-  margin-right: 10px;
-  padding: 16px;
-  @include box;
-}
-
-.image {
-  width: 150px;
-  height: 500px;
-}
-
-.right {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 16px;
-  @include box;
-}
-
-.info {
-  flex: 1;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  }
 }
 
 .reviews {
@@ -66,19 +77,4 @@
   }
 }
 
-.description {
-  font-size: 16px;
-}
 
-.actions {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.price {
-  font-size: 20px;
-  font-weight: 600;
-  color: $price;
-}

@@ -37,14 +37,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
         <title>{title}</title>
       </Head>
       <div className={styles.mainLayout}>
-        <div className={styles.header}>
+        <div className={styles.mainLayout__header}>
           <TopHeader onSearchButtonPressed={toggleInput} />
           <NavHeader />
         </div>
-
-        <main className={styles.content}>{children}</main>
+        <main className={styles.mainLayout__content}>{children}</main>
         {isSearchInputShown && <SearchInput onCloseRequested={toggleInput} />}
-        {/*<Footer />*/}
       </div>
     </div>
   )
@@ -67,14 +65,14 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
 
   return (
     <nav className={styles.topHeader}>
-      <div className={styles.logo}>LOGO</div>
-      <div className={styles.topHeaderButtons}>
+      <div className={styles.topHeader__logo}>LOGO</div>
+      <div className={styles.topHeader__buttons}>
         <Image
           src={'/searchIcon.svg'}
           width={30}
           height={30}
           onClick={onSearchButtonPressed}
-          className={styles.topHeaderButton}
+          className={styles.topHeader__button}
           alt="search"
           priority
         />
@@ -83,7 +81,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
             src={'/personIcon.svg'}
             width={30}
             height={30}
-            className={styles.topHeaderButton}
+            className={styles.topHeader__button}
             alt="personal"
             priority
           />
@@ -98,7 +96,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
                 src={'/basketIcon.svg'}
                 width={30}
                 height={30}
-                className={styles.topHeaderButton}
+                className={styles.topHeader__button}
                 alt="basket"
                 priority
               />
@@ -115,47 +113,18 @@ const NavHeader: React.FC = () => {
     <header>
       <nav className={styles.navHeader}>
         <Link href="/">
-          <div className={styles.navHeaderButton}>Главная</div>
+          <div className={styles.navHeader__button}>Главная</div>
         </Link>
         <Link href="/catalog">
-          <div className={styles.navHeaderButton}>Каталог продукции</div>
+          <div className={styles.navHeader__button}>Каталог продукции</div>
         </Link>
         <Link href="/consult">
-          <div className={styles.navHeaderButton}>Консультации</div>
+          <div className={styles.navHeader__button}>Консультации</div>
         </Link>
         <Link href="/personal">
-          <div className={styles.navHeaderButton}>Личный кабинет</div>
+          <div className={styles.navHeader__button}>Личный кабинет</div>
         </Link>
       </nav>
     </header>
-  )
-}
-
-const Footer: React.FC = () => {
-  return (
-    <div className={styles.footer}>
-      <div>
-        <div className={styles.footerLogo}>LOGO</div>
-        <div className={styles.footerInfo}>тел: 9 999 999 99</div>
-        <div className={styles.footerInfo}>E-mail: slimix23@gmail.com</div>
-      </div>
-      <div>
-        <div className={styles.footerTitleLink}>ИНТЕРНЕТ МАГАЗИН</div>
-        <div className={styles.footerLink}>Каталог товаров</div>
-        <div className={styles.footerLink}>Как сделать заказ</div>
-        <div className={styles.footerLink}>Способы оплаты</div>
-        <div className={styles.footerLink}>Доставка</div>
-      </div>
-      <div>
-        <div className={styles.footerTitleLink}>ЛИЧНЫЙ КАБИНЕТ</div>
-        <div className={styles.footerLink}>Политика конфеденциальности</div>
-        <div className={styles.footerLink}>Публичная оферта</div>
-      </div>
-      <div>
-        <div className={styles.footerTitleLink}>О КОМПАНИИ</div>
-        <div className={styles.footerLink}>Связаться с нами</div>
-        <div className={styles.footerLink}>Реквизиты компании</div>
-      </div>
-    </div>
   )
 }

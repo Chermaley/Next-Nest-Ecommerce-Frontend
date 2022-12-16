@@ -1,10 +1,12 @@
-import React from "react";
-import styles from "./Button.module.scss";
+import React from 'react'
+import styles from './Button.module.scss'
+import clsx from 'clsx'
 
-const Button: React.FC<{ onClick?: () => void; title: string }> = ({
-  onClick,
-  title,
-}) => {
+const Button: React.FC<{
+  onClick?: () => void
+  title: string
+  className: string
+}> = ({ onClick, title, className }) => {
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation()
     if (onClick) {
@@ -12,7 +14,7 @@ const Button: React.FC<{ onClick?: () => void; title: string }> = ({
     }
   }
   return (
-    <button className={styles.button} onClick={clickHandler}>
+    <button className={clsx(styles.button, className)} onClick={clickHandler}>
       {title}
     </button>
   )

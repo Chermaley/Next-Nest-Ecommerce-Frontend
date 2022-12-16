@@ -53,15 +53,15 @@ const Consult = () => {
       <PageTitle>Консультация</PageTitle>
       <div className={styles.wrapper}>
         <WithAuth>
-          <div className={styles.left}>
-            <div className={styles.consultType}>Открытые</div>
+          <div className={clsx(styles.wrapper__left, styles.consultationList)}>
+            <div className={styles.consultationList__title}>Открытые</div>
             {openConsultations?.map((consultation) => (
               <ConsultationItem
                 key={consultation.id}
                 consultation={consultation}
               />
             ))}
-            <div className={styles.consultType}>История</div>
+            <div className={styles.consultationList__title}>История</div>
             <div>
               {closedConsultations?.map((consultation) => (
                 <ConsultationItem
@@ -71,7 +71,7 @@ const Consult = () => {
               ))}
             </div>
           </div>
-          <div className={styles.right}>
+          <div className={styles.wrapper__right}>
             {!openConsultations?.length && !activeConsultation && (
               <Button
                 title="Создать обращение"

@@ -16,6 +16,8 @@
 
   &__row {
     border-bottom: 1px solid #e0e0e0;
+
+
     &_head {
       font-weight: bold;
     }
@@ -27,5 +29,10 @@
 }
 
 .table__column {
+    vertical-align: middle;
     padding: 10px 0;
+    &:last-child {
+      display: flex;
+      justify-content: flex-end;
+    }
 }

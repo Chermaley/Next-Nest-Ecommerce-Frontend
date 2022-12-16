@@ -1,9 +1,9 @@
-import { Product } from './Product'
+import { BasketProduct } from './Basket'
 
 export type Order = {
   id: number
   createdAt: string
-  products: Product[]
+  products: BasketProduct[]
   amount: number
   status: OrderStatus
 }

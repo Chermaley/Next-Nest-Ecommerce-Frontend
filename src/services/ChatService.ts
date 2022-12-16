@@ -66,11 +66,14 @@ export const {
   useFetchOpenConsultationsQuery,
 } = chatServiceAPI
 
-export const modifyConsultations =
-  (type: 'open' | 'closed', map: (consultations: Consultation[]) => any) =>
-  () =>
-    chatServiceAPI.util.updateQueryData(
-      type === 'open' ? 'fetchOpenConsultations' : 'fetchClosedConsultations',
-      undefined,
-      map
-    )
+export const modifyConsultations = (
+  type: 'open' | 'closed',
+  map: (consultations: Consultation[]) => any
+) =>
+  chatServiceAPI.util.updateQueryData(
+    type === 'open' ? 'fetchOpenConsultations' : 'fetchClosedConsultations',
+    undefined,
+    (data) => {
+      map(data)
+    }
+  )

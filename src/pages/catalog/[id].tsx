@@ -17,11 +17,13 @@ import { Input } from '../../components/Input'
 import { Comment } from '../../services/models'
 import { Rating } from 'react-simple-star-rating'
 import { Carousel } from 'react-responsive-carousel'
+import { PageTitle } from '../../components/PageTitle'
 
 const ProductPage = () => {
   const session = useSession()
-  const { id } = useRouter().query
+  const router = useRouter()
   const user = session.data?.user
+  const id = router.query.id
   const [addProductToBasket] = useAddProductToBasketMutation()
   const { data: product } = fetchProduct.useQuery({
     productId: Number(id),
@@ -41,43 +43,52 @@ const ProductPage = () => {
 
   return (
     <MainLayout title={product?.name ?? ''}>
-      <div className={styles.top}>
-        <div className={styles.left}>
-          <Carousel
-            emulateTouch
-            swipeable
-            showThumbs={false}
-            showArrows={false}
-          >
-            {images.map((image) => (
-              <div key={image} className={styles.image}>
-                <Image
-                  key={image}
-                  src={`${config.apiUrl}/${image}`}
-                  alt={product?.name ?? 'Продукт'}
-                  fill
-                />
+      <div className={styles.product}>
+        <div className={styles.product__top}>
+          <div className={styles.product__left}>
+            <Carousel
+              emulateTouch
+              swipeable
+              showThumbs={false}
+              showArrows={false}
+            >
+              {images.map((image) => (
+                <div key={image} className={styles.product__image}>
+                  <Image
+                    key={image}
+                    src={`${config.apiUrl}/${image}`}
+                    alt={product?.name ?? 'Продукт'}
+                    fill
+                  />
+                </div>
+              ))}
+            </Carousel>
+          </div>
+          <div className={styles.product__right}>
+            <div className={styles.product__info}>
+              <div className={styles.product__header}>
+                <h1 className={styles.product__title}>{product?.name}</h1>
+                <Rating size={25} readonly initialValue={product?.rating} />
               </div>
-            ))}
-          </Carousel>
-        </div>
-        <div className={styles.right}>
-          <div className={styles.info}>
-            <div className={styles.header}>
-              <h1 className={styles.title}>{product?.name}</h1>
-              <Rating size={25} readonly initialValue={product?.rating} />
+              <div className={styles.description}>{product?.description}</div>
             </div>
-            <div className={styles.description}>{product?.description}</div>
+            <div className={styles.product__actions}>
+              <div className={styles.product__price}>{product?.price} ₽</div>
+              {user && (
+                <Button title="Добавить в корзину" onClick={addToCart} />
+              )}
+            </div>
           </div>
-          <div className={styles.actions}>
-            <div className={styles.price}>{product?.price} ₽</div>
-            {user && <Button title="Добавить в корзину" onClick={addToCart} />}
-          </div>
+        </div>
+        <div className={styles.product__reviews}>
+          {product?.comments && (
+            <CommentSection
+              productId={product.id}
+              comments={product.comments}
+            />
+          )}
         </div>
       </div>
-      {product?.comments && (
-        <CommentSection productId={product.id} comments={product.comments} />
-      )}
     </MainLayout>
   )
 }
@@ -101,8 +112,11 @@ const CommentSection: React.FC<{ productId: number; comments: Comment[] }> = ({
   const [text, setText] = React.useState('')
   const [rating, setRating] = React.useState(0)
   const [leaveComment] = useLeaveCommentMutation()
+
   const onLeaveCommentButtonClick = () => {
     leaveComment({ productId, text, rating })
+    setText('')
+    setRating(0)
   }
 
   return (
