@@ -3,20 +3,6 @@ import { Consultation } from './models'
 import { HYDRATE } from 'next-redux-wrapper'
 import prepareHeaders from './prepareHeaders'
 
-enum ChatEvent {
-  CreateConsultation = 'createConsultation',
-  LeaveConsultation = 'leaveConsultation',
-  Consultations = 'consultations',
-  ActiveConsultation = 'activeConsultation',
-  JoinConsultation = 'joinConsultation',
-  Messages = 'messages',
-  SendMessage = 'sendMessage',
-  NewMessage = 'newMessage',
-  NewConsultation = 'newConsultation',
-  NewMessageInConversation = 'newMessageInConsultation',
-  ConsultationClosed = 'consultationClosed',
-}
-
 export const chatServiceAPI = createApi({
   reducerPath: 'chatAPI',
   baseQuery: fetchBaseQuery({

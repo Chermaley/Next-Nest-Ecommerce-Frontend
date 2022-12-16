@@ -23,7 +23,7 @@ const Personal = () => {
                 {user?.roles &&
                   user.roles.map((role) => <p key={role.id}>{role.value}</p>)}
               </div>
-              <div onClick={() => signOut()} className={styles.logout}>
+              <div onClick={() => signOut()} className={styles.user__logout}>
                 Выйти
               </div>
             </div>

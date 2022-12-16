@@ -8,20 +8,7 @@ import clsx from 'clsx'
 import { PageTitle } from '../../components/PageTitle'
 import Link from 'next/link'
 import Image from 'next/image'
-import { OrderStatus } from '../../services/models'
-
-const translateStatus = (status: OrderStatus) => {
-  switch (status) {
-    case OrderStatus.Confirmed:
-      return 'Подтвержденный'
-    case OrderStatus.Delivered:
-      return 'Доставленный'
-    case OrderStatus.Pending:
-      return 'Ожидает подтверждения'
-    case OrderStatus.Rejected:
-      return 'Отклоненный'
-  }
-}
+import { translateOrderStatus } from '../../utils'
 
 const Index = () => {
   const skip = useTypedSelector((state) => state.auth.skip)
@@ -49,7 +36,7 @@ const Index = () => {
                 <tr className={styles.table__row} key={order.id}>
                   <td className={styles.table__column}>Заказ N#{order.id}</td>
                   <td className={styles.table__column}>
-                    {translateStatus(order.status)}
+                    {translateOrderStatus(order.status)}
                   </td>
                   <td className={styles.table__column}>{order.amount}</td>
                   <Link
