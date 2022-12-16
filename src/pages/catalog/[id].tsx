@@ -79,12 +79,12 @@ const ProductPage = () => {
           </div>
         </div>
         <div className={styles.product__reviews}>
-          {product?.comments && (
+          {product?.comments ? (
             <CommentSection
               productId={product.id}
               comments={product.comments}
             />
-          )}
+          ) : null}
         </div>
       </div>
     </MainLayout>

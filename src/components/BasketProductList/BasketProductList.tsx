@@ -14,7 +14,7 @@ const BasketProductList: React.FC<{
         <li>Количество</li>
         <li>Цена за 1 шт.</li>
         <li>Общая цена</li>
-        {!readonly && <li />}
+        {!readonly ? <li /> : null}
       </ul>
       <div className={classes.basketProductList__products}>
         {products.map((product) => (
@@ -45,11 +45,11 @@ const Product: React.FC<{ product: BasketProduct; readonly?: boolean }> = ({
       </div>
       <div>{product.price} ₽</div>
       <div>{product.price * product.quantity} ₽</div>
-      {!readonly && (
+      {!readonly ? (
         <div onClick={onDelete} className={classes.product__delete}>
           Удалить
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

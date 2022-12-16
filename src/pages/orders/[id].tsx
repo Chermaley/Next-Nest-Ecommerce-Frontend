@@ -14,9 +14,9 @@ const OrderPage = () => {
     <MainLayout title={`Заказ ${data?.id}`}>
       <PageTitle onBack={router.back}>Заказ {data?.id}</PageTitle>
       <div className={styles.order}>
-        {data?.products && (
+        {data?.products ? (
           <BasketProductList readonly products={data.products} />
-        )}
+        ) : null}
       </div>
     </MainLayout>
   )

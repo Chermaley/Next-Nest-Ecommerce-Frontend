@@ -39,7 +39,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </Link>
         <div className={styles.product__bottom}>
           <p className={styles.product__price}>{product.price} ₽</p>
-          {user && (
+          {user ? (
             <Image
               onClick={addToCart}
               src={'/basketIcon.svg'}
@@ -47,7 +47,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
               height={30}
               alt="basket"
             />
-          )}
+          ) : null}
         </div>
       </div>
     </div>

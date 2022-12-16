@@ -2,9 +2,12 @@ import { Middleware } from 'redux'
 import { io, Socket } from 'socket.io-client'
 import { chatActions } from '../reducers/chatSlice'
 import { Consultation, Message } from '../../services/models'
-import { NotificationManager } from 'react-notifications'
 import { modifyConsultations } from '../../services/ChatService'
 import { AppDispatch } from '../store'
+import {
+  notificationActions,
+  NotificationType,
+} from '../reducers/notificationSlice'
 
 export enum ChatEvent {
   CreateConsultation = 'createConsultation',
@@ -62,7 +65,12 @@ const chatMiddleware: Middleware = (store) => {
       })
 
       socket.on(ChatEvent.NewMessageInConversation, (message: Message) => {
-        NotificationManager.info('Новое сообщение по консультации: ' + message)
+        store.dispatch(
+          notificationActions.show({
+            type: NotificationType.Success,
+            text: 'Новое сообщение по консультации',
+          })
+        )
       })
 
       socket.on(ChatEvent.ConsultationClosed, (consultation: Consultation) => {

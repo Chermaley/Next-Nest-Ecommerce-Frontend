@@ -68,9 +68,9 @@ const Chat: React.FC = () => {
               ))
             : null}
         </div>
-        {activeConsultation?.status === ConsultationStatus.Open && (
+        {activeConsultation?.status === ConsultationStatus.Open ? (
           <ChatInput onInputFormSubmit={sendMessage} />
-        )}
+        ) : null}
       </div>
     </div>
   )

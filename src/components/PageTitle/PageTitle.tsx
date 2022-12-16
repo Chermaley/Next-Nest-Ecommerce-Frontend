@@ -8,7 +8,7 @@ const PageTitle: React.FC<{ children: any; onBack?: () => void }> = ({
 }) => {
   return (
     <div className={styles.wrapper}>
-      {onBack && (
+      {onBack ? (
         <Image
           className={styles.back}
           src={'/backIcon.svg'}
@@ -17,7 +17,7 @@ const PageTitle: React.FC<{ children: any; onBack?: () => void }> = ({
           height={24}
           onClick={onBack}
         />
-      )}
+      ) : null}
       <h1 className={styles.title}>{children}</h1>
     </div>
   )

@@ -1,6 +1,6 @@
 import { OrderStatus } from '../services/models'
 
-export default function (status: OrderStatus) {
+export default function translateOrderStatus(status: OrderStatus) {
   switch (status) {
     case OrderStatus.Confirmed:
       return 'Подтвержденный'

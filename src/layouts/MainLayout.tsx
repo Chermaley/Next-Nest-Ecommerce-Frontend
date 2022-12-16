@@ -86,7 +86,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
             priority
           />
         </Link>
-        {!skip && (
+        {!skip ? (
           <div>
             {productsInBasketCount ? (
               <div className={styles.badge}>{productsInBasketCount}</div>
@@ -102,7 +102,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
               />
             </Link>
           </div>
-        )}
+        ) : null}
       </div>
     </nav>
   )

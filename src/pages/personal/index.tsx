@@ -20,8 +20,9 @@ const Personal = () => {
               <div>Почта {user?.email}</div>
               <div>
                 Роли:
-                {user?.roles &&
-                  user.roles.map((role) => <p key={role.id}>{role.value}</p>)}
+                {user?.roles
+                  ? user.roles.map((role) => <p key={role.id}>{role.value}</p>)
+                  : null}
               </div>
               <div onClick={() => signOut()} className={styles.user__logout}>
                 Выйти

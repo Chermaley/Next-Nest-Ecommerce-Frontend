@@ -26,7 +26,7 @@ const ChatMessage: React.FC<MessageProps> = ({ message, currentUserId }) => {
             dangerouslySetInnerHTML={{ __html: message.message }}
           />
         </div>
-        {message.attachments && (
+        {message.attachments ? (
           <div className={styles.message__images}>
             {message.attachments.map((item) => (
               <Image
@@ -38,7 +38,7 @@ const ChatMessage: React.FC<MessageProps> = ({ message, currentUserId }) => {
               />
             ))}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   )

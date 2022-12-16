@@ -72,13 +72,13 @@ const Consult = () => {
             </div>
           </div>
           <div className={styles.wrapper__right}>
-            {!openConsultations?.length && !activeConsultation && (
+            {!openConsultations?.length && !activeConsultation ? (
               <Button
                 title="Создать обращение"
                 onClick={onCreateNewConsultation}
               />
-            )}
-            {activeConsultation && <Chat />}
+            ) : null}
+            {activeConsultation ? <Chat /> : null}
           </div>
         </WithAuth>
       </div>
