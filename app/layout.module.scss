@@ -1,0 +1,100 @@
+.mainLayout {
+  padding-top: 20px;
+  width: 1280px;
+  margin: 0 auto;
+  @media (max-width: 1280px) {
+    padding: 0 20px;
+  }
+
+  &__content {
+    width: 100%;
+    padding: 30px 0;
+    flex: 1;
+  }
+
+}
+
+.topHeader {
+  position: relative;
+  &__logo {
+    font-size: 40px;
+    text-decoration: none;
+  }
+
+  &__buttons {
+    position: absolute;
+    align-items: center;
+    display: flex;
+    right: 0;
+    top: 0;
+  }
+
+  &__button {
+    display: block;
+    width: 28px;
+    cursor: pointer;
+  }
+}
+
+.navHeader {
+  display: flex;
+  margin-top: 30px;
+  border-bottom: 3px solid #9ac7dc;
+  padding-bottom: 10px;
+  &__button {
+    text-transform: uppercase;
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+  }
+}
+
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 80px;
+}
+
+.footerLogo {
+  font-size: 40px;
+  line-height: 40px;
+  margin-bottom: 18px;
+  position: relative;
+  top: -8px;
+}
+
+.footerInfo {
+  font-size: 20px;
+  width: 340px;
+  margin-bottom: 18px;
+}
+
+.footerLink {
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+.footerTitleLink {
+  font-size: 20px;
+  margin-bottom: 32px;
+}
+
+.badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    border-radius: 100px;
+    z-index: 10;
+
+}

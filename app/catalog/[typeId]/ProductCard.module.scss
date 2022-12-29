@@ -1,0 +1,49 @@
+@import '../../../styles/base';
+
+.product {
+  cursor: pointer;
+  height: 280px;
+  margin: 0 5px 10px 5px;
+  flex-basis: calc(25% - 1em);
+  @include box;
+  @media (max-width: 1024px) {
+    flex-basis: calc(33% - 1em);
+  }
+  @media (max-width: 768px) {
+    flex-basis: calc(50% - 1em);
+  }
+
+  &__image {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+  }
+
+  &__info {
+    padding: 15px 10px;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__name {
+    font-size: 18px;
+    color: black;
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__price {
+    font-size: 20px;
+    font-weight: 400;
+    color: $price;
+  }
+}
+

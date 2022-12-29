@@ -1,0 +1,41 @@
+.container {
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-end;
+  display: flex;
+  border-radius: 20px;
+  border: 2px solid #a19999;
+  background: #FAFAFA;
+}
+
+.textArea {
+  background: #FAFAFA;
+  outline: none;
+  width: 100%;
+  flex: 1;
+  border: none;
+  resize: none;
+  position: relative;
+  padding: 10px;
+  border-radius: 20px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+.button {
+  margin-bottom: 5px;
+  margin-right: 5px;
+  background: #E4E4E4;
+  border: 1px solid #E4E4E4;
+  border-radius: 100px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

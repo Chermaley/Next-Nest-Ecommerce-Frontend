@@ -1,6 +1,5 @@
 import type { AppProps } from 'next/app'
 import { wrapper } from '../store/store'
-import 'react-notifications/lib/notifications.css'
 import { SessionProvider } from 'next-auth/react'
 import '../styles/global.css'
 import 'moment/locale/ru'

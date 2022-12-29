@@ -1,0 +1,45 @@
+@import '../../styles/base';
+
+.catalog {
+  display: flex;
+  &__types {
+
+  }
+  &__products {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    align-content: flex-start;
+  }
+}
+
+.types {
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  min-height: 100vh;
+  @include box;
+
+  &__title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+
+  &__content {
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__type {
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 220px;
+  }
+}

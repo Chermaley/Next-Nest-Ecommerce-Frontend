@@ -8,10 +8,7 @@ const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
 
-export const authOptions = (
-  req: NextApiRequest,
-  res: NextApiResponse
-): NextAuthOptions => ({
+export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 10 },
   secret: process.env.SECRET,
   providers: [
@@ -56,8 +53,8 @@ export const authOptions = (
       return session
     },
   },
-})
+}
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  return NextAuth(req, res, authOptions(req, res))
+  return NextAuth(req, res, authOptions)
 }

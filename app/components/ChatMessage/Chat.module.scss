@@ -1,0 +1,57 @@
+@import '../../../styles/base';
+
+.message {
+  padding: 0.5rem 0;
+  overflow: hidden;
+  display: flex;
+
+  &__content {
+    min-width: 50px;
+    flex-direction: column;
+    display: inline-flex;
+    padding: 10px 15px;
+    border-radius: 16px;
+  }
+
+  &__textWrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &__imgages {
+    max-width: 400px;
+  }
+
+  &__info {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    bottom: -20px;
+  }
+
+  &__messageLeft {
+    .message__content {
+      background-color: #d0cccc;
+      border-bottom-left-radius: 0;
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    }
+
+    &__text {
+      color: black;
+    }
+  }
+
+  &__messageRight {
+    display: flex;
+    justify-content: flex-end;
+
+    .message__content {
+      background-color: #0667eb;
+      border-bottom-right-radius: 0;
+    }
+
+    .message__text {
+      color: #fff;
+    }
+  }
+}

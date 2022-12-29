@@ -1,0 +1,80 @@
+@import '../../../styles/base';
+
+.product {
+  &__top {
+    display: flex;
+    height: auto;
+  }
+  &__left {
+    margin-right: 10px;
+    padding: 16px;
+    @include box;
+  }
+  &__right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 16px;
+    @include box;
+  }
+  &__info {
+    flex: 1;
+  }
+  &__image {
+    width: 150px;
+    height: 500px;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__price {
+    font-size: 20px;
+    font-weight: 600;
+    color: $price;
+  }
+  &__descriptions {
+    font-size: 16px;
+  }
+  &__actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__reviews {
+
+  }
+}
+
+.reviews {
+  padding: 16px;
+  margin-top: 10px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  @include box;
+
+  &__title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  &__list {
+    overflow: scroll;
+    height: 500px;
+  }
+  &__inputField {
+    display: flex;
+  }
+  &__input {
+    padding: 10px;
+    width: 100%;
+    margin-right: 10px;
+  }
+  &__rating {
+
+  }
+}
+
+

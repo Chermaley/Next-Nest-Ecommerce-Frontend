@@ -1,0 +1,52 @@
+@import '../../styles/base';
+
+.overlay {
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 0;
+  @include box;
+}
+
+.results {
+  background: white;
+  padding: 16px;
+  height: 500px;
+  width: 600px;
+  @include box;
+}
+
+.result {
+  font-size: 17px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cross {
+  position: relative;
+  top: -30px;
+  left: 5px;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+}

@@ -1,0 +1,15 @@
+
+$price: #fc8507;
+$shadows: 0 1px 2px 0 rgb(0 0 0 / 16%);
+
+@mixin box-shadow($params) {
+  -webkit-box-shadow: $params;
+  -moz-box-shadow: $params;
+  box-shadow: $params;
+}
+
+@mixin box ($params: $shadows) {
+  border-radius: 8px;
+  background-color: #fff;
+  @include box-shadow($params);
+}

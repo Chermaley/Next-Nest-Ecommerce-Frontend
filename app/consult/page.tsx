@@ -1,55 +1,46 @@
+'use client'
+
 import React from 'react'
-import MainLayout from '../../layouts/MainLayout'
-import { useTypedSelector } from '../../hooks/useTypedSelectors'
+import { useWebsocketStore } from '../../websocket/WebsocketContextProvider'
+import { useSession } from 'next-auth/react'
+import { PageTitle } from '../components/PageTitle'
+import { WithAuth } from '../../src/hoc'
+import styles from './Consult.module.scss'
+import clsx from 'clsx'
+import { Button } from '../components/Button'
+import { Chat } from '../components/Chat'
 import {
   Consultation,
   ConsultationStatus,
   ConsultationType,
-} from '../../services/models'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { chatActions } from '../../store/reducers/chatSlice'
-import { Chat } from '../../components/Chat'
-import styles from './Consult.module.scss'
-import clsx from 'clsx'
-import { useSession } from 'next-auth/react'
-import { WithAuth } from '../../hoc'
-import { PageTitle } from '../../components/PageTitle'
-import { Button } from '../../components/Button'
-import {
-  useFetchClosedConsultationsQuery,
-  useFetchOpenConsultationsQuery,
-} from '../../services/ChatService'
+} from '../../src/services/models'
 
 const Consult = () => {
-  const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
-  const skip = !useTypedSelector((state) => state.auth.accessToken)
-  const { data: openConsultations } = useFetchOpenConsultationsQuery(
-    undefined,
-    { skip }
-  )
-  const { data: closedConsultations } = useFetchClosedConsultationsQuery(
-    undefined,
-    { skip }
-  )
-  const activeConsultation = useTypedSelector(
-    (state) => state.chat.activeConsultation
-  )
+  const [websocketStore] = useWebsocketStore()
+  const {
+    activeConsultation,
+    closedConsultations,
+    openConsultations,
+    messages,
+    isConnected,
+    isEstablishingConnection,
+    isLoading,
+    createNewConsultation,
+  } = websocketStore
 
   const onCreateNewConsultation = () => {
-    if (!skip && user) {
-      dispatch(
-        chatActions.createNewConsultation({
-          userId: user.id,
-          type: ConsultationType.Cosmetic,
-        })
-      )
+    if (user) {
+      createNewConsultation({
+        creatorId: user.id,
+        type: ConsultationType.Cosmetic,
+      })
     }
   }
 
   return (
-    <MainLayout title="Консультация">
+    <>
       <PageTitle>Консультация</PageTitle>
       <div className={styles.wrapper}>
         <WithAuth>
@@ -82,7 +73,7 @@ const Consult = () => {
           </div>
         </WithAuth>
       </div>
-    </MainLayout>
+    </>
   )
 }
 
@@ -91,12 +82,13 @@ export default Consult
 const ConsultationItem: React.FC<{
   consultation: Consultation
 }> = ({ consultation }) => {
-  const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
+  const [websocketStore] = useWebsocketStore()
+  const { joinConsultation } = websocketStore
   const onClick = () => {
     if (user) {
-      dispatch(chatActions.joinConsultation({ consultation, userId: user.id }))
+      joinConsultation({ consultation, userId: user.id })
     }
   }
   return (

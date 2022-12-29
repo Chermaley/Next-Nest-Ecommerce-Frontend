@@ -1,11 +1,10 @@
-import React from "react";
-import MainLayout from "../layouts/MainLayout";
-import styles from "./Home.module.scss";
-import { PageTitle } from "../components/PageTitle";
+import React from 'react'
+import styles from './home.module.scss'
+import { PageTitle } from './components/PageTitle'
 
 const Index = () => {
   return (
-    <MainLayout title="Домашняя страница">
+    <div>
       <PageTitle>Главная</PageTitle>
       <p className={styles.text}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus,
@@ -44,7 +43,7 @@ const Index = () => {
         voluptatum.
         <span className={styles.more}>Подробнее...</span>
       </p>
-    </MainLayout>
+    </div>
   )
 }
 

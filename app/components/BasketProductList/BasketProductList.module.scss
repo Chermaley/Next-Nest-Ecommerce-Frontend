@@ -1,0 +1,58 @@
+@import '../../styles/base';
+
+.basketProductList {
+  &__fields {
+    padding: 0 18px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    li {
+      list-style: none;
+      font-size: 16px;
+      flex-basis: calc(25% - 1em);
+      &:first-child {
+        flex-basis: calc(50% - 1em);
+      }
+    }
+  }
+  &__products {
+    display: flex;
+    flex-direction: column;
+  }
+  &__button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  &__empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 24px;
+  }
+}
+
+.product {
+  padding: 18px;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  @include box(rgba(0, 0, 0, 0.18) 0px 2px 4px);
+  div {
+    display: flex;
+    flex-basis: calc(25% - 1em);
+    &:first-child {
+      flex-basis: calc(50% - 1em);
+    }
+  }
+  &__delete {
+    cursor: pointer;
+    color: red;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
