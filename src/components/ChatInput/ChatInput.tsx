@@ -1,6 +1,6 @@
-import React, { FormEvent, useState } from "react";
-import styles from "./ChatInput.module.scss";
-import Image from "next/image";
+import React, { FormEvent, useState } from 'react'
+import styles from './ChatInput.module.scss'
+import Image from 'next/image'
 
 type InputFormProps = {
   onInputFormSubmit: (value: string, files: ChatFile[]) => void

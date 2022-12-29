@@ -4,57 +4,35 @@ import { useFetchOrdersQuery } from '../../services/BasketService'
 import MainLayout from '../../layouts/MainLayout'
 import { WithAuth } from '../../hoc'
 import styles from './Orders.module.scss'
-import clsx from 'clsx'
 import { PageTitle } from '../../components/PageTitle'
 import Link from 'next/link'
 import Image from 'next/image'
 import { translateOrderStatus } from '../../utils'
+import { Order } from '../../services/models'
 
 const Index = () => {
   const skip = useTypedSelector((state) => state.auth.skip)
   const { data: orders } = useFetchOrdersQuery(undefined, {
     skip,
   })
-
   return (
     <MainLayout title="История заказов">
       <PageTitle>История заказов</PageTitle>
       <div className={styles.wrapper}>
         <WithAuth>
-          <table className={styles.table}>
-            <thead>
-              <tr className={clsx(styles.table__row, styles.table__row_head)}>
-                <th>Номер</th>
-                <th className="font-weight-bold py-2 border-0 quantity">
-                  Статус
-                </th>
-                <th className="font-weight-bold py-2 border-0 ">Сумма</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className={styles.orders}>
+            <ul className={styles.orders__fields}>
+              <li>Номер</li>
+              <li>Статус</li>
+              <li>Сумма</li>
+              <li className={styles.back}></li>
+            </ul>
+            <div className={styles.orders__list}>
               {orders?.map((order) => (
-                <tr className={styles.table__row} key={order.id}>
-                  <td className={styles.table__column}>Заказ N#{order.id}</td>
-                  <td className={styles.table__column}>
-                    {translateOrderStatus(order.status)}
-                  </td>
-                  <td className={styles.table__column}>{order.amount}</td>
-                  <Link
-                    className={styles.table__column}
-                    href={`/orders/${order.id}`}
-                  >
-                    <Image
-                      className={styles.back}
-                      src={'/rightIcon.svg'}
-                      alt="right"
-                      width={16}
-                      height={16}
-                    />
-                  </Link>
-                </tr>
+                <OrderItem key={order.id} order={order} />
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </WithAuth>
       </div>
     </MainLayout>
@@ -62,3 +40,22 @@ const Index = () => {
 }
 
 export default Index
+
+const OrderItem: React.FC<{ order: Order }> = ({ order }) => {
+  return (
+    <div className={styles.order}>
+      <div>Заказ N#{order.id}</div>
+      <div>{translateOrderStatus(order.status)}</div>
+      <div>{order.amount}</div>
+      <Link href={`/orders/${order.id}`}>
+        <Image
+          className={styles.back}
+          src={'/rightIcon.svg'}
+          alt="right"
+          width={16}
+          height={16}
+        />
+      </Link>
+    </div>
+  )
+}

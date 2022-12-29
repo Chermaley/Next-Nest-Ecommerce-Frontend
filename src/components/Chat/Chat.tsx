@@ -6,9 +6,9 @@ import { useChatScroll } from '../../hooks/useChatScroll'
 import { useTypedSelector } from '../../hooks/useTypedSelectors'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { ChatFile } from '../ChatInput/ChatInput'
-import styles from './Chat.module.scss'
 import { ConsultationStatus } from '../../services/models'
 import { useSession } from 'next-auth/react'
+import styles from './Chat.module.scss'
 
 const Chat: React.FC = () => {
   const dispatch = useAppDispatch()

@@ -1,15 +1,15 @@
-import { User } from "./User";
+import { User } from './User'
 
 export type Consultation = {
-  id: number;
+  id: number
   updatedAt: string
-  creator: User;
+  creator: User
   status: ConsultationStatus
 }
 
 export enum ConsultationStatus {
   Open = 'Open',
-  Close = 'Close'
+  Close = 'Close',
 }
 
 export enum ConsultationType {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, ReactNode } from 'react'
+import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import styles from './MainLayout.module.scss'
 import Link from 'next/link'
 import Head from 'next/head'
