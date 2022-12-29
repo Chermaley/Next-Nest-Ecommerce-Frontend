@@ -1,10 +1,10 @@
-import React from "react";
-import classes from "./Input.module.scss";
+import React from 'react'
+import classes from './Input.module.scss'
 
 type InputProps = {
   value: string
   onChange: (value: string) => void
-  className: string
+  className?: string
   placeholder?: string
   type?: string
 }

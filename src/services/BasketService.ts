@@ -62,7 +62,10 @@ export const basketServiceAPI = createApi({
         url: `/order/${body.id}`,
       }),
     }),
-    createOrder: build.mutation<Order, { basketId: number }>({
+    createOrder: build.mutation<
+      Order,
+      { basketId: number; phone: string; address: string }
+    >({
       query: (body) => ({
         method: 'POST',
         url: `/order`,

@@ -1,38 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import classes from './Basket.module.scss'
 import { Button } from '../../components/Button'
 import { PageTitle } from '../../components/PageTitle'
 import { WithAuth } from '../../hoc'
-import {
-  fetchBasket,
-  useCreateOrderMutation,
-} from '../../services/BasketService'
-import { NotificationType } from '../../store/reducers/notificationSlice'
-import useNotification from '../../hooks/useNotification'
+import { fetchBasket } from '../../services/BasketService'
 import { BasketProductList } from '../../components/BasketProductList'
+import { CreateOrderModal } from '../../modals/CreateOrderModal'
 
 const Index = () => {
   const { data } = fetchBasket.useQueryState(undefined)
-  const [createOrder] = useCreateOrderMutation()
-  const showNotification = useNotification()
-
-  const onCreateOrder = async () => {
-    if (data?.products.length) {
-      try {
-        await createOrder({ basketId: data.id }).unwrap()
-        showNotification({
-          type: NotificationType.Success,
-          text: 'Заказ успешно создан',
-        })
-      } catch (e) {
-        showNotification({
-          type: NotificationType.Error,
-          text: 'Упс, что-то пошло не так',
-        })
-      }
-    }
-  }
+  const [isCreateOrderModalShown, setIsCreateOrderModalShown] = useState(false)
+  const toggleCreateOrderModal = () =>
+    setIsCreateOrderModalShown(!isCreateOrderModalShown)
 
   return (
     <MainLayout title="Корзина">
@@ -43,7 +23,7 @@ const Index = () => {
             <>
               <BasketProductList products={data.products} />
               <Button
-                onClick={onCreateOrder}
+                onClick={toggleCreateOrderModal}
                 className={classes.basket__button}
                 title="Оформить заказ"
               />
@@ -51,6 +31,10 @@ const Index = () => {
           ) : (
             <div className={classes.basket__empty}>Корзина пуста</div>
           )}
+          <CreateOrderModal
+            isOpen={isCreateOrderModalShown}
+            toggleModal={toggleCreateOrderModal}
+          />
         </WithAuth>
       </div>
     </MainLayout>
