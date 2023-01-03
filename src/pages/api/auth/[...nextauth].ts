@@ -1,21 +1,14 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { Tokens } from '../../../services/models'
-import axios from 'axios'
+import NextAuth, { NextAuthOptions, User } from 'next-auth'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { prisma } from '../../../server/db/client'
+import Credentials from 'next-auth/providers/credentials'
 
-const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-})
-
-export const authOptions = (
-  req: NextApiRequest,
-  res: NextApiResponse
-): NextAuthOptions => ({
+export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 10 },
   secret: process.env.SECRET,
+  adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: 'credentials',
       credentials: {
         email: {},
@@ -23,22 +16,16 @@ export const authOptions = (
       },
       async authorize(credentials) {
         if (credentials) {
-          const signInResponse = await axiosInstance.post<Tokens>(
-            '/auth/local/signin',
-            {
+          const user = await prisma.user.findUnique({
+            where: {
               email: credentials.email,
-              password: credentials.password,
-            }
-          )
-          if (signInResponse.data) {
-            const userResponse = await axiosInstance.get(`/users/me`, {
-              headers: {
-                Authorization: `${process.env.ACCESS_TOKEN_PREFIX} ${signInResponse.data.accessToken}`,
-              },
-            })
+            },
+          })
+          if (user) {
             return {
-              ...userResponse.data,
-              accessToken: signInResponse.data.accessToken,
+              id: user.id,
+              email: user.email,
+              isAdmin: user.roles.some((role) => role === 'ADMIN'),
             }
           }
         }
@@ -47,8 +34,11 @@ export const authOptions = (
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, profile }) => {
-      user && (token.user = user)
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.user = user
+      }
+
       return token
     },
     session: async ({ session, token }) => {
@@ -56,8 +46,6 @@ export const authOptions = (
       return session
     },
   },
-})
-
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  return NextAuth(req, res, authOptions(req, res))
 }
+
+export default NextAuth(authOptions)

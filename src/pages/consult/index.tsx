@@ -1,13 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainLayout from '../../layouts/MainLayout'
-import { useTypedSelector } from '../../hooks/useTypedSelectors'
-import {
-  Consultation,
-  ConsultationStatus,
-  ConsultationType,
-} from '../../services/models'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { chatActions } from '../../store/reducers/chatSlice'
 import { Chat } from '../../components/Chat'
 import styles from './Consult.module.scss'
 import clsx from 'clsx'
@@ -15,37 +7,33 @@ import { useSession } from 'next-auth/react'
 import { WithAuth } from '../../hoc'
 import { PageTitle } from '../../components/PageTitle'
 import { Button } from '../../components/Button'
-import {
-  useFetchClosedConsultationsQuery,
-  useFetchOpenConsultationsQuery,
-} from '../../services/ChatService'
+import { trpc } from '../../utils/trpc'
+import { Consultation, ConsultationStatus } from '@prisma/client'
 
 const Consult = () => {
-  const dispatch = useAppDispatch()
   const session = useSession()
   const user = session.data?.user
-  const skip = !useTypedSelector((state) => state.auth.accessToken)
-  const { data: openConsultations } = useFetchOpenConsultationsQuery(
+  const [activeConsultation, setActiveConsultation] =
+    useState<Consultation | null>(null)
+  const { mutate: createConsultation } =
+    trpc.chat.createConsultation.useMutation()
+  const { data: openConsultations } = trpc.chat.getOpenConsultations.useQuery(
     undefined,
-    { skip }
+    {
+      enabled: !!user,
+    }
   )
-  const { data: closedConsultations } = useFetchClosedConsultationsQuery(
-    undefined,
-    { skip }
-  )
-  const activeConsultation = useTypedSelector(
-    (state) => state.chat.activeConsultation
-  )
+  const { mutate: joinConsultation } = trpc.chat.joinConsultation.useMutation()
 
   const onCreateNewConsultation = () => {
-    if (!skip && user) {
-      dispatch(
-        chatActions.createNewConsultation({
-          userId: user.id,
-          type: ConsultationType.Cosmetic,
-        })
-      )
+    if (user) {
+      createConsultation()
     }
+  }
+
+  const onJoinConsultation = (consultation: Consultation) => {
+    setActiveConsultation(consultation)
+    joinConsultation({ consultationId: consultation.id })
   }
 
   return (
@@ -59,26 +47,32 @@ const Consult = () => {
               <ConsultationItem
                 key={consultation.id}
                 consultation={consultation}
+                onClick={onJoinConsultation}
               />
             ))}
             <div className={styles.consultationList__title}>История</div>
             <div>
-              {closedConsultations?.map((consultation) => (
-                <ConsultationItem
-                  consultation={consultation}
-                  key={consultation.id}
-                />
-              ))}
+              {/*{closedConsultations?.map((consultation) => (*/}
+              {/*  <ConsultationItem*/}
+              {/*    consultation={consultation}*/}
+              {/*    key={consultation.id}*/}
+              {/*  />*/}
+              {/*))}*/}
             </div>
           </div>
           <div className={styles.wrapper__right}>
-            {!openConsultations?.length && !activeConsultation ? (
+            {!activeConsultation && !openConsultations?.length ? (
               <Button
                 title="Создать обращение"
                 onClick={onCreateNewConsultation}
               />
             ) : null}
-            {activeConsultation ? <Chat /> : null}
+            {activeConsultation ? (
+              <Chat
+                onClose={() => setActiveConsultation(null)}
+                activeConsultation={activeConsultation}
+              />
+            ) : null}
           </div>
         </WithAuth>
       </div>
@@ -90,21 +84,14 @@ export default Consult
 
 const ConsultationItem: React.FC<{
   consultation: Consultation
-}> = ({ consultation }) => {
-  const dispatch = useAppDispatch()
-  const session = useSession()
-  const user = session.data?.user
-  const onClick = () => {
-    if (user) {
-      dispatch(chatActions.joinConsultation({ consultation, userId: user.id }))
-    }
-  }
+  onClick: (consultation: Consultation) => void
+}> = ({ consultation, onClick }) => {
   return (
     <div
       className={clsx(styles.consultation, {
-        [styles.active]: consultation.status === ConsultationStatus.Open,
+        [styles.active]: consultation.status === ConsultationStatus.OPEN,
       })}
-      onClick={onClick}
+      onClick={() => onClick(consultation)}
     >
       Консультация {consultation.id}
     </div>

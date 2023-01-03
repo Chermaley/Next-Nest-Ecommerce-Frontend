@@ -1,15 +1,11 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 import styles from './MainLayout.module.scss'
 import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 import SearchInput from '../components/SearchInput/SearchInput'
 import { useSession } from 'next-auth/react'
-import { useAppDispatch } from '../hooks/useAppDispatch'
-import { chatActions } from '../store/reducers/chatSlice'
-import { authActions } from '../store/reducers/authSlice'
-import { useFetchBasketQuery } from '../services/BasketService'
-import { useTypedSelector } from '../hooks/useTypedSelectors'
+import { trpc } from '../utils/trpc'
 
 type MainLayoutProps = {
   children: ReactNode
@@ -17,19 +13,8 @@ type MainLayoutProps = {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {
-  const session = useSession()
-  const user = session.data?.user
-  const accessToken = user?.accessToken
   const [isSearchInputShown, setIsSearchInputShown] = useState(false)
   const toggleInput = () => setIsSearchInputShown(!isSearchInputShown)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    if (accessToken) {
-      dispatch(chatActions.startConnecting({ accessToken }))
-      dispatch(authActions.setAccessToken(accessToken))
-    }
-  }, [dispatch, accessToken])
 
   return (
     <div>
@@ -53,9 +38,10 @@ export default MainLayout
 const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
   onSearchButtonPressed,
 }) => {
-  const skip = useTypedSelector((state) => state.auth.skip)
-  const { data: basket } = useFetchBasketQuery(undefined, {
-    skip,
+  const session = useSession()
+  const user = session.data?.user
+  const { data: basket } = trpc.basket.getBasket.useQuery(undefined, {
+    enabled: !!user,
   })
   const productsInBasketCount = useMemo(
     () =>
@@ -86,7 +72,7 @@ const TopHeader: React.FC<{ onSearchButtonPressed: () => void }> = ({
             priority
           />
         </Link>
-        {!skip ? (
+        {user ? (
           <div>
             {productsInBasketCount ? (
               <div className={styles.badge}>{productsInBasketCount}</div>

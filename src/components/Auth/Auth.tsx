@@ -1,18 +1,16 @@
 import React, { FormEvent, useState } from 'react'
 import classes from './auth.module.scss'
 import { Input } from '../Input'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { NotificationManager } from 'react-notifications'
 import { signIn } from 'next-auth/react'
 import { Button } from '../Button'
-import { singUp } from '../../services/AuthService'
+import { trpc } from '../../utils/trpc'
 
 const Auth = () => {
-  const dispatch = useAppDispatch()
   const [isLogin, setIsLogin] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+  const { mutate: signUp } = trpc.auth.signUp.useMutation()
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -20,9 +18,9 @@ const Auth = () => {
       return signIn('credentials', { email, password, redirect: false })
     }
     if (password !== passwordConfirm) {
-      return NotificationManager.error('Пароли не совпадают')
+      // return NotificationManager.error('Пароли не совпадают')
     }
-    dispatch(singUp.initiate({ email, password }))
+    signUp({ email, password })
   }
 
   return (

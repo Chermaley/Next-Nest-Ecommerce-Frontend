@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
-import { Consultation } from './models'
 import { HYDRATE } from 'next-redux-wrapper'
 import prepareHeaders from './prepareHeaders'
 

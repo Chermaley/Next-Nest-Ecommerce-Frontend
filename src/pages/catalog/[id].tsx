@@ -1,39 +1,39 @@
 import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
-import { wrapper } from '../../store/store'
 import styles from './Product.module.scss'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import Button from '../../components/Button/Button'
 import { ProductComment } from '../../components/ProductComment'
-import {
-  fetchProduct,
-  useLeaveCommentMutation,
-} from '../../services/ProductService'
 import { useRouter } from 'next/router'
-import { useAddProductToBasketMutation } from '../../services/BasketService'
 import { Input } from '../../components/Input'
-import { Comment } from '../../services/models'
 import { Rating } from 'react-simple-star-rating'
 import { Carousel } from 'react-responsive-carousel'
+import { trpc } from '../../utils/trpc'
+import { ProductComment as Comment } from '@prisma/client'
 
 const ProductPage = () => {
   const session = useSession()
   const router = useRouter()
   const user = session.data?.user
-  const id = router.query.id
-  const [addProductToBasket] = useAddProductToBasketMutation()
-  const { data: product } = fetchProduct.useQuery({
-    productId: Number(id),
+  const productId = router.query.id as string
+  const utils = trpc.useContext()
+  const { data: product } = trpc.products.getProduct.useQuery({
+    productId,
   })
-  const images = [product?.image1, product?.image2, product?.image3]
+  const { data: productComments } = trpc.products.getProductComments.useQuery({
+    productId,
+  })
+  const { mutate: addToBasket } = trpc.basket.addToBasket.useMutation({
+    onSuccess: () => utils.basket.invalidate(),
+  })
+
+  const images = [product?.image]
 
   const addToCart = () => {
     if (product) {
-      addProductToBasket({
+      addToBasket({
         productId: product.id,
-        price: product.price,
-        name: product.name,
         quantity: 1,
       })
     }
@@ -79,11 +79,8 @@ const ProductPage = () => {
           </div>
         </div>
         <div className={styles.product__reviews}>
-          {product?.comments ? (
-            <CommentSection
-              productId={product.id}
-              comments={product.comments}
-            />
+          {productComments ? (
+            <CommentSection productId={productId} comments={productComments} />
           ) : null}
         </div>
       </div>
@@ -91,25 +88,20 @@ const ProductPage = () => {
   )
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ params }) => {
-      await store.dispatch(
-        fetchProduct.initiate({ productId: Number(params?.id) })
-      )
-      return { props: {} }
-    }
-)
-
 export default ProductPage
 
-const CommentSection: React.FC<{ productId: number; comments: Comment[] }> = ({
-  comments,
-  productId,
-}) => {
+const CommentSection: React.FC<{
+  productId: string
+  comments: Comment[]
+}> = ({ comments, productId }) => {
   const [text, setText] = React.useState('')
   const [rating, setRating] = React.useState(0)
-  const [leaveComment] = useLeaveCommentMutation()
+  const utils = trpc.useContext()
+
+  const { mutate: leaveComment } = trpc.products.leaveComment.useMutation({
+    onSuccess: () =>
+      utils.products.getProductComments.invalidate({ productId }),
+  })
 
   const onLeaveCommentButtonClick = () => {
     leaveComment({ productId, text, rating })

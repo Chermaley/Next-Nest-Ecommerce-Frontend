@@ -1,6 +1,4 @@
 import React from 'react'
-import { useTypedSelector } from '../../hooks/useTypedSelectors'
-import { useFetchOrdersQuery } from '../../services/BasketService'
 import MainLayout from '../../layouts/MainLayout'
 import { WithAuth } from '../../hoc'
 import styles from './Orders.module.scss'
@@ -8,13 +6,11 @@ import { PageTitle } from '../../components/PageTitle'
 import Link from 'next/link'
 import Image from 'next/image'
 import { translateOrderStatus } from '../../utils'
-import { Order } from '../../services/models'
+import { Order } from '@prisma/client'
+import { trpc } from '../../utils/trpc'
 
 const Index = () => {
-  const skip = useTypedSelector((state) => state.auth.skip)
-  const { data: orders } = useFetchOrdersQuery(undefined, {
-    skip,
-  })
+  const { data: orders } = trpc.order.getOrders.useQuery()
   return (
     <MainLayout title="История заказов">
       <PageTitle>История заказов</PageTitle>
@@ -25,7 +21,7 @@ const Index = () => {
               <li>Номер</li>
               <li>Статус</li>
               <li>Сумма</li>
-              <li className={styles.back}></li>
+              <li className={styles.back} />
             </ul>
             <div className={styles.orders__list}>
               {orders?.map((order) => (

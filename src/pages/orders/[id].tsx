@@ -1,21 +1,21 @@
 import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import { useRouter } from 'next/router'
-import { useFetchOrderQuery } from '../../services/BasketService'
 import styles from './Order.module.scss'
 import { PageTitle } from '../../components/PageTitle'
 import { BasketProductList } from '../../components/BasketProductList'
+import { trpc } from '../../utils/trpc'
 
 const OrderPage = () => {
   const router = useRouter()
   const id = router.query.id
-  const { data } = useFetchOrderQuery({ id: Number(id) })
+  const { data: order } = trpc.order.getOrder.useQuery({ id: id as string })
   return (
-    <MainLayout title={`Заказ ${data?.id}`}>
-      <PageTitle onBack={router.back}>Заказ {data?.id}</PageTitle>
+    <MainLayout title={`Заказ ${order?.id}`}>
+      <PageTitle onBack={router.back}>Заказ {order?.id}</PageTitle>
       <div className={styles.order}>
-        {data?.products ? (
-          <BasketProductList readonly products={data.products} />
+        {order?.products ? (
+          <BasketProductList readonly products={order.products} />
         ) : null}
       </div>
     </MainLayout>

@@ -1,7 +1,7 @@
 import React from 'react'
-import { BasketProduct } from '../../services/models'
 import classes from './BasketProductList.module.scss'
-import { useDeleteProductFromBasketMutation } from '../../services/BasketService'
+import { trpc } from '../../utils/trpc'
+import { BasketProduct } from '@prisma/client'
 
 const BasketProductList: React.FC<{
   products: BasketProduct[]
@@ -31,10 +31,12 @@ const Product: React.FC<{ product: BasketProduct; readonly?: boolean }> = ({
   product,
   readonly,
 }) => {
-  const [deleteProductFromBasket] = useDeleteProductFromBasketMutation()
-
+  const utils = trpc.useContext()
+  const { mutate: removeFromBasket } = trpc.basket.removeFromBasket.useMutation(
+    { onSuccess: () => utils.basket.invalidate() }
+  )
   const onDelete = () => {
-    deleteProductFromBasket({ productId: product.id })
+    removeFromBasket({ productId: product.id })
   }
 
   return (

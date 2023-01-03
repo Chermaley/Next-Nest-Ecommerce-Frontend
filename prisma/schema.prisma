@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  url      = env("DATABASE_URL")
+}
+
+model Example {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Necessary for Next auth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                   String                @id @default(cuid())
+  name                 String?
+  email                String?               @unique
+  emailVerified        DateTime?
+  image                String?
+  accounts             Account[]
+  sessions             Session[]
+  password             String
+  productComments      ProductComment[]
+  basket               Basket?
+  consultationMessages ConsultationMessage[]
+  consultations        Consultation[]        @relation("consultations")
+  activeConsultations  Consultation[]        @relation("activeParticipants")
+  orders               Order[]
+  roles                Role[]                @default([USER])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Basket {
+  id       String          @id @default(cuid())
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String          @unique
+  products BasketProduct[]
+}
+
+model Order {
+  id          String          @id @default(cuid())
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  products    BasketProduct[]
+  address     String
+  city        String
+  zipCode     String
+  country     String
+  phoneNumber String
+  email       String
+  amount      Int
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  status      OrderStatus     @default(NEW)
+}
+
+enum OrderStatus {
+  NEW
+  IN_PROGRESS
+  DELIVERED
+  CANCELED
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model ProductType {
+  id      String    @id @default(cuid())
+  name    String
+  Product Product[]
+}
+
+model Product {
+  id            String           @id @default(cuid())
+  name          String
+  price         Int
+  comments      ProductComment[]
+  rating        Int              @default(0)
+  type          ProductType      @relation(fields: [typeId], references: [id])
+  typeId        String
+  BasketProduct BasketProduct[]
+  description   String
+  image         String
+}
+
+model BasketProduct {
+  id        String  @id @default(cuid())
+  basket    Basket  @relation(fields: [basketId], references: [id], onDelete: Cascade)
+  basketId  String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  quantity  Int
+  price     Int
+  name      String
+  Order     Order?  @relation(fields: [orderId], references: [id])
+  orderId   String?
+}
+
+model ProductComment {
+  id        String   @id @default(cuid())
+  text      String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  email     String
+  createdAt DateTime @default(now())
+  rating    Int
+}
+
+model Consultation {
+  id                 String                @id @default(cuid())
+  type               String
+  messages           ConsultationMessage[]
+  updatedAt          DateTime              @default(now())
+  creatorId          String
+  creator            User                  @relation("consultations", fields: [creatorId], references: [id])
+  activeParticipants User[]                @relation("activeParticipants")
+  status             ConsultationStatus    @default(OPEN)
+}
+
+enum ConsultationStatus {
+  OPEN
+  CLOSED
+}
+
+model ConsultationMessage {
+  id             String       @id @default(cuid())
+  message        String
+  consultation   Consultation @relation(fields: [consultationId], references: [id])
+  consultationId String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  createdAt      DateTime     @default(now())
+  attachments    Attachment[]
+}
+
+model Attachment {
+  id        String              @id @default(cuid())
+  url       String
+  name      String
+  message   ConsultationMessage @relation(fields: [messageId], references: [id])
+  messageId String
+}
+

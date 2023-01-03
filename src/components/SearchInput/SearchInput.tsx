@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './SearchInput.module.scss'
 import Link from 'next/link'
-import { fetchProductsByTerm } from '../../services/ProductService'
+import { trpc } from '../../utils/trpc'
 
 type SearchInputPropsTypes = {
   onCloseRequested: () => void
@@ -9,7 +9,8 @@ type SearchInputPropsTypes = {
 
 const SearchInput: React.FC<SearchInputPropsTypes> = ({ onCloseRequested }) => {
   const [term, setTerm] = useState('')
-  const { data } = fetchProductsByTerm.useQuery(term, {})
+
+  const { data } = trpc.products.getProductsByTerm.useQuery({ term }, {})
 
   return (
     <div className={styles.overlay} onClick={onCloseRequested}>

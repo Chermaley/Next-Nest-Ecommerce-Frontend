@@ -1,8 +1,8 @@
 import React from 'react'
-import { Comment } from '../../services/models'
 import styles from './ProductComment.module.scss'
 import moment from 'moment/moment'
 import { Rating } from 'react-simple-star-rating'
+import { ProductComment as Comment } from '@prisma/client'
 
 const ProductComment: React.FC<{ comment: Comment }> = ({ comment }) => {
   return (

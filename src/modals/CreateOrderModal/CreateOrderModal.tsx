@@ -1,39 +1,38 @@
 import React, { useState } from 'react'
-import {
-  fetchBasket,
-  useCreateOrderMutation,
-} from '../../services/BasketService'
-import useNotification from '../../hooks/useNotification'
 import { NotificationType } from '../../store/reducers/notificationSlice'
 import classes from './CreateOrderModal.module.scss'
 import { Input } from '../../components/Input'
 import { Button } from '../../components/Button'
 import BaseModal from '../BaseModal'
+import { trpc } from '../../utils/trpc'
 
 const CreateOrderModal: React.FC<{
   toggleModal: () => void
   isOpen: boolean
 }> = ({ isOpen, toggleModal }) => {
-  const [createOrder] = useCreateOrderMutation()
-  const { data } = fetchBasket.useQueryState(undefined)
-  const [phone, setPhone] = useState('')
+  const [phoneNumber, setPhone] = useState('')
   const [address, setAddress] = useState('')
-  const showNotification = useNotification()
-
+  const { mutate: createOrder } = trpc.order.createOrder.useMutation()
   const onCreateOrder = async () => {
-    if (data?.products.length && phone && address) {
+    if (phoneNumber && address) {
       try {
-        await createOrder({ basketId: data.id, phone, address }).unwrap()
+        await createOrder({
+          phoneNumber,
+          address,
+          city: 'Москва',
+          country: 'Россия',
+          zipCode: '123456',
+        })
         toggleModal()
-        showNotification({
-          type: NotificationType.Success,
-          text: 'Заказ успешно создан',
-        })
+        // showNotification({
+        //   type: NotificationType.Success,
+        //   text: 'Заказ успешно создан',
+        // })
       } catch (e) {
-        showNotification({
-          type: NotificationType.Error,
-          text: 'Упс, что-то пошло не так',
-        })
+        // showNotification({
+        //   type: NotificationType.Error,
+        //   text: 'Упс, что-то пошло не так',
+        // })
       }
     }
   }
@@ -48,7 +47,7 @@ const CreateOrderModal: React.FC<{
       <div className={classes.createOrderModal__formGroup}>
         <label className={classes.createOrderModal__label}>Телефон</label>
         <Input
-          value={phone}
+          value={phoneNumber}
           onChange={setPhone}
           className={classes.createOrderModal__input}
         />

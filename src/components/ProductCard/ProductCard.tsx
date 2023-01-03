@@ -1,26 +1,26 @@
 import React from 'react'
-import { Product } from '../../services/models'
 import styles from './ProductCard.module.scss'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useAddProductToBasketMutation } from '../../services/BasketService'
+import { Product } from '@prisma/client'
+import { trpc } from '../../utils/trpc'
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const session = useSession()
   const user = session.data?.user
-  const [addProductToBasket] = useAddProductToBasketMutation()
+  const utils = trpc.useContext()
+
+  const { mutate: addToBasket } = trpc.basket.addToBasket.useMutation({
+    onSuccess: () => utils.basket.invalidate(),
+  })
 
   const addToCart = () => {
-    addProductToBasket({
+    addToBasket({
       productId: product.id,
-      price: product.price,
-      name: product.name,
       quantity: 1,
     })
   }
-
-  console.log(process.env)
 
   return (
     <div className={styles.product}>
@@ -28,8 +28,8 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         <Image
           fill
           placeholder="blur"
-          blurDataURL={`${process.env.NEXT_PUBLIC_API_URL}/${product.image1}`}
-          src={`${process.env.NEXT_PUBLIC_API_URL}/${product.image1}`}
+          blurDataURL={`${process.env.NEXT_PUBLIC_API_URL}/${product.image}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${product.image}`}
           alt={product.description}
         />
       </div>

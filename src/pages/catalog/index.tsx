@@ -1,27 +1,18 @@
 import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
-import { wrapper } from '../../store/store'
-import { setCurrentProductTypeId } from '../../store/reducers/productSlice'
 import styles from './Catalog.module.scss'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { GetServerSideProps } from 'next'
 import { ProductCard } from '../../components/ProductCard'
 import { PageTitle } from '../../components/PageTitle'
-import {
-  fetchAllProducts,
-  fetchProductTypes,
-} from '../../services/ProductService'
-import { useTypedSelector } from '../../hooks/useTypedSelectors'
 import clsx from 'clsx'
+import { trpc } from '../../utils/trpc'
 
 const Catalog = () => {
-  const dispatch = useAppDispatch()
-  const typeId = useTypedSelector((state) => state.product.currentProductTypeId)
-  const { data: products } = fetchAllProducts.useQuery(typeId ?? undefined)
-  const { data: productTypes } = fetchProductTypes.useQueryState(undefined)
+  const [typeId, setTypeId] = React.useState<string | null>(null)
+  const { data: products } = trpc.products.getAllProducts.useQuery({ typeId })
+  const { data: productTypes } = trpc.products.getAllProductTypes.useQuery()
 
-  const onTypeClick = (id: number | null) => {
-    dispatch(setCurrentProductTypeId(id))
+  const onTypeClick = (id: string | null) => {
+    setTypeId(id)
   }
 
   return (
@@ -57,14 +48,5 @@ const Catalog = () => {
     </MainLayout>
   )
 }
-
-export const getServerSideProps: GetServerSideProps =
-  wrapper.getServerSideProps((store) => async () => {
-    await Promise.all([
-      store.dispatch(fetchAllProducts.initiate(undefined)),
-      store.dispatch(fetchProductTypes.initiate()),
-    ])
-    return { props: {} }
-  })
 
 export default Catalog

@@ -1,14 +1,14 @@
-import { OrderStatus } from '../services/models'
+import { OrderStatus } from '@prisma/client'
 
 export default function translateOrderStatus(status: OrderStatus) {
   switch (status) {
-    case OrderStatus.Confirmed:
-      return 'Подтвержденный'
-    case OrderStatus.Delivered:
-      return 'Доставленный'
-    case OrderStatus.Pending:
-      return 'Ожидает подтверждения'
-    case OrderStatus.Rejected:
+    case OrderStatus.NEW:
+      return 'Новый'
+    case OrderStatus.CANCELED:
       return 'Отклоненный'
+    case OrderStatus.DELIVERED:
+      return 'Доставленный'
+    case OrderStatus.IN_PROGRESS:
+      return 'В процессе'
   }
 }

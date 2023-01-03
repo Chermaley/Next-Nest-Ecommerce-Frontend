@@ -4,12 +4,12 @@ import classes from './Basket.module.scss'
 import { Button } from '../../components/Button'
 import { PageTitle } from '../../components/PageTitle'
 import { WithAuth } from '../../hoc'
-import { fetchBasket } from '../../services/BasketService'
 import { BasketProductList } from '../../components/BasketProductList'
 import { CreateOrderModal } from '../../modals/CreateOrderModal'
+import { trpc } from '../../utils/trpc'
 
 const Index = () => {
-  const { data } = fetchBasket.useQueryState(undefined)
+  const { data: basket } = trpc.basket.getBasket.useQuery()
   const [isCreateOrderModalShown, setIsCreateOrderModalShown] = useState(false)
   const toggleCreateOrderModal = () =>
     setIsCreateOrderModalShown(!isCreateOrderModalShown)
@@ -19,9 +19,9 @@ const Index = () => {
       <PageTitle>Корзина</PageTitle>
       <div className={classes.basket}>
         <WithAuth>
-          {data?.products && data?.products.length ? (
+          {basket?.products && basket?.products.length ? (
             <>
-              <BasketProductList products={data.products} />
+              <BasketProductList products={basket.products} />
               <Button
                 onClick={toggleCreateOrderModal}
                 className={classes.basket__button}

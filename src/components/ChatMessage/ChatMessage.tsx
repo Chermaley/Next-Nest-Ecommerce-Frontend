@@ -1,12 +1,12 @@
 import React from 'react'
-import { Message } from '../../services/models'
 import styles from './Chat.module.scss'
 import clsx from 'clsx'
 import Image from 'next/image'
+import { ConsultationMessage, Attachment } from '@prisma/client'
 
 type MessageProps = {
-  message: Message
-  currentUserId: number
+  message: ConsultationMessage & { attachments: Attachment[] }
+  currentUserId: string
 }
 
 const ChatMessage: React.FC<MessageProps> = ({ message, currentUserId }) => {
@@ -31,7 +31,7 @@ const ChatMessage: React.FC<MessageProps> = ({ message, currentUserId }) => {
             {message.attachments.map((item) => (
               <Image
                 key={item.id}
-                src={item.content}
+                src={item.url}
                 width={300}
                 height={200}
                 alt={item.name}
